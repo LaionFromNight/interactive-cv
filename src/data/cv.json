@@ -586,5 +586,24 @@
   "extras": {
     "misc_skills": ["Don't crack under pressure", "Target oriented and organized developer", "Team Management"],
     "hobbies": ["Sailing", "Playing Piano", "Games"]
+  },
+
+  "media": {
+    "spotify": {
+      "title": "DJ Dev Studio — Soundtrack",
+      "subtitle": "My AI-generated albums. Pick one and hit play.",
+      "items": [
+        {
+          "id": "s1",
+          "title": "Developers Trap",
+          "url": "https://open.spotify.com/album/1ud1SgOhZ4zMkvgW5jCR0u?si=wv8ERsvVQAGPWNUsRveU7w"
+        },
+        {
+          "id": "s2",
+          "title": "Corpohalla",
+          "url": "https://open.spotify.com/album/2qFZ4fTte7addpkcvvtHye?si=hiX6B3XdR_mMHFvpXDybwg"
+        }
+      ]
+    }
   }
 }
