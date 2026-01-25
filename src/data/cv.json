@@ -1,0 +1,590 @@
+{
+  "schema_version": "interactive_cv_v1",
+  "meta": {
+    "owner": "Łukasz Komur",
+    "source": {
+      "cv_file": "cv_lukas.pdf",
+      "voice_notes_included": true
+    },
+    "privacy_rules": {
+      "anonymize_clients": ["client_institute"],
+      "anonymize_projects": ["proj_institute_omni"],
+      "public_display_defaults": {
+        "show_client_names": true,
+        "show_project_names": true
+      },
+      "overrides": {
+        "client_institute": { "show_client_name": false },
+        "proj_institute_omni": { "show_project_name": false }
+      }
+    },
+    "generated_at_local": "2026-01-25"
+  },
+
+  "person": {
+    "full_name": "Łukasz Komur",
+    "headline": "Software Engineer / Senior Backend Engineer / Solution Architect",
+    "contacts": {
+      "email": "komur.l@wp.pl",
+      "phone": "+48531538987"
+    },
+    "profiles": {
+      "linkedin_label": "Lukasz Komur",
+      "github_label": "GitHub"
+    },
+    "spoken_languages": ["Polish", "English"]
+  },
+
+  "taxonomy": {
+    "roles": [
+      { "id": "role_backend", "name": "Backend Engineer" },
+      { "id": "role_senior_backend", "name": "Senior Backend Engineer" },
+      { "id": "role_solution_arch", "name": "Solution Architect" },
+      { "id": "role_fullstack", "name": "Full Stack Developer" },
+      { "id": "role_sdet", "name": "Software Development Engineer in Test" },
+      { "id": "role_qa", "name": "QA Engineer" },
+      { "id": "role_team_lead", "name": "Team Lead" },
+      { "id": "role_backend_tech_lead", "name": "Backend Tech Lead" }
+    ],
+    "domains": [
+      { "id": "dom_auth", "name": "Authentication / Authorization / IAM" },
+      { "id": "dom_ecomm_tools", "name": "E-commerce management systems (not a storefront)" },
+      { "id": "dom_social", "name": "Social platform / high scale" },
+      { "id": "dom_data_platform", "name": "Internal platforms / provisioning / dev tools" },
+      { "id": "dom_testing", "name": "Automation testing frameworks" },
+      { "id": "dom_rpa", "name": "RPA / desktop automation" },
+      { "id": "dom_marketing_sync", "name": "Marketing systems integration / data sync" }
+    ]
+  },
+
+  "skills": {
+   "tech": [
+      { "id": "t_ts", "name": "TypeScript", "tags": ["language"], "ui": { "visible": true, "order": 10 } },
+      { "id": "t_js", "name": "JavaScript", "tags": ["language"], "ui": { "visible": true, "order": 10 } },
+      { "id": "t_python", "name": "Python", "tags": ["language"], "ui": { "visible": true, "order": 10 } },
+      { "id": "t_dotnet", "name": ".NET / C#", "tags": ["language", "desktop"] },
+      
+      { "id": "t_ror", "name": "Ruby on Rails", "tags": ["language","backend"], "ui": { "visible": true, "order": 15 } },
+      { "id": "t_node", "name": "Node.js", "tags": ["backend"], "ui": { "visible": true, "order": 20 } },
+      { "id": "t_express", "name": "Express", "tags": ["backend"], "ui": { "visible": true, "order": 20 } },
+      { "id": "t_fastapi", "name": "FastAPI", "tags": ["backend"], "ui": { "visible": true, "order": 20 } },
+      { "id": "t_flask", "name": "Flask", "tags": ["backend"], "ui": { "visible": false, "order": 20 } },
+      
+      { "id": "t_wpf", "name": "WPF", "tags": ["backend","desktop"] },
+
+      { "id": "t_react", "name": "React", "tags": ["frontend"], "ui": { "visible": true, "order": 30 } },
+      { "id": "t_angular", "name": "Angular", "tags": ["frontend"], "ui": { "visible": true, "order": 30 } },
+      { "id": "t_angularjs", "name": "AngularJS", "tags": ["frontend"] },
+      { "id": "t_bootstrap", "name": "Bootstrap", "tags": ["frontend"] },
+
+
+      { "id": "t_mongo", "name": "MongoDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 500 } },
+      { "id": "t_pg", "name": "PostgreSQL", "tags": ["db", "sql"], "ui": { "visible": true, "order": 510 } },
+      { "id": "t_kafka", "name": "Kafka", "tags": ["db", "streaming"], "ui": { "visible": true, "order": 550 } },
+      { "id": "t_redis", "name": "Redis", "tags": ["db", "cache"], "ui": { "visible": true, "order": 550 } },
+      { "id": "t_mysql", "name": "MySQL", "tags": ["db", "sql"], "ui": { "visible": true, "order": 530 } },
+      { "id": "t_docdb", "name": "DocumentDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 } },
+      { "id": "t_dynamo", "name": "DynamoDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 } },
+      { "id": "t_cassandra", "name": "Cassandra", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 } },
+      { "id": "t_oracle", "name": "Oracle DB", "tags": ["db", "sql"], "ui": { "visible": true, "order": 530 } },
+
+      { "id": "t_aws_lambda", "name": "AWS Lambda", "tags": ["cloud", "serverless"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_apigw", "name": "AWS API Gateway", "tags": ["cloud", "api"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_cognito", "name": "AWS Cognito", "tags": ["cloud", "auth"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_iam", "name": "AWS IAM", "tags": ["cloud", "security"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_s3", "name": "AWS S3", "tags": ["cloud", "storage"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_sqs", "name": "AWS SQS", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_sns", "name": "AWS SNS", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_ec2", "name": "AWS EC2", "tags": ["cloud", "compute"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_aws_ses", "name": "AWS SES", "tags": ["cloud", "email"], "ui": { "visible": true, "order": 1000 } },
+      { "id": "t_gcp_cf", "name": "GCP Cloud Functions", "tags": ["cloud", "serverless"], "ui": { "visible": true, "order": 1500 } },
+      { "id": "t_gcp_apigw", "name": "GCP API Gateway", "tags": ["cloud", "api"], "ui": { "visible": true, "order": 1500 } },
+      { "id": "t_pubsub", "name": "Pub/Sub", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1500 } },
+      { "id": "t_firebase", "name": "Firebase", "tags": ["cloud"] , "ui": { "visible": true, "order": 1500 } },
+
+      { "id": "t_docker", "name": "Docker", "tags": ["devops"], "ui": { "visible": true, "order": 3000 } },
+      { "id": "t_k8s", "name": "Kubernetes", "tags": ["devops"], "ui": { "visible": true, "order": 3000 } },
+      { "id": "t_nginx", "name": "NGINX", "tags": ["devops"], "ui": { "visible": true, "order": 3000 } },
+      { "id": "t_istio", "name": "Istio", "tags": ["devops", "mesh"] },
+
+      { "id": "t_datadog", "name": "Datadog", "tags": ["observability"], "ui": { "visible": false, "order": 240 } },
+      { "id": "t_salesforce", "name": "Salesforce", "tags": ["platform"] },
+      { "id": "t_cloudcraze", "name": "CloudCraze", "tags": ["platform"] },
+      { "id": "t_activecampaign", "name": "ActiveCampaign", "tags": ["platform", "integration", "marketing"] },
+      { "id": "t_selenium", "name": "Selenium", "tags": ["testing"] },
+      { "id": "t_golem", "name": "Golem (testing framework)", "tags": ["testing"] },
+      { "id": "t_opencv", "name": "OpenCV", "tags": ["testing", "vision"] },
+      { "id": "t_ibm_watson", "name": "IBM Watson Assistant", "tags": ["nlp"] }
+    ],
+    "usage_scale": {
+      "0": "mentioned",
+      "1": "basic",
+      "2": "regular",
+      "3": "advanced",
+      "4": "expert/owner"
+    }
+  },
+
+  "companies": [
+    {
+      "id": "co_sofomo",
+      "name": "Sofomo",
+      "type": "employer",
+      "time_range": { "start": "2021-04", "end": null }
+    },
+    {
+      "id": "co_accenture",
+      "name": "Accenture",
+      "type": "employer",
+      "time_range": { "start": "2018-01", "end": "2021-03" }
+    },
+    {
+      "id": "co_codeconcept",
+      "name": "CodeConcept",
+      "type": "employer",
+      "time_range": { "start": "2016-07", "end": "2017-12" }
+    },
+    {
+      "id": "co_confronter",
+      "name": "Confronter",
+      "type": "employer",
+      "time_range": { "start": "2015-11", "end": "2016-05" }
+    }
+  ],
+
+  "clients": [
+    {
+      "id": "client_breastpump",
+      "display_name": "Breast pump manufacturer (consumer medical device)",
+      "employer_company_id": "co_sofomo",
+      "is_anonymized": true,
+      "notes": "Client builds and distributes breast pumps + mobile apps (from CV)."
+    },
+    {
+      "id": "client_medical_federal",
+      "display_name": "Medical industry platform(s) (federal compliance)",
+      "employer_company_id": "co_sofomo",
+      "is_anonymized": true
+    },
+    {
+      "id": "client_social_startup",
+      "display_name": "Startup social media platform",
+      "employer_company_id": "co_sofomo",
+      "is_anonymized": true
+    },
+    {
+      "id": "client_institute",
+      "display_name": "Anonymized Institute (large e-commerce retailer)",
+      "employer_company_id": "co_sofomo",
+      "is_anonymized": true,
+      "privacy": { "show_client_name": false }
+    },
+    {
+      "id": "client_accenture_internal",
+      "display_name": "Accenture internal / enterprise clients (various)",
+      "employer_company_id": "co_accenture",
+      "is_anonymized": true
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "proj_sofomo_uus",
+      "client_id": "client_breastpump",
+      "company_id": "co_sofomo",
+      "name": "Unified User Service",
+      "display_name": "Unified User Service",
+      "time_range": { "start": "2023-03", "end": "2023-12" },
+      "status": "completed",
+      "domain_ids": ["dom_auth"],
+      "description": "Centralized scattered user data, provided authentication, integrated with legacy authorization systems, and supported a unified mobile app across multiple device generations.",
+      "roles": ["role_senior_backend", "role_solution_arch"],
+      "responsibilities": [
+        "Designed and developed the Unified User Service.",
+        "Implemented authentication flows and integrated with existing authorization systems."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_node", "usage": 4 },
+        { "tech_id": "t_ts", "usage": 4 },
+        { "tech_id": "t_js", "usage": 3 },
+        { "tech_id": "t_docker", "usage": 3 },
+        { "tech_id": "t_gcp_cf", "usage": 3 },
+        { "tech_id": "t_gcp_apigw", "usage": 3 },
+        { "tech_id": "t_firebase", "usage": 2 },
+        { "tech_id": "t_mongo", "usage": 3 },
+        { "tech_id": "t_pubsub", "usage": 2 }
+      ],
+      "highlights": [],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_sofomo_uus_support",
+      "client_id": "client_breastpump",
+      "company_id": "co_sofomo",
+      "name": "Unified User Service (Support / part-time return)",
+      "display_name": "Unified User Service (Support)",
+      "time_range": { "start": "2024-05", "end": null },
+      "status": "ongoing",
+      "domain_ids": ["dom_auth"],
+      "description": "Part-time backend technical support + targeted enhancements for the existing service after completion.",
+      "roles": ["role_backend", "role_senior_backend"],
+      "responsibilities": [
+        "Ongoing support: system upgrades and maintenance (MongoDB upgrade, Node.js upgrade).",
+        "Fixing failures/incidents and smaller improvements.",
+        "Building new service functionality enabling new mobile app features (incl. MAM pump support).",
+        "Integration with external AI Agent 'Emma' and delivering data to the frontend.",
+        "Migrating/reconnecting CMS to a new solution."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_node", "usage": 3 },
+        { "tech_id": "t_ts", "usage": 2 },
+        { "tech_id": "t_mongo", "usage": 3 }
+      ],
+      "highlights": [
+        "Integrated external AI Agent 'Emma' and exposed the data to the frontend.",
+        "Performed platform upgrades (MongoDB, Node.js) and stability fixes.",
+        "Executed CMS migration/switch to a new solution."
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_sofomo_federal_auth",
+      "client_id": "client_medical_federal",
+      "company_id": "co_sofomo",
+      "name": "Federal authentication service",
+      "display_name": "Federal authentication service",
+      "time_range": { "start": "2022-02", "end": "2022-11" },
+      "status": "completed",
+      "domain_ids": ["dom_auth"],
+      "description": "Centralized authentication/authorization for medical industry platforms with federal security compliance and integrations with Identity Providers.",
+      "roles": ["role_senior_backend", "role_solution_arch"],
+      "responsibilities": [
+        "Designed and implemented the auth service with compliance in mind.",
+        "Worked with clients on requirements and integrations with IdPs."
+      ],
+      "highlights": [
+        "Defensive layer against DDoS and sniffing detection mechanisms.",
+        "Secure login: phishing detection, temp lockouts, invalid token generation on phishing attempts, 2FA, anomaly alerts, token revocation on threat.",
+        "Built SDK for easier adoption of new auth system and RBAC-based access management."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_node", "usage": 4 },
+        { "tech_id": "t_ts", "usage": 4 },
+        { "tech_id": "t_react", "usage": 2 },
+        { "tech_id": "t_aws_cognito", "usage": 3 },
+        { "tech_id": "t_docdb", "usage": 2 },
+        { "tech_id": "t_redis", "usage": 2 },
+        { "tech_id": "t_datadog", "usage": 2 },
+        { "tech_id": "t_docker", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_sofomo_ecomm_core",
+      "client_id": "client_breastpump",
+      "company_id": "co_sofomo",
+      "name": "E-commerce platform (core team developer)",
+      "display_name": "E-commerce platform (core team)",
+      "time_range": { "start": "2021-10", "end": "2023-02" },
+      "status": "completed",
+      "domain_ids": ["dom_ecomm_tools"],
+      "description": "Core development on an e-commerce ecosystem (platform + tooling).",
+      "roles": ["role_backend", "role_senior_backend"],
+      "responsibilities": [
+        "Designed and implemented new platform features.",
+        "R&D/optimization ('green code').",
+        "Built integrations and platform components across UI and backend."
+      ],
+      "highlights": [
+        "Improved fraud checks: switched external integration Braintree -> Kount; built internal manual review mechanism.",
+        "Salesforce Live Chat integration: React UI session init component + Ruby on Rails admin view + backend handling of complex config combinations.",
+        "Improved scalability by splitting monolith into separate UI & backend; introduced JSON API serializer, Dry Transactions, Swagger docs."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_ror", "usage": 4 },
+        { "tech_id": "t_react", "usage": 3 },
+        { "tech_id": "t_pg", "usage": 3 },
+        { "tech_id": "t_redis", "usage": 2 },
+        { "tech_id": "t_datadog", "usage": 2 },
+        { "tech_id": "t_salesforce", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_sofomo_social_startup",
+      "client_id": "client_social_startup",
+      "company_id": "co_sofomo",
+      "name": "Startup Social Media Platform",
+      "display_name": "Startup Social Media Platform",
+      "time_range": { "start": "2021-04", "end": "2021-11" },
+      "status": "completed",
+      "domain_ids": ["dom_social"],
+      "description": "Cloud-agnostic, secure, scalable social platform built within ~6 months; designed to handle up to 5M simultaneous users.",
+      "roles": ["role_backend_tech_lead", "role_solution_arch"],
+      "responsibilities": [
+        "Managed backend team (3 devs + 1 QA).",
+        "Designed microservices and functionality as part of product team.",
+        "Owned backend Jira board and sprint goals.",
+        "Worked with security and QA; participated in load tests; delivered end-to-end features."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_node", "usage": 3 },
+        { "tech_id": "t_ts", "usage": 3 },
+        { "tech_id": "t_docker", "usage": 3 },
+        { "tech_id": "t_k8s", "usage": 2 },
+        { "tech_id": "t_istio", "usage": 2 },
+        { "tech_id": "t_cassandra", "usage": 2 },
+        { "tech_id": "t_mongo", "usage": 2 },
+        { "tech_id": "t_redis", "usage": 2 },
+        { "tech_id": "t_kafka", "usage": 2 },
+        { "tech_id": "t_datadog", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_institute_activecampaign",
+      "client_id": "client_institute",
+      "company_id": "co_sofomo",
+      "name": "ActiveCampaign integration (Oracle -> AWS)",
+      "display_name": "Marketing system integration (ActiveCampaign)",
+      "time_range": { "start": "2023-12", "end": "2024-06" },
+      "status": "completed",
+      "domain_ids": ["dom_marketing_sync"],
+      "description": "Integrated a new marketing system (ActiveCampaign) with existing Oracle-based data sources using AWS serverless jobs; handled bidirectional sync and critical paths.",
+      "roles": ["role_backend", "role_senior_backend"],
+      "responsibilities": [
+        "Built AWS Lambda + Python jobs for data synchronization into ActiveCampaign.",
+        "Handled a mix of live API sync calls and job-based sync triggers (DB triggers, DS scripts triggers).",
+        "Focused on two-way synchronization rules and managing critical error paths and data quality constraints."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_activecampaign", "usage": 3 },
+        { "tech_id": "t_oracle", "usage": 2 },
+        { "tech_id": "t_aws_lambda", "usage": 3 },
+        { "tech_id": "t_python", "usage": 3 }
+      ],
+      "notes_private": [
+        "Architecture layer existed outside scope: DS pipelines/jobs on on-prem servers sending to AWS."
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_institute_omni",
+      "client_id": "client_institute",
+      "company_id": "co_sofomo",
+      "name": "Omni (legacy Oracle forms rewrite)",
+      "display_name": "Legacy forms modernization (React + Express)",
+      "time_range": { "start": "2024-06", "end": null },
+      "status": "ongoing",
+      "domain_ids": ["dom_ecomm_tools"],
+      "description": "Modernization of legacy Oracle-based internal forms/app ('SIMS') into user-friendly React + Express tools for managing e-commerce operations (not building a storefront).",
+      "roles": ["role_fullstack", "role_backend"],
+      "responsibilities": [
+        "Rewrite legacy Oracle forms into modern web UI/UX.",
+        "Implement features for: account creation, account archival, password management.",
+        "Implement e-commerce operations tooling: order management, order views, reporting, statistics, and related admin workflows."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_react", "usage": 3 },
+        { "tech_id": "t_express", "usage": 3 },
+        { "tech_id": "t_node", "usage": 3 },
+        { "tech_id": "t_oracle", "usage": 1 }
+      ],
+      "public": { "show": true, "show_project_name": false }
+    },
+
+    {
+      "id": "proj_acc_ds_platform",
+      "client_id": "client_accenture_internal",
+      "company_id": "co_accenture",
+      "name": "Data Science Platform",
+      "display_name": "Data Science Platform",
+      "time_range": { "start": "2019-08", "end": "2021-03" },
+      "status": "completed",
+      "domain_ids": ["dom_data_platform"],
+      "description": "End-to-end platform for creating/configuring servers for project needs.",
+      "roles": ["role_fullstack"],
+      "responsibilities": [
+        "SME for UI, backend ops, architecture, troubleshooting.",
+        "Managed git repo (merges, milestones, release branches).",
+        "Built new API endpoints using Lambda.",
+        "Coordinated cross-team releases."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_aws_apigw", "usage": 3 },
+        { "tech_id": "t_aws_lambda", "usage": 3 },
+        { "tech_id": "t_python", "usage": 3 },
+        { "tech_id": "t_fastapi", "usage": 2 },
+        { "tech_id": "t_node", "usage": 2 },
+        { "tech_id": "t_express", "usage": 2 },
+        { "tech_id": "t_angular", "usage": 2 },
+        { "tech_id": "t_docdb", "usage": 2 },
+        { "tech_id": "t_dynamo", "usage": 2 },
+        { "tech_id": "t_aws_cognito", "usage": 2 },
+        { "tech_id": "t_nginx", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_acc_e2e_framework",
+      "client_id": "client_accenture_internal",
+      "company_id": "co_accenture",
+      "name": "End-to-End Testing Framework",
+      "display_name": "End-to-End Testing Framework",
+      "time_range": { "start": "2018-12", "end": "2019-08" },
+      "status": "completed",
+      "domain_ids": ["dom_testing"],
+      "roles": ["role_sdet"],
+      "responsibilities": [
+        "Set up and maintained Golem-based E2E automation framework.",
+        "Trained testers (Python, API rules, Selenium, XPath).",
+        "Built visual regression (OpenCV) and dedicated API test modules.",
+        "Integrated GitLab pipeline, improved reporting, auto-created Jira bugs.",
+        "Handled environment-specific test data gaps."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_python", "usage": 4 },
+        { "tech_id": "t_golem", "usage": 3 },
+        { "tech_id": "t_selenium", "usage": 3 },
+        { "tech_id": "t_opencv", "usage": 2 },
+        { "tech_id": "t_mongo", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_acc_hr_assistant",
+      "client_id": "client_accenture_internal",
+      "company_id": "co_accenture",
+      "name": "Virtual HR Assistant",
+      "display_name": "Virtual HR Assistant",
+      "time_range": { "start": "2018-08", "end": "2018-12" },
+      "status": "completed",
+      "domain_ids": ["dom_data_platform"],
+      "roles": ["role_fullstack"],
+      "responsibilities": [
+        "Built front-end chat.",
+        "Built backend microservices for NLP.",
+        "Designed intents/patterns and dialog logic in IBM Watson Assistant."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_angularjs", "usage": 2 },
+        { "tech_id": "t_node", "usage": 2 },
+        { "tech_id": "t_express", "usage": 2 },
+        { "tech_id": "t_ibm_watson", "usage": 2 },
+        { "tech_id": "t_mongo", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_acc_cloudcraze",
+      "client_id": "client_accenture_internal",
+      "company_id": "co_accenture",
+      "name": "Salesforce-CloudCraze e-Commerce Platform",
+      "display_name": "Salesforce-CloudCraze e-Commerce Platform",
+      "time_range": { "start": "2018-01", "end": "2018-08" },
+      "status": "completed",
+      "domain_ids": ["dom_ecomm_tools"],
+      "roles": ["role_qa", "role_team_lead", "role_fullstack"],
+      "responsibilities": [
+        "QA: updated documentation, wrote user stories, manual testing, scenarios, regression tests (Selenium).",
+        "Team lead/UI dev: organized work for a team of 4 devs, task management, recruitment, implemented UX/UI redesign.",
+        "Salesforce dev: backend operations."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_salesforce", "usage": 3 },
+        { "tech_id": "t_cloudcraze", "usage": 2 },
+        { "tech_id": "t_js", "usage": 2 },
+        { "tech_id": "t_bootstrap", "usage": 2 },
+        { "tech_id": "t_selenium", "usage": 2 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_cc_bring_data_to_life",
+      "client_id": null,
+      "company_id": "co_codeconcept",
+      "name": "Bring Data to Life",
+      "display_name": "Bring Data to Life",
+      "time_range": { "start": "2016-07", "end": "2017-12" },
+      "status": "completed",
+      "domain_ids": ["dom_testing"],
+      "roles": ["role_qa", "role_sdet"],
+      "responsibilities": [
+        "QA: created test cases, maintained them in TestLink; prepared analysis models used during testing.",
+        "Automation: UI automation tests (Ranorex 6.1 in C#), NUnit tests."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_dotnet", "usage": 2 },
+        { "tech_id": "t_selenium", "usage": 1 }
+      ],
+      "public": { "show": true }
+    },
+
+    {
+      "id": "proj_confronter_rpa",
+      "client_id": null,
+      "company_id": "co_confronter",
+      "name": "RPA Application Developer",
+      "display_name": "RPA Application Developer",
+      "time_range": { "start": "2015-11", "end": "2016-05" },
+      "status": "completed",
+      "domain_ids": ["dom_rpa"],
+      "roles": ["role_backend"],
+      "responsibilities": [
+        "Fixed bugs in an existing app and evolved it into an RPA application.",
+        "Rewrote from WinForms to WPF (MVVM), ensured Windows XP compatibility.",
+        "Built JSON-instructions engine converting patterns into Selenium commands.",
+        "Maintained XPath handlers; wrote unit tests (NUnit); integrated with SOAP APIs."
+      ],
+      "tech_usage": [
+        { "tech_id": "t_dotnet", "usage": 3 },
+        { "tech_id": "t_wpf", "usage": 2 },
+        { "tech_id": "t_selenium", "usage": 2 }
+      ],
+      "public": { "show": true }
+    }
+  ],
+
+  "experience_timeline": [
+    { "company_id": "co_sofomo", "start": "2021-04", "end": null, "project_ids": ["proj_sofomo_social_startup", "proj_sofomo_ecomm_core", "proj_sofomo_federal_auth", "proj_sofomo_uus", "proj_institute_activecampaign", "proj_sofomo_uus_support", "proj_institute_omni"] },
+    { "company_id": "co_accenture", "start": "2018-01", "end": "2021-03", "project_ids": ["proj_acc_cloudcraze", "proj_acc_hr_assistant", "proj_acc_e2e_framework", "proj_acc_ds_platform"] },
+    { "company_id": "co_codeconcept", "start": "2016-07", "end": "2017-12", "project_ids": ["proj_cc_bring_data_to_life"] },
+    { "company_id": "co_confronter", "start": "2015-11", "end": "2016-05", "project_ids": ["proj_confronter_rpa"] }
+  ],
+
+  "education": [
+    {
+      "id": "edu_wsb_pm",
+      "institution": "WSB University of Wroclaw",
+      "program": "Course of Project Management",
+      "time_range": { "start": "2021", "end": "2022" }
+    },
+    {
+      "id": "edu_aswb",
+      "institution": "Academy of WSB in Dabrowa Gornicza",
+      "program": "First degree studies in software engineering (interrupted after 4th semester)",
+      "time_range": { "start": "2014", "end": "2016" }
+    },
+    {
+      "id": "edu_tech4",
+      "institution": "Technical no. 4 Jan III Sobieski (Jastrzębie-Zdrój)",
+      "program": "IT specialist / WebMaster",
+      "time_range": { "start": "2006", "end": "2010" }
+    }
+  ],
+
+  "extras": {
+    "misc_skills": ["Don't crack under pressure", "Target oriented and organized developer", "Team Management"],
+    "hobbies": ["Sailing", "Playing Piano", "Games"]
+  }
+}
