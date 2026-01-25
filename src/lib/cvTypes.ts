@@ -61,13 +61,18 @@ export type CVContacts = {
 };
 
 export type CVProfiles = {
-  linkedin_label?: string;
-  github_label?: string;
+  id: "github" | "linkedin" | "website" | "x" | "email" | string;
+  label: string; // what user sees
+  url: string;   // destination link
+  icon?: "globe" | "link" | string;
+  icon_url?: string; // optional custom icon (e.g. /assets/github.svg or https://...)
 };
 
 export type CVPerson = {
   full_name: string;
   headline: string;
+  avatar_url: string;
+  bio_short?: string;
   contacts: CVContacts;
   profiles: CVProfiles;
   spoken_languages: string[];
@@ -84,6 +89,21 @@ export type CVTaxonomyItem = {
 export type CVTaxonomy = {
   roles: CVTaxonomyItem[];
   domains: CVTaxonomyItem[];
+};
+
+// --------------------
+// Summary
+// --------------------
+export type CVSummaryCard = {
+  id: string;
+  title: string;
+  desc: string;
+};
+
+export type CVSummary = {
+  title?: string;      // e.g. "In short"
+  subtitle?: string;   // e.g. "Key values and work style."
+  cards: CVSummaryCard[];
 };
 
 // --------------------
@@ -197,6 +217,26 @@ export type CVExtras = {
 };
 
 // --------------------
+// Showcase
+// --------------------
+export type CVShowcaseItem = {
+  id: string;
+  title: string;
+  teaser: string;
+  url: string;
+  image_url?: string;      
+  image_alt?: string;
+  tags?: string[];         
+  featured?: boolean;      
+};
+
+export type CVShowcase = {
+  title?: string;          
+  subtitle?: string;       
+  items: CVShowcaseItem[];
+};
+
+// --------------------
 // Root CV
 // --------------------
 export type CV = {
@@ -208,6 +248,8 @@ export type CV = {
   media?: CVMedia;
 
   person: CVPerson;
+
+  summary?: CVSummary;
 
   taxonomy: CVTaxonomy;
 
@@ -224,4 +266,6 @@ export type CV = {
   education: CVEducation[];
 
   extras: CVExtras;
+
+  showcase?: CVShowcase;
 };

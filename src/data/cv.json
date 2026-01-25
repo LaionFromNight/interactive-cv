@@ -24,16 +24,76 @@
   "person": {
     "full_name": "Łukasz Komur",
     "headline": "Software Engineer / Senior Backend Engineer / Solution Architect",
+    "bio_short": "I design and build backend systems and architectures: IAM, internal platforms, integrations, and cloud/serverless solutions. I value ownership, clear delivery, and clean, maintainable code."
+,
+    "avatar_url": "https://media.licdn.com/dms/image/v2/C4E03AQEV2iNjVjnFMw/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1621016414803?e=1770854400&v=beta&t=FKTBc60KlzY0QbrXmtFA8lCKTiYEoicdpV8JKEEBCqY",
     "contacts": {
       "email": "komur.l@wp.pl",
       "phone": "+48531538987"
     },
-    "profiles": {
-      "linkedin_label": "Lukasz Komur",
-      "github_label": "GitHub"
-    },
+    "profiles": [
+      {
+        "id": "github",
+        "label": "GitHub",
+        "url": "https://github.com/LaionFromNight",
+        "icon_url": "https://cdn.simpleicons.org/github/ffffff"
+      },
+      {
+        "id": "linkedin",
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/%C5%82ukasz-komur-553042117/"
+      }
+    ],
     "spoken_languages": ["Polish", "English"]
   },
+
+  "showcase": {
+  "title": "Featured work",
+  "subtitle": "A few projects I’m happy to show.",
+  "items": [
+      {
+        "id": "sh_interactive_cv",
+        "title": "Interactive CV",
+        "teaser": "JSON-driven CV with filtering, timeline, and project drill-down.",
+        "url": "https://github.com/LaionFromNight/interactive-cv",
+        "image_url": "/assets/showcase/interactive-cv.jpg",
+        "image_alt": "Interactive CV preview",
+        "tags": ["React", "TypeScript", "UX"]
+      },
+      {
+        "id": "sh_ideboide",
+        "title": "ideboide.pl",
+        "teaser": "Travel blog built from scratch on WordPress + Elementor Pro. I manage the site end-to-end: structure, styling, performance, and ongoing content updates.",
+        "url": "https://ideboide.pl",
+        "image_url": "/assets/showcase/ideboide.jpg",
+        "image_alt": "ideboide.pl travel blog preview",
+        "tags": ["WordPress", "Elementor Pro", "CSS", "SEO", "Performance"]
+      }
+    ]
+},
+
+  "summary": {
+    "title": "In short",
+    "subtitle": "Key values and work style.",
+    "cards": [
+      {
+        "id": "s_arch",
+        "title": "Architecture & delivery",
+        "desc": "I design and ship backend systems with security, scale, and testability in mind."
+      },
+      {
+        "id": "s_owner",
+        "title": "Ownership",
+        "desc": "I run projects from discovery to production: planning, estimates, integrations, observability."
+      },
+      {
+        "id": "s_collab",
+        "title": "Collaboration",
+        "desc": "Mentoring, coordinating teams, clear requirements, and fast iterations with stakeholders."
+      }
+    ]
+},
+
 
   "taxonomy": {
     "roles": [
@@ -585,7 +645,7 @@
 
   "extras": {
     "misc_skills": ["Don't crack under pressure", "Target oriented and organized developer", "Team Management"],
-    "hobbies": ["Sailing", "Playing Piano", "Games"]
+    "hobbies": ["Sailing", "Chess", "Playing Piano", "Games"]
   },
 
   "media": {

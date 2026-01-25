@@ -1,21 +1,114 @@
-const navItems = [
-  { href: "#about", label: "About" },
-  { href: "#experience", label: "Experience" },
+import { useEffect, useMemo, useState } from "react";
+
+type NavItem = { id: string; label: string; href: string };
+
+type Props = {
+  ownerName?: string;
+  subtitle?: string;
+  items?: NavItem[];
+  avatarSrc?: string;     
+  avatarAlt?: string;
+};
+
+const DEFAULT_ITEMS: NavItem[] = [
+  { id: "about", label: "About", href: "#about" },
+  { id: "experience", label: "Experience", href: "#experience" },
+  { id: "skills", label: "Skills", href: "#skills" },
+  { id: "education", label: "Education", href: "#education" },
 ];
 
-export function Nav() {
+const useActiveSection = (ids: string[]) => {
+  const [active, setActive] = useState<string>(ids[0] ?? "about");
+
+  useEffect(() => {
+    if (!ids.length) return;
+
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
+
+        if (visible?.target?.id) setActive(visible.target.id);
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: [0.1, 0.2, 0.35, 0.5, 0.75] }
+    );
+
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [ids]);
+
+  return active;
+};
+
+export function Nav({
+  ownerName = "Your Name",
+  subtitle = "Interactive CV",
+  items = DEFAULT_ITEMS,
+  avatarSrc,
+  avatarAlt,
+}: Props) {
+  const ids = useMemo(() => items.map((x) => x.id), [items]);
+  const active = useActiveSection(ids);
+
   return (
-    <nav className="sticky top-0 z-20 border-b border-white/10 bg-[#0B0F17]/80 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <span className="text-sm font-semibold text-white">Interactive CV</span>
-        <div className="flex items-center gap-4 text-sm text-white/70">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} className="hover:text-white">
-              {item.label}
-            </a>
-          ))}
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+        {/* Brand */}
+        <a href="#about" className="flex items-center gap-3">
+          {avatarSrc ? (
+            <img
+              src={avatarSrc}
+              alt={avatarAlt ?? ownerName}
+              className="h-9 w-9 rounded-xl object-cover ring-1 ring-white/10"
+              loading="lazy"
+            />
+          ) : (
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-amber-400/80 to-emerald-400/60 ring-1 ring-white/10" />
+          )}
+
+          <div className="leading-tight">
+            <p className="text-sm font-semibold tracking-tight">{ownerName}</p>
+            <p className="text-xs text-white/60">{subtitle}</p>
+          </div>
+        </a>
+
+        {/* Links */}
+        <nav className="hidden items-center gap-6 text-sm md:flex">
+          {items.map((it) => {
+            const isActive = it.id === active;
+            return (
+              <a
+                key={it.id}
+                href={it.href}
+                className={`transition ${isActive ? "text-white" : "text-white/70 hover:text-white"}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {it.label}
+              </a>
+            );
+          })}
+        </nav>
+
+        {/* CTA */}
+        <div className="flex items-center gap-2">
+          <a
+            className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+            href="#contact"
+          >
+            Contact
+          </a>
+          <a
+            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
+            href="#experience"
+          >
+            Browse projects
+          </a>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

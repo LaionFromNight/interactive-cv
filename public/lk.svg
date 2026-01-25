@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="ŁK emblem">
+  <defs>
+    <style>
+      :root{ --ink:#0B0F14; --accent:#2F7EF7; --ring:#111827; }
+      .ink{ fill:var(--ink); } .accent{ fill:var(--accent); }
+      .no{ fill:none; } .round{ stroke-linecap:round; stroke-linejoin:round; }
+    </style>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141B25"></stop>
+      <stop offset="1" stop-color="#0B0F14"></stop>
+    </linearGradient>
+  </defs>
+
+  <circle cx="120" cy="120" r="102" class="no" stroke="var(--ring)" stroke-width="12"></circle>
+  <circle cx="120" cy="120" r="102" class="no" stroke="var(--accent)" stroke-width="2" opacity="0.7"></circle>
+
+  <!-- weapons -->
+  <g class="no round" stroke="var(--ink)" stroke-width="10">
+    <path d="M70 178 L178 70"></path>
+    <path d="M64 186 L74 174"></path>
+    <path d="M78 70 L178 170"></path>
+  </g>
+  <path d="M72 82 C58 68 56 50 72 40 C88 32 106 44 110 62 C98 70 86 78 72 82 Z" class="ink"></path>
+  <rect x="112" y="160" width="34" height="10" rx="5" class="accent" transform="rotate(-45 129 165)"></rect>
+
+  <!-- helmet -->
+  <path d="M74 134 C78 98 100 76 120 76 C140 76 162 98 166 134 C152 150 137 158 120 158 C103 158 88 150 74 134 Z" fill="url(#g)"></path>
+
+  <!-- mask -->
+  <path d="M92 138 C98 158 108 170 120 170 C132 170 142 158 148 138 C140 132 130 128 120 128 C110 128 100 132 92 138 Z" class="ink"></path>
+  <g class="no round" stroke="var(--accent)" stroke-width="4">
+    <path d="M102 150 H138"></path>
+    <path d="M108 158 H132"></path>
+  </g>
+
+  <!-- horns -->
+  <g class="no round" stroke="var(--ink)" stroke-width="10">
+    <path d="M84 96 C62 90 54 74 62 60 C70 44 90 46 96 60"></path>
+    <path d="M156 96 C178 90 186 74 178 60 C170 44 150 46 144 60"></path>
+  </g>
+  <circle cx="62" cy="60" r="6" class="accent"></circle>
+  <circle cx="178" cy="60" r="6" class="accent"></circle>
+
+  <!-- crest + brackets -->
+  <path d="M110 56 C112 46 128 46 130 56 C140 56 148 66 148 76 C138 74 130 72 120 72 C110 72 102 74 92 76 C92 66 100 56 110 56 Z" class="accent"></path>
+  <g class="no round" stroke="var(--ink)" stroke-width="6" opacity="0.9">
+    <path d="M104 68 L96 76 L104 84"></path>
+    <path d="M136 68 L144 76 L136 84"></path>
+  </g>
+</svg>

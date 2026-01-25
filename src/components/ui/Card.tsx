@@ -13,7 +13,7 @@ export function Card({
     <div
       onClick={onClick}
       className={[
-        "rounded-2xl border border-white/10 bg-white/[0.04] p-6",
+        "cv-card rounded-2xl border border-white/10 bg-white/[0.04] p-6",
         onClick ? "cursor-pointer hover:bg-white/[0.06]" : "",
       ].join(" ")}
     >

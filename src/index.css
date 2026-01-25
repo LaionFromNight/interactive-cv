@@ -13,6 +13,10 @@ html, body {
   background: #0b1216;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Vite.dev-ish background */
 .vite-bg {
   position: relative;
@@ -41,4 +45,59 @@ html, body {
   background-size: 64px 64px;
   opacity: 0.12;
   mask-image: radial-gradient(500px 300px at 50% 10%, black 25%, transparent 80%);
+}
+
+
+@keyframes softGlow {
+  0%, 100% { opacity: 0.35; transform: translate3d(0,0,0); }
+  50% { opacity: 0.65; transform: translate3d(0,-1px,0); }
+}
+
+.cv-card {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.cv-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(800px 240px at 15% 10%, rgba(16,185,129,0.12), transparent 60%),
+    radial-gradient(800px 260px at 85% 85%, rgba(59,130,246,0.10), transparent 60%);
+  opacity: 0.55;
+  animation: softGlow 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Chip shimmer (hover) */
+.chip {
+  position: relative;
+  overflow: hidden;
+}
+
+.chip::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 55%;
+  height: 180%;
+  transform: rotate(12deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip:hover::after {
+  opacity: 0.5;
+  left: 120%;
+  transition: left 650ms ease, opacity 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-card::before { animation: none !important; }
+  .chip::after,
+  .chip:hover::after { transition: none !important; }
 }
