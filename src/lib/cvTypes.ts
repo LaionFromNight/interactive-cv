@@ -74,7 +74,7 @@ export type CVPerson = {
   avatar_url: string;
   bio_short?: string;
   contacts: CVContacts;
-  profiles: CVProfiles;
+  profiles: CVProfiles[];
   spoken_languages: string[];
 };
 
