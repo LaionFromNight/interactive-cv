@@ -18,7 +18,7 @@
         "proj_institute_omni": { "show_project_name": false }
       }
     },
-    "generated_at_local": "2026-01-25"
+    "generated_at_local": "2026-MAY-01"
   },
 
   "person": {
@@ -42,6 +42,11 @@
         "id": "linkedin",
         "label": "LinkedIn",
         "url": "https://www.linkedin.com/in/%C5%82ukasz-komur-553042117/"
+      },
+      {
+        "id": "cv",
+        "label": "Interactive CV",
+        "url": "https://lukaszkomur.dev/"
       }
     ],
     "spoken_languages": ["Polish", "English"]
@@ -662,6 +667,16 @@
           "id": "s2",
           "title": "Corpohalla",
           "url": "https://open.spotify.com/album/2qFZ4fTte7addpkcvvtHye?si=hiX6B3XdR_mMHFvpXDybwg"
+        },
+        {
+          "id": "s3",
+          "title": "[${Rave.Hard}-${Code.Harder()}]",
+          "url": "https://open.spotify.com/album/00iOxHxyV9YujBlGS44yiE?si=UoHUlvr-S5K6iOf3iD-Lww"
+        },
+        {
+          "id": "s4",
+          "title": "Digital Koto Blades",
+          "url": "https://open.spotify.com/album/2Ovh4Md4C09wbRqqCO5L8Q?si=du5qFqQORTmF09LTIFvIIA"
         }
       ]
     }
