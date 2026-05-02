@@ -275,6 +275,40 @@ export type CVShowcase = {
   items: CVShowcaseItem[];
 };
 
+export type CVAIMetadata = {
+  positioning?: {
+    primary_title?: string;
+    alternative_titles?: string[];
+    seniority?: string;
+    preferred_roles?: string[];
+  };
+  career_summary?: {
+    short?: string;
+    long?: string;
+  };
+  keywords?: {
+    primary?: string[];
+    technologies?: string[];
+    domains?: string[];
+  };
+  ats?: {
+    target_markets?: string[];
+    recommended_resume_types?: string[];
+    avoid_phrases?: string[];
+    preferred_tone?: string;
+  };
+  strengths?: Array<{
+    id: string;
+    label: string;
+    evidence_project_ids?: string[];
+  }>;
+  project_prioritization?: Array<{
+    project_id: string;
+    priority: number;
+    best_for_roles?: string[];
+  }>;
+};
+
 // --------------------
 // Root CV
 // --------------------
@@ -310,4 +344,6 @@ export type CV = {
   extras: CVExtras;
 
   showcase?: CVShowcase;
+
+  ai_metadata?: CVAIMetadata;
 };

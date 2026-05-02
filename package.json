@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.3.2",
+    "buffer": "^6.0.3",
+    "pdf-lib": "^1.17.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

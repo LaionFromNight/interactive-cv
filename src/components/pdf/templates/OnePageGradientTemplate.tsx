@@ -11,6 +11,7 @@ import {
 import type { CV } from "../../../lib/cvTypes";
 import { getConsentText, type CvPdfOptions } from "../CvPdfOptions";
 import type { PdfTemplateConfig } from "../PdfTemplateConfig";
+import { getPdfDocumentMetadata } from "../PdfDocumentMetadata";
 
 Font.register({
   family: "Inter",
@@ -289,11 +290,16 @@ export function OnePageGradientTemplate({
   const consentText = getConsentText(options);
   const bottomQrSrc = `${import.meta.env.BASE_URL}QRCODE2.png`;
 
+  const documentMetadata = getPdfDocumentMetadata(cv);
+
   return (
     <Document
-      author={cv.person.full_name}
-      title={`${cv.person.full_name} CV`}
-      subject={cv.person.headline}
+      author={documentMetadata.author}
+      title={documentMetadata.title}
+      subject={documentMetadata.subject}
+      keywords={documentMetadata.keywords}
+      creator={documentMetadata.creator}
+      producer={documentMetadata.producer}
     >
       <Page size="A4" style={styles.page} wrap={false}>
         <View style={styles.bgLayerOne} fixed />

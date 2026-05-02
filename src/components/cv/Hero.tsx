@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { pdf } from "@react-pdf/renderer";
+import { Buffer } from "buffer";
 import type { CV } from "../../lib/cvTypes";
 import { CvPdfDocument } from "../pdf/CvPdfDocument";
 import {
@@ -10,6 +11,12 @@ import {
   type CvPdfOptions,
 } from "../pdf/CvPdfOptions";
 import { Chip } from "../ui/Chip";
+import { PDFDocument } from "pdf-lib";
+import { getPdfDocumentMetadata } from "../pdf/PdfDocumentMetadata";
+
+if (typeof globalThis !== "undefined" && !("Buffer" in globalThis)) {
+  (globalThis as typeof globalThis & { Buffer: typeof Buffer }).Buffer = Buffer;
+}
 
 export function Hero({ cv }: { cv: CV }) {
   const [pdfOptions, setPdfOptions] =
@@ -46,19 +53,51 @@ export function Hero({ cv }: { cv: CV }) {
     setIsGeneratingPdf(true);
 
     try {
-      const blob = await pdf(
+      const rawBlob = await pdf(
         <CvPdfDocument cv={cv} options={pdfOptions} />,
       ).toBlob();
 
-      const url = URL.createObjectURL(blob);
+      const metadata = getPdfDocumentMetadata(cv);
+
+      const arrayBuffer = await rawBlob.arrayBuffer();
+      const pdfDocument = await PDFDocument.load(arrayBuffer);
+
+      pdfDocument.setTitle(metadata.title);
+      pdfDocument.setAuthor(metadata.author);
+      pdfDocument.setSubject(metadata.subject);
+      pdfDocument.setKeywords(
+        metadata.keywords
+          .split(",")
+          .map((keyword) => keyword.trim())
+          .filter(Boolean),
+      );
+      pdfDocument.setCreator(metadata.creator);
+      pdfDocument.setProducer(metadata.producer);
+      pdfDocument.setModificationDate(new Date());
+
+      const pdfBytes = await pdfDocument.save();
+
+      const finalBlob = new Blob([pdfBytes.buffer as ArrayBuffer], {
+        type: "application/pdf",
+      });
+
+      const url = URL.createObjectURL(finalBlob);
 
       const anchor = document.createElement("a");
       anchor.href = url;
       anchor.download = "Lukasz-Komur-CV.pdf";
+      anchor.rel = "noopener noreferrer";
+      document.body.appendChild(anchor);
       anchor.click();
+      anchor.remove();
 
-      URL.revokeObjectURL(url);
+      window.setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 1000);
+
       setIsPdfModalOpen(false);
+    } catch (error) {
+      console.error("[Hero] PDF generation failed", error);
     } finally {
       setIsGeneratingPdf(false);
     }

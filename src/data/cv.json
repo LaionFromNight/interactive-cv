@@ -131,6 +131,41 @@
     }
   },
 
+  "ai_metadata": {
+    "positioning": {
+      "primary_title": "Senior Backend Engineer / Solution Architect",
+      "alternative_titles": [
+        "Software Engineer",
+        "Backend Developer",
+        "Backend Engineer",
+        "Senior Backend Engineer",
+        "Solution Architect",
+        "Cloud Backend Engineer",
+        "Backend Tech Lead",
+        "Full Stack Developer"
+      ],
+      "seniority": "senior",
+      "preferred_roles": [
+        "Senior Backend Engineer",
+        "Backend Engineer",
+        "Solution Architect",
+        "Cloud Backend Engineer",
+        "Backend Tech Lead",
+        "Full Stack Developer"
+      ]
+    },
+    "career_summary": {
+      "short": "Senior backend engineer and solution architect focused on secure backend systems, IAM, integrations, internal platforms, e-commerce tooling, and cloud/serverless delivery.",
+      "long": "I design and deliver backend systems and architectures across IAM, authentication and authorization, internal platforms, integrations, e-commerce operations, and cloud/serverless solutions. I combine hands-on implementation with ownership of delivery, technical planning, stakeholder communication, production support, and maintainable engineering."
+    },
+    "ats": {
+      "target_markets": ["EU", "US"],
+      "recommended_resume_types": ["americanResume", "executiveLight"],
+      "avoid_phrases": ["ninja", "rockstar", "guru", "wizard"],
+      "preferred_tone": "direct, senior, technical, ownership-driven, delivery-focused"
+    }
+  },
+
   "taxonomy": {
     "roles": [
       { "id": "role_backend", "name": "Backend Engineer" },
