@@ -2,12 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/lk+xml" href="/lk.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Łukasz Komur</title>
+    <title>%SEO_TITLE%</title>
+    <style>
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
   </head>
   <body>
+    <div class="sr-only">
+      <p>
+        %SEO_CRAWLER_NOTE%
+      </p>
+      <a href="/cv/">%SEO_CRAWLER_LINK_TEXT%</a>
+    </div>
     <div id="root"></div>
+    <noscript>
+      <main>
+        <h1>Lukasz Komur</h1>
+        <p>
+          Software Engineer / Senior Backend Engineer / Solution Architect
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Lukasz Komur Open Graph image</title>
+  <desc id="desc">Dark social preview image with gold LK logo and freelance IT consultant positioning text.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071015" />
+      <stop offset="0.58" stop-color="#0b1216" />
+      <stop offset="1" stop-color="#172018" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5d99e" />
+      <stop offset="0.48" stop-color="#d8b274" />
+      <stop offset="1" stop-color="#a97837" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.38" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="url(#bg)" />
+
+  <g transform="translate(0 285)">
+  <path d="M0 508 C198 438 378 462 548 520 C770 596 1002 578 1200 482 L1200 630 L0 630 Z" fill="#111b23" opacity="0.82" />
+  <path d="M65 84 H1135 V546 H65 Z" fill="none" stroke="#d8b274" stroke-width="2" opacity="0.28" />
+
+  <g transform="translate(86 142)" filter="url(#shadow)">
+    <circle cx="140" cy="140" r="140" fill="#0f171d" stroke="#d8b274" stroke-width="6" />
+    <text x="140" y="178" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="128" font-weight="700" fill="url(#gold)">LK</text>
+  </g>
+
+  <g transform="translate(392 138)">
+    <text x="0" y="42" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" fill="#d8b274" letter-spacing="3">LUKASZ KOMUR</text>
+    <text x="0" y="142" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="800" fill="#ffffff">Freelance IT /</text>
+    <text x="0" y="212" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="800" fill="#ffffff">Systems Architect</text>
+    <text x="0" y="312" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="650" fill="#d7e2ea">Systems, apps, integrations, automation</text>
+  </g>
+  </g>
+</svg>

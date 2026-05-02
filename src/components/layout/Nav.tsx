@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 
-type NavItem = { id: string; label: string; href: string };
+type NavItem = { id: string; label: string; href: string; trackActive?: boolean };
 
 type Props = {
   ownerName?: string;
   subtitle?: string;
   items?: NavItem[];
-  avatarSrc?: string;     
+  avatarSrc?: string;
   avatarAlt?: string;
+  onOpenPdfModal?: () => void;
 };
 
 const DEFAULT_ITEMS: NavItem[] = [
@@ -50,8 +51,12 @@ export function Nav({
   items = DEFAULT_ITEMS,
   avatarSrc,
   avatarAlt,
+  onOpenPdfModal,
 }: Props) {
-  const ids = useMemo(() => items.map((x) => x.id), [items]);
+  const ids = useMemo(
+    () => items.filter((item) => item.trackActive !== false).map((item) => item.id),
+    [items],
+  );
   const active = useActiveSection(ids);
 
   return (
@@ -79,7 +84,7 @@ export function Nav({
         {/* Links */}
         <nav className="hidden items-center gap-6 text-sm md:flex">
           {items.map((it) => {
-            const isActive = it.id === active;
+            const isActive = it.trackActive === false ? false : it.id === active;
             return (
               <a
                 key={it.id}
@@ -95,12 +100,13 @@ export function Nav({
 
         {/* CTA */}
         <div className="flex items-center gap-2">
-          <a
+          <button
+            type="button"
             className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
-            href="#contact"
+            onClick={onOpenPdfModal}
           >
-            Contact
-          </a>
+            Generate CV
+          </button>
           <a
             className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
             href="#experience"

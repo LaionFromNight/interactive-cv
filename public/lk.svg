@@ -1,50 +1,73 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="ŁK emblem">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 239" role="img" aria-labelledby="title desc">
+  <title id="title">LK horned emblem</title>
+  <desc id="desc">Vector recreation of a gold angular LK-style horned emblem based on the provided reference image.</desc>
   <defs>
-    <style>
-      :root{ --ink:#0B0F14; --accent:#2F7EF7; --ring:#111827; }
-      .ink{ fill:var(--ink); } .accent{ fill:var(--accent); }
-      .no{ fill:none; } .round{ stroke-linecap:round; stroke-linejoin:round; }
-    </style>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#141B25"></stop>
-      <stop offset="1" stop-color="#0B0F14"></stop>
+    <linearGradient id="gold" x1="40" y1="20" x2="290" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f1d49c"/>
+      <stop offset="0.45" stop-color="#d8b274"/>
+      <stop offset="1" stop-color="#b8894d"/>
     </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .mark{fill:url(#gold);filter:url(#softShadow)}
+    </style>
   </defs>
 
-  <circle cx="120" cy="120" r="102" class="no" stroke="var(--ring)" stroke-width="12"></circle>
-  <circle cx="120" cy="120" r="102" class="no" stroke="var(--accent)" stroke-width="2" opacity="0.7"></circle>
+  <!-- left upper horn -->
+  <path class="mark" d="M11 14
+    C22 48 45 74 82 88
+    L82 114
+    C48 102 23 79 8 47
+    C5 36 5 24 11 14 Z"/>
 
-  <!-- weapons -->
-  <g class="no round" stroke="var(--ink)" stroke-width="10">
-    <path d="M70 178 L178 70"></path>
-    <path d="M64 186 L74 174"></path>
-    <path d="M78 70 L178 170"></path>
-  </g>
-  <path d="M72 82 C58 68 56 50 72 40 C88 32 106 44 110 62 C98 70 86 78 72 82 Z" class="ink"></path>
-  <rect x="112" y="160" width="34" height="10" rx="5" class="accent" transform="rotate(-45 129 165)"></rect>
+  <!-- right upper horn -->
+  <path class="mark" d="M319 14
+    C308 48 285 74 248 88
+    L248 114
+    C282 102 307 79 322 47
+    C325 36 325 24 319 14 Z"/>
 
-  <!-- helmet -->
-  <path d="M74 134 C78 98 100 76 120 76 C140 76 162 98 166 134 C152 150 137 158 120 158 C103 158 88 150 74 134 Z" fill="url(#g)"></path>
+  <!-- left lower blade / horn -->
+  <path class="mark" d="M18 113
+    C45 132 76 143 111 147
+    L107 166
+    C72 161 42 145 18 113 Z"/>
 
-  <!-- mask -->
-  <path d="M92 138 C98 158 108 170 120 170 C132 170 142 158 148 138 C140 132 130 128 120 128 C110 128 100 132 92 138 Z" class="ink"></path>
-  <g class="no round" stroke="var(--accent)" stroke-width="4">
-    <path d="M102 150 H138"></path>
-    <path d="M108 158 H132"></path>
-  </g>
+  <!-- right lower blade / horn -->
+  <path class="mark" d="M312 113
+    C285 132 254 143 219 147
+    L223 166
+    C258 161 288 145 312 113 Z"/>
 
-  <!-- horns -->
-  <g class="no round" stroke="var(--ink)" stroke-width="10">
-    <path d="M84 96 C62 90 54 74 62 60 C70 44 90 46 96 60"></path>
-    <path d="M156 96 C178 90 186 74 178 60 C170 44 150 46 144 60"></path>
-  </g>
-  <circle cx="62" cy="60" r="6" class="accent"></circle>
-  <circle cx="178" cy="60" r="6" class="accent"></circle>
+  <!-- left outer vertical plate -->
+  <path class="mark" d="M47 82 L78 94 L78 170 L50 154 Z"/>
 
-  <!-- crest + brackets -->
-  <path d="M110 56 C112 46 128 46 130 56 C140 56 148 66 148 76 C138 74 130 72 120 72 C110 72 102 74 92 76 C92 66 100 56 110 56 Z" class="accent"></path>
-  <g class="no round" stroke="var(--ink)" stroke-width="6" opacity="0.9">
-    <path d="M104 68 L96 76 L104 84"></path>
-    <path d="M136 68 L144 76 L136 84"></path>
-  </g>
+  <!-- right outer vertical plate -->
+  <path class="mark" d="M283 82 L252 94 L252 170 L280 154 Z"/>
+
+  <!-- central left tall plate -->
+  <path class="mark" d="M107 36 L130 20 L130 139 L107 123 Z"/>
+
+  <!-- central middle tall plate -->
+  <path class="mark" d="M143 20 L166 9 L166 159 L143 145 Z"/>
+
+  <!-- central right tall plate -->
+  <path class="mark" d="M180 9 L203 20 L203 102 L180 123 Z"/>
+
+  <!-- left angular body / L stroke -->
+  <path class="mark" d="M91 72 L118 49 L118 146 L168 176 L168 209 L91 160 Z"/>
+
+  <!-- right angular K upper arm -->
+  <path class="mark" d="M210 42 L234 58 L234 108 L210 129 Z"/>
+
+  <!-- right angular K diagonal main -->
+  <path class="mark" d="M181 132 L244 83 L244 119 L203 154 L253 185 L216 185 L181 161 Z"/>
+
+  <!-- bottom shield / chevron -->
+  <path class="mark" d="M89 163 L165 214 L241 163 L241 190 L165 234 L89 190 Z"/>
+
+  <!-- central lower split plate -->
+  <path class="mark" d="M147 169 L165 181 L183 169 L183 213 L165 224 L147 213 Z"/>
 </svg>

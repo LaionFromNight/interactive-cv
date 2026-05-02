@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# Interactive CV / Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Public React + TypeScript + Vite portfolio for Lukasz Komur.
 
-Currently, two official plugins are available:
+Live URL: https://lukaszkomur.dev
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech stack
 
-## React Compiler
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React PDF
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Interactive experience explorer with project filtering and detail views
+- Skills, timeline, education, contact links, and profile summary driven from `src/data/cv.json`
+- SEO, Open Graph, Twitter Card, favicon, manifest, and Schema.org metadata driven from `src/data/seo.json`
+- Generated PDF CV from the same JSON data source
+- Static crawler-friendly CV page generated at build time under `/cv/`
+- Static "work with me" page generated at build time under `/work-with-me/`
+- JSON-LD structured data using Schema.org `Person`, `ProfessionalService`, `WebSite`, `BreadcrumbList`, and `ProfilePage`
+- `robots.txt` and `sitemap.xml` for crawler discovery
+- Static GitHub Pages deployment
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Development
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Install dependencies:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Run the local dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run dev
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Build the production site:
+
+```bash
+npm run build
+```
+
+The build runs TypeScript checks, creates the Vite app in `dist/`, applies
+metadata from `src/data/seo.json`, and then generates `dist/cv/index.html`
+from `src/data/cv.json`.
+
+Preview the production build locally:
+
+```bash
+npm run preview
 ```

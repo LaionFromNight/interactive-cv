@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { pdf } from "@react-pdf/renderer";
-import { Buffer } from "buffer";
 import type { CV } from "../../lib/cvTypes";
-import { CvPdfDocument } from "../pdf/CvPdfDocument";
 import {
   colorSchemeOptions,
   consentOptions,
@@ -11,31 +8,59 @@ import {
   type CvPdfOptions,
 } from "../pdf/CvPdfOptions";
 import { Chip } from "../ui/Chip";
-import { PDFDocument } from "pdf-lib";
-import { getPdfDocumentMetadata } from "../pdf/PdfDocumentMetadata";
 
-if (typeof globalThis !== "undefined" && !("Buffer" in globalThis)) {
-  (globalThis as typeof globalThis & { Buffer: typeof Buffer }).Buffer = Buffer;
-}
+type InterestTone =
+  | "notInterested"
+  | "maybe"
+  | "looking"
+  | "ideal"
+  | "neutral";
 
-export function Hero({ cv }: { cv: CV }) {
+type Interest = {
+  id: string;
+  label: string;
+  tone: InterestTone;
+};
+
+const interestToneClassName: Record<InterestTone, string> = {
+  notInterested: "border-red-300/35 bg-red-400/10 text-red-200",
+  maybe: "border-amber-300/40 bg-amber-400/10 text-amber-200",
+  looking: "border-sky-300/35 bg-sky-400/10 text-sky-200",
+  ideal: "border-emerald-300/30 bg-emerald-400/10 text-emerald-200",
+  neutral: "border-white/10 bg-white/5 text-white/70",
+};
+
+type HeroProps = {
+  cv: CV;
+  isPdfModalOpen: boolean;
+  onOpenPdfModal: () => void;
+  onClosePdfModal: () => void;
+};
+
+export function Hero({
+  cv,
+  isPdfModalOpen,
+  onOpenPdfModal,
+  onClosePdfModal,
+}: HeroProps) {
   const [pdfOptions, setPdfOptions] =
     useState<CvPdfOptions>(defaultCvPdfOptions);
-  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-  const interests = [
-    { id: "short", label: "Short-term projects", tone: "accent" as const },
-    { id: "mentoring", label: "Mentoring", tone: "soft" as const },
+  const interests: Interest[] = [
+    // { id: "long-term", label: "Long-term roles", tone: "notInterested" },
+    { id: "part-time", label: "Part-time roles", tone: "maybe" },
+    { id: "short", label: "Short-term projects", tone: "looking" },
+    { id: "mentoring", label: "Mentoring", tone: "ideal" },
     {
       id: "nonprofit",
       label: "Non-profit (animal welfare)",
-      tone: "soft" as const,
+      tone: "ideal",
     },
     {
       id: "contact",
       label: "If you have something — reach out",
-      tone: "neutral" as const,
+      tone: "neutral",
     },
   ];
 
@@ -53,6 +78,25 @@ export function Hero({ cv }: { cv: CV }) {
     setIsGeneratingPdf(true);
 
     try {
+      const { Buffer } = await import("buffer");
+
+      if (typeof globalThis !== "undefined" && !("Buffer" in globalThis)) {
+        (globalThis as typeof globalThis & { Buffer: typeof Buffer }).Buffer =
+          Buffer;
+      }
+
+      const [
+        { pdf },
+        { CvPdfDocument },
+        { PDFDocument },
+        { getPdfDocumentMetadata },
+      ] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("../pdf/CvPdfDocument"),
+        import("pdf-lib"),
+        import("../pdf/PdfDocumentMetadata"),
+      ]);
+
       const rawBlob = await pdf(
         <CvPdfDocument cv={cv} options={pdfOptions} />,
       ).toBlob();
@@ -95,7 +139,7 @@ export function Hero({ cv }: { cv: CV }) {
         URL.revokeObjectURL(url);
       }, 1000);
 
-      setIsPdfModalOpen(false);
+      onClosePdfModal();
     } catch (error) {
       console.error("[Hero] PDF generation failed", error);
     } finally {
@@ -116,7 +160,7 @@ export function Hero({ cv }: { cv: CV }) {
         ) : null}
 
         <div className="min-w-[260px]">
-          <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
+          <h1 className="text-4xl font-semibold md:text-6xl">
             {cv.person.full_name}
           </h1>
           <p className="mt-3 text-lg text-white/80 md:text-xl">
@@ -145,11 +189,7 @@ export function Hero({ cv }: { cv: CV }) {
             key={interest.id}
             className={[
               "rounded-full border px-3 py-1 text-xs",
-              interest.tone === "accent"
-                ? "border-amber-300/40 bg-amber-400/10 text-amber-200"
-                : interest.tone === "soft"
-                  ? "border-emerald-300/30 bg-emerald-400/10 text-emerald-200"
-                  : "border-white/10 bg-white/5 text-white/70",
+              interestToneClassName[interest.tone],
             ].join(" ")}
           >
             {interest.label}
@@ -158,6 +198,13 @@ export function Hero({ cv }: { cv: CV }) {
       </div>
 
       <div className="mt-10 flex flex-wrap gap-3">
+        <a
+          className="rounded-xl bg-amber-200 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-100"
+          href="/work-with-me/"
+        >
+          Work with me
+        </a>
+
         <a
           className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-white/90"
           href="#experience"
@@ -175,10 +222,10 @@ export function Hero({ cv }: { cv: CV }) {
         <button
           type="button"
           className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/85 hover:bg-white/10"
-          onClick={() => setIsPdfModalOpen(true)}
+          onClick={onOpenPdfModal}
           title="Generate PDF from JSON"
         >
-          Generate PDF
+          Generate CV
         </button>
       </div>
 
@@ -199,7 +246,7 @@ export function Hero({ cv }: { cv: CV }) {
               <button
                 type="button"
                 className="rounded-xl border border-white/10 px-3 py-2 text-sm text-white/70 hover:bg-white/10"
-                onClick={() => setIsPdfModalOpen(false)}
+                onClick={onClosePdfModal}
               >
                 Close
               </button>
@@ -323,7 +370,7 @@ export function Hero({ cv }: { cv: CV }) {
               <button
                 type="button"
                 className="rounded-xl border border-white/10 px-5 py-3 text-sm font-semibold text-white/75 hover:bg-white/10"
-                onClick={() => setIsPdfModalOpen(false)}
+                onClick={onClosePdfModal}
               >
                 Cancel
               </button>
