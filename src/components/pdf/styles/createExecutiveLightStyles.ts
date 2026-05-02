@@ -1,4 +1,5 @@
 import { StyleSheet } from "@react-pdf/renderer";
+import type { Style } from "@react-pdf/types";
 
 export type ExecutiveLightPalette = {
   pageBg: string;
@@ -13,298 +14,565 @@ export type ExecutiveLightPalette = {
   accent: string;
 };
 
-export function createExecutiveLightStyles(palette: ExecutiveLightPalette) {
+type ExecutiveLightStyleKey =
+  | "page"
+  | "header"
+  | "headerMain"
+  | "name"
+  | "headline"
+  | "contactLine"
+  | "contactText"
+  | "headerQr"
+  | "headerQrImage"
+  | "headerQrText"
+  | "continuedHeader"
+  | "continuedHeaderMain"
+  | "continuedName"
+  | "continuedSubtitle"
+  | "continuedQr"
+  | "continuedQrImage"
+  | "continuedQrText"
+  | "body"
+  | "sidebar"
+  | "avatarWrap"
+  | "avatar"
+  | "sidebarBlock"
+  | "sidebarTitle"
+  | "focusList"
+  | "focusItem"
+  | "skillGroup"
+  | "skillGroupTitle"
+  | "badgesRow"
+  | "badge"
+  | "timelineItem"
+  | "timelineDot"
+  | "timelineContent"
+  | "timelineTitle"
+  | "timelineDate"
+  | "linkRow"
+  | "linkLabel"
+  | "link"
+  | "main"
+  | "mainSection"
+  | "sectionTitle"
+  | "summaryText"
+  | "experienceList"
+  | "projectItem"
+  | "projectMeta"
+  | "projectTitle"
+  | "projectDesc"
+  | "emptyMainPanel"
+  | "emptyMainText"
+  | "footerBlock"
+  | "footerConsentText"
+  | "footer"
+  | "inlineLinkItem"
+  | "inlineLinkSeparator";
+
+export type ExecutiveLightStyleOverrides = Partial<
+  Record<ExecutiveLightStyleKey, Style>
+>;
+
+function mergeStyle(base: Style, override?: Style): Style {
+  return {
+    ...base,
+    ...(override ?? {}),
+  };
+}
+
+export function createExecutiveLightStyles(
+  palette: ExecutiveLightPalette,
+  overrides: ExecutiveLightStyleOverrides = {},
+) {
   return StyleSheet.create({
-    page: {
-      fontFamily: "Inter",
-      paddingTop: 28,
-      paddingHorizontal: 28,
-      paddingBottom: 62,
-      backgroundColor: palette.pageBg,
-      color: palette.text,
-    },
+    page: mergeStyle(
+      {
+        fontFamily: "Inter",
+        paddingTop: 28,
+        paddingHorizontal: 28,
+        paddingBottom: 62,
+        backgroundColor: palette.pageBg,
+        color: palette.text,
+      },
+      overrides.page,
+    ),
 
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingBottom: 18,
-      marginBottom: 18,
-      borderBottom: `1px solid ${palette.border}`,
-    },
-    headerMain: {
-      flex: 1,
-      paddingRight: 18,
-    },
-    name: {
-      fontSize: 29,
-      fontWeight: 600,
-      color: palette.heading,
-    },
-    headline: {
-      fontSize: 11,
-      marginTop: 5,
-      color: palette.muted,
-    },
-    contactLine: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      marginTop: 9,
-    },
-    contactText: {
-      fontSize: 8.8,
-      color: palette.muted,
-    },
-    headerQr: {
-      width: 92,
-      alignItems: "center",
-    },
-    headerQrImage: {
-      width: 78,
-      height: 78,
-    },
-    headerQrText: {
-      marginTop: 4,
-      fontSize: 7,
-      color: palette.muted,
-    },
+    header: mergeStyle(
+      {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingBottom: 18,
+        marginBottom: 18,
+        borderBottom: `1px solid ${palette.border}`,
+      },
+      overrides.header,
+    ),
 
-    continuedHeader: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingBottom: 16,
-      marginBottom: 18,
-      borderBottom: `1px solid ${palette.border}`,
-    },
-    continuedHeaderMain: {
-      flex: 1,
-    },
-    continuedName: {
-      fontSize: 21,
-      fontWeight: 600,
-      color: palette.heading,
-    },
-    continuedSubtitle: {
-      fontSize: 10,
-      marginTop: 4,
-      color: palette.muted,
-    },
-    continuedQr: {
-      width: 70,
-      alignItems: "center",
-    },
-    continuedQrImage: {
-      width: 54,
-      height: 54,
-    },
-    continuedQrText: {
-      marginTop: 3,
-      fontSize: 6.5,
-      color: palette.muted,
-    },
+    headerMain: mergeStyle(
+      {
+        flex: 1,
+        paddingRight: 18,
+      },
+      overrides.headerMain,
+    ),
 
-    body: {
-      flexDirection: "row",
-    },
+    name: mergeStyle(
+      {
+        fontSize: 29,
+        fontWeight: 600,
+        color: palette.heading,
+      },
+      overrides.name,
+    ),
 
-    sidebar: {
-      width: "32%",
-      paddingRight: 18,
-      borderRight: `1px solid ${palette.border}`,
-    },
+    headline: mergeStyle(
+      {
+        fontSize: 11,
+        marginTop: 5,
+        color: palette.muted,
+      },
+      overrides.headline,
+    ),
 
-    avatarWrap: {
-      width: "100%",
-      alignItems: "center",
-      marginBottom: 16,
-    },
-    avatar: {
-      width: 78,
-      height: 78,
-      borderRadius: 18,
-      objectFit: "cover",
-    },
+    contactLine: mergeStyle(
+      {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginTop: 9,
+      },
+      overrides.contactLine,
+    ),
 
-    sidebarBlock: {
-      marginBottom: 14,
-    },
-    sidebarTitle: {
-      fontSize: 10.5,
-      fontWeight: 600,
-      color: palette.heading,
-      marginBottom: 8,
-      textTransform: "uppercase",
-      letterSpacing: 0.4,
-    },
+    contactText: mergeStyle(
+      {
+        fontSize: 8.8,
+        color: palette.muted,
+      },
+      overrides.contactText,
+    ),
 
-    focusList: {},
-    focusItem: {
-      fontSize: 8.6,
-      color: palette.text,
-      paddingVertical: 4,
-      paddingHorizontal: 8,
-      borderRadius: 8,
-      backgroundColor: palette.cardBg,
-      border: `1px solid ${palette.border}`,
-      marginBottom: 5,
-    },
+    headerQr: mergeStyle(
+      {
+        width: 92,
+        alignItems: "center",
+      },
+      overrides.headerQr,
+    ),
 
-    skillGroup: {
-      marginBottom: 8,
-    },
-    skillGroupTitle: {
-      fontSize: 8.8,
-      fontWeight: 600,
-      color: palette.muted,
-      marginBottom: 5,
-    },
-    badgesRow: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-    },
-    badge: {
-      fontSize: 7.4,
-      paddingHorizontal: 6,
-      paddingVertical: 3,
-      borderRadius: 7,
-      backgroundColor: palette.badgeBg,
-      color: palette.badgeText,
-      border: `1px solid ${palette.border}`,
-      marginRight: 4,
-      marginBottom: 4,
-    },
+    headerQrImage: mergeStyle(
+      {
+        width: 78,
+        height: 78,
+      },
+      overrides.headerQrImage,
+    ),
 
-    timelineItem: {
-      flexDirection: "row",
-      marginBottom: 9,
-    },
-    timelineDot: {
-      width: 6,
-      height: 6,
-      borderRadius: 999,
-      backgroundColor: palette.accent,
-      marginTop: 3,
-      marginRight: 7,
-    },
-    timelineContent: {
-      flex: 1,
-    },
-    timelineTitle: {
-      fontSize: 8.8,
-      fontWeight: 600,
-      color: palette.heading,
-    },
-    timelineDate: {
-      fontSize: 7.6,
-      marginTop: 2,
-      color: palette.muted,
-    },
+    headerQrText: mergeStyle(
+      {
+        marginTop: 4,
+        fontSize: 7,
+        color: palette.muted,
+      },
+      overrides.headerQrText,
+    ),
 
-    linkRow: {
-      marginBottom: 8,
-    },
-    linkLabel: {
-      fontSize: 7.8,
-      color: palette.muted,
-      marginBottom: 2,
-    },
-    link: {
-      fontSize: 7.8,
-      color: palette.accent,
-      textDecoration: "none",
-    },
+    continuedHeader: mergeStyle(
+      {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingBottom: 16,
+        marginBottom: 18,
+        borderBottom: `1px solid ${palette.border}`,
+      },
+      overrides.continuedHeader,
+    ),
 
-    main: {
-      width: "68%",
-      paddingLeft: 18,
-    },
-    mainSection: {
-      marginBottom: 15,
-    },
-    sectionTitle: {
-      fontSize: 13,
-      fontWeight: 600,
-      color: palette.heading,
-      marginBottom: 8,
-    },
-    summaryText: {
-      fontSize: 9.6,
-      lineHeight: 1.45,
-      color: palette.text,
-      backgroundColor: palette.cardBg,
-      border: `1px solid ${palette.border}`,
-      borderRadius: 12,
-      padding: 12,
-    },
+    continuedHeaderMain: mergeStyle(
+      {
+        flex: 1,
+      },
+      overrides.continuedHeaderMain,
+    ),
 
-    experienceList: {
-      backgroundColor: palette.cardBg,
-      border: `1px solid ${palette.border}`,
-      borderRadius: 12,
-      padding: 13,
-    },
-    projectItem: {
-      marginBottom: 10,
-      paddingBottom: 9,
-      borderBottom: `1px solid ${palette.border}`,
-    },
-    projectMeta: {
-      fontSize: 8,
-      color: palette.muted,
-    },
-    projectTitle: {
-      fontSize: 10.3,
-      fontWeight: 600,
-      marginTop: 3,
-      color: palette.heading,
-    },
-    projectDesc: {
-      fontSize: 8.7,
-      marginTop: 4,
-      color: palette.text,
-      lineHeight: 1.35,
-    },
+    continuedName: mergeStyle(
+      {
+        fontSize: 21,
+        fontWeight: 600,
+        color: palette.heading,
+      },
+      overrides.continuedName,
+    ),
 
-    emptyMainPanel: {
-      backgroundColor: palette.cardBg,
-      border: `1px solid ${palette.border}`,
-      borderRadius: 12,
-      padding: 13,
-    },
-    emptyMainText: {
-      fontSize: 9,
-      color: palette.subtle,
-    },
+    continuedSubtitle: mergeStyle(
+      {
+        fontSize: 10,
+        marginTop: 4,
+        color: palette.muted,
+      },
+      overrides.continuedSubtitle,
+    ),
 
-    footerBlock: {
-      position: "absolute",
-      left: 28,
-      right: 28,
-      bottom: 18,
-      alignItems: "center",
-    },
-    footerConsentText: {
-      width: "88%",
-      fontSize: 5,
-      lineHeight: 1.15,
-      color: palette.subtle,
-      textAlign: "center",
-      marginBottom: 3,
-    },
-    footer: {
-      fontSize: 7.2,
-      color: palette.subtle,
-      textAlign: "center",
-    },
-    inlineLinkItem: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
+    continuedQr: mergeStyle(
+      {
+        width: 70,
+        alignItems: "center",
+      },
+      overrides.continuedQr,
+    ),
 
-    inlineLinkSeparator: {
-      fontSize: 7.8,
-      color: palette.subtle,
-      marginHorizontal: 3,
-    },
+    continuedQrImage: mergeStyle(
+      {
+        width: 54,
+        height: 54,
+      },
+      overrides.continuedQrImage,
+    ),
+
+    continuedQrText: mergeStyle(
+      {
+        marginTop: 3,
+        fontSize: 6.5,
+        color: palette.muted,
+      },
+      overrides.continuedQrText,
+    ),
+
+    body: mergeStyle(
+      {
+        flexDirection: "row",
+      },
+      overrides.body,
+    ),
+
+    sidebar: mergeStyle(
+      {
+        width: "32%",
+        paddingRight: 18,
+        borderRight: `1px solid ${palette.border}`,
+      },
+      overrides.sidebar,
+    ),
+
+    avatarWrap: mergeStyle(
+      {
+        width: "100%",
+        alignItems: "center",
+        marginBottom: 16,
+      },
+      overrides.avatarWrap,
+    ),
+
+    avatar: mergeStyle(
+      {
+        width: 78,
+        height: 78,
+        borderRadius: 18,
+        objectFit: "cover",
+      },
+      overrides.avatar,
+    ),
+
+    sidebarBlock: mergeStyle(
+      {
+        marginBottom: 14,
+      },
+      overrides.sidebarBlock,
+    ),
+
+    sidebarTitle: mergeStyle(
+      {
+        fontSize: 10.5,
+        fontWeight: 600,
+        color: palette.heading,
+        marginBottom: 8,
+        textTransform: "uppercase",
+        letterSpacing: 0.4,
+      },
+      overrides.sidebarTitle,
+    ),
+
+    focusList: mergeStyle({}, overrides.focusList),
+
+    focusItem: mergeStyle(
+      {
+        fontSize: 8.6,
+        color: palette.text,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderRadius: 8,
+        backgroundColor: palette.cardBg,
+        border: `1px solid ${palette.border}`,
+        marginBottom: 5,
+      },
+      overrides.focusItem,
+    ),
+
+    skillGroup: mergeStyle(
+      {
+        marginBottom: 8,
+      },
+      overrides.skillGroup,
+    ),
+
+    skillGroupTitle: mergeStyle(
+      {
+        fontSize: 8.8,
+        fontWeight: 600,
+        color: palette.muted,
+        marginBottom: 5,
+      },
+      overrides.skillGroupTitle,
+    ),
+
+    badgesRow: mergeStyle(
+      {
+        flexDirection: "row",
+        flexWrap: "wrap",
+      },
+      overrides.badgesRow,
+    ),
+
+    badge: mergeStyle(
+      {
+        fontSize: 7.4,
+        paddingHorizontal: 6,
+        paddingVertical: 3,
+        borderRadius: 7,
+        backgroundColor: palette.badgeBg,
+        color: palette.badgeText,
+        border: `1px solid ${palette.border}`,
+        marginRight: 4,
+        marginBottom: 4,
+      },
+      overrides.badge,
+    ),
+
+    timelineItem: mergeStyle(
+      {
+        flexDirection: "row",
+        marginBottom: 9,
+      },
+      overrides.timelineItem,
+    ),
+
+    timelineDot: mergeStyle(
+      {
+        width: 6,
+        height: 6,
+        borderRadius: 999,
+        backgroundColor: palette.accent,
+        marginTop: 3,
+        marginRight: 7,
+      },
+      overrides.timelineDot,
+    ),
+
+    timelineContent: mergeStyle(
+      {
+        flex: 1,
+      },
+      overrides.timelineContent,
+    ),
+
+    timelineTitle: mergeStyle(
+      {
+        fontSize: 8.8,
+        fontWeight: 600,
+        color: palette.heading,
+      },
+      overrides.timelineTitle,
+    ),
+
+    timelineDate: mergeStyle(
+      {
+        fontSize: 7.6,
+        marginTop: 2,
+        color: palette.muted,
+      },
+      overrides.timelineDate,
+    ),
+
+    linkRow: mergeStyle(
+      {
+        marginBottom: 8,
+        width: "100%",
+      },
+      overrides.linkRow,
+    ),
+
+    linkLabel: mergeStyle(
+      {
+        fontSize: 7.4,
+        color: palette.muted,
+        marginBottom: 2,
+        width: "100%",
+      },
+      overrides.linkLabel,
+    ),
+
+    link: mergeStyle(
+      {
+        fontSize: 7,
+        color: palette.accent,
+        textDecoration: "none",
+        lineHeight: 1.15,
+        width: "100%",
+        maxWidth: "100%",
+      },
+      overrides.link,
+    ),
+
+    main: mergeStyle(
+      {
+        width: "68%",
+        paddingLeft: 18,
+      },
+      overrides.main,
+    ),
+
+    mainSection: mergeStyle(
+      {
+        marginBottom: 15,
+      },
+      overrides.mainSection,
+    ),
+
+    sectionTitle: mergeStyle(
+      {
+        fontSize: 13,
+        fontWeight: 600,
+        color: palette.heading,
+        marginBottom: 8,
+      },
+      overrides.sectionTitle,
+    ),
+
+    summaryText: mergeStyle(
+      {
+        fontSize: 9.6,
+        lineHeight: 1.45,
+        color: palette.text,
+        backgroundColor: palette.cardBg,
+        border: `1px solid ${palette.border}`,
+        borderRadius: 12,
+        padding: 12,
+      },
+      overrides.summaryText,
+    ),
+
+    experienceList: mergeStyle(
+      {
+        backgroundColor: palette.cardBg,
+        border: `1px solid ${palette.border}`,
+        borderRadius: 12,
+        padding: 13,
+      },
+      overrides.experienceList,
+    ),
+
+    projectItem: mergeStyle(
+      {
+        marginBottom: 10,
+        paddingBottom: 9,
+        borderBottom: `1px solid ${palette.border}`,
+      },
+      overrides.projectItem,
+    ),
+
+    projectMeta: mergeStyle(
+      {
+        fontSize: 8,
+        color: palette.muted,
+      },
+      overrides.projectMeta,
+    ),
+
+    projectTitle: mergeStyle(
+      {
+        fontSize: 10.3,
+        fontWeight: 600,
+        marginTop: 3,
+        color: palette.heading,
+      },
+      overrides.projectTitle,
+    ),
+
+    projectDesc: mergeStyle(
+      {
+        fontSize: 8.7,
+        marginTop: 4,
+        color: palette.text,
+        lineHeight: 1.35,
+      },
+      overrides.projectDesc,
+    ),
+
+    emptyMainPanel: mergeStyle(
+      {
+        backgroundColor: palette.cardBg,
+        border: `1px solid ${palette.border}`,
+        borderRadius: 12,
+        padding: 13,
+      },
+      overrides.emptyMainPanel,
+    ),
+
+    emptyMainText: mergeStyle(
+      {
+        fontSize: 9,
+        color: palette.subtle,
+      },
+      overrides.emptyMainText,
+    ),
+
+    footerBlock: mergeStyle(
+      {
+        position: "absolute",
+        left: 28,
+        right: 28,
+        bottom: 18,
+        alignItems: "center",
+      },
+      overrides.footerBlock,
+    ),
+
+    footerConsentText: mergeStyle(
+      {
+        width: "88%",
+        fontSize: 5,
+        lineHeight: 1.15,
+        color: palette.subtle,
+        textAlign: "center",
+        marginBottom: 3,
+      },
+      overrides.footerConsentText,
+    ),
+
+    footer: mergeStyle(
+      {
+        fontSize: 7.2,
+        color: palette.subtle,
+        textAlign: "center",
+      },
+      overrides.footer,
+    ),
+
+    inlineLinkItem: mergeStyle(
+      {
+        flexDirection: "row",
+        alignItems: "center",
+      },
+      overrides.inlineLinkItem,
+    ),
+
+    inlineLinkSeparator: mergeStyle(
+      {
+        fontSize: 7.8,
+        color: palette.subtle,
+        marginHorizontal: 3,
+      },
+      overrides.inlineLinkSeparator,
+    ),
   });
 }
 

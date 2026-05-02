@@ -75,7 +75,7 @@
         "tags": ["WordPress", "Elementor Pro", "CSS", "SEO", "Performance"]
       }
     ]
-},
+  },
 
   "summary": {
     "title": "In short",
@@ -97,8 +97,39 @@
         "desc": "Mentoring, coordinating teams, clear requirements, and fast iterations with stakeholders."
       }
     ]
-},
+  },
 
+  "pdf": {
+    "qr_code": {
+      "image_url": "https://lukaszkomur.dev/QRCODE.png",
+      "target_url": "https://lukaszkomur.dev/",
+      "label": "lukaszkomur.dev"
+    },
+    "profile_focus": [
+      "Backend / Solution Architecture",
+      "System Design",
+      "Cloud / Serverless",
+      "IAM & Integrations"
+    ],
+    "labels": {
+      "summary": "Summary",
+      "professional_summary": "Professional Summary",
+      "core_strengths": "Core Strengths",
+      "core_skills": "Core Skills",
+      "skills": "Skills",
+      "profile": "Profile",
+      "timeline": "Timeline",
+      "links": "Links",
+      "experience_projects": "Experience / Projects",
+      "experience_projects_continued": "Experience / Projects continued",
+      "responsibilities": "Responsibilities",
+      "highlights": "Highlights",
+      "stack": "Stack",
+      "cv_continued": "CV continued",
+      "additional_profile_details": "Additional profile details",
+      "last_updated": "Last updated"
+    }
+  },
 
   "taxonomy": {
     "roles": [
@@ -124,55 +155,55 @@
 
   "skills": {
    "tech": [
-      { "id": "t_ts", "name": "TypeScript", "tags": ["language"], "ui": { "visible": true, "order": 10 } },
-      { "id": "t_js", "name": "JavaScript", "tags": ["language"], "ui": { "visible": true, "order": 10 } },
-      { "id": "t_python", "name": "Python", "tags": ["language"], "ui": { "visible": true, "order": 10 } },
-      { "id": "t_dotnet", "name": ".NET / C#", "tags": ["language", "desktop"] },
+      { "id": "t_ts", "name": "TypeScript", "tags": ["language"], "ui": { "visible": true, "order": 10 }, "core_stack": true },
+      { "id": "t_js", "name": "JavaScript", "tags": ["language"], "ui": { "visible": true, "order": 10 }, "core_stack": true },
+      { "id": "t_python", "name": "Python", "tags": ["language"], "ui": { "visible": true, "order": 10 }, "core_stack": true },
+      { "id": "t_dotnet", "name": ".NET / C#", "tags": ["language", "desktop"], "core_stack": false },
       
-      { "id": "t_ror", "name": "Ruby on Rails", "tags": ["language","backend"], "ui": { "visible": true, "order": 15 } },
-      { "id": "t_node", "name": "Node.js", "tags": ["backend"], "ui": { "visible": true, "order": 20 } },
-      { "id": "t_express", "name": "Express", "tags": ["backend"], "ui": { "visible": true, "order": 20 } },
-      { "id": "t_fastapi", "name": "FastAPI", "tags": ["backend"], "ui": { "visible": true, "order": 20 } },
-      { "id": "t_flask", "name": "Flask", "tags": ["backend"], "ui": { "visible": false, "order": 20 } },
+      { "id": "t_ror", "name": "Ruby on Rails", "tags": ["language","backend"], "ui": { "visible": true, "order": 15 }, "core_stack": false },
+      { "id": "t_node", "name": "Node.js", "tags": ["backend"], "ui": { "visible": true, "order": 20 }, "core_stack": true },
+      { "id": "t_express", "name": "Express", "tags": ["backend"], "ui": { "visible": true, "order": 20 }, "core_stack": true },
+      { "id": "t_fastapi", "name": "FastAPI", "tags": ["backend"], "ui": { "visible": true, "order": 20 }, "core_stack": false },
+      { "id": "t_flask", "name": "Flask", "tags": ["backend"], "ui": { "visible": false, "order": 20 }, "core_stack": false },
       
-      { "id": "t_wpf", "name": "WPF", "tags": ["backend","desktop"] },
+      { "id": "t_wpf", "name": "WPF", "tags": ["backend","desktop"], "core_stack": false },
 
-      { "id": "t_react", "name": "React", "tags": ["frontend"], "ui": { "visible": true, "order": 30 } },
-      { "id": "t_angular", "name": "Angular", "tags": ["frontend"], "ui": { "visible": true, "order": 30 } },
-      { "id": "t_angularjs", "name": "AngularJS", "tags": ["frontend"] },
-      { "id": "t_bootstrap", "name": "Bootstrap", "tags": ["frontend"] },
+      { "id": "t_react", "name": "React", "tags": ["frontend"], "ui": { "visible": true, "order": 30 }, "core_stack": true },
+      { "id": "t_angular", "name": "Angular", "tags": ["frontend"], "ui": { "visible": true, "order": 30 }, "core_stack": false },
+      { "id": "t_angularjs", "name": "AngularJS", "tags": ["frontend"], "core_stack": false },
+      { "id": "t_bootstrap", "name": "Bootstrap", "tags": ["frontend"], "core_stack": false },
 
 
-      { "id": "t_mongo", "name": "MongoDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 500 } },
-      { "id": "t_pg", "name": "PostgreSQL", "tags": ["db", "sql"], "ui": { "visible": true, "order": 510 } },
-      { "id": "t_kafka", "name": "Kafka", "tags": ["db", "streaming"], "ui": { "visible": true, "order": 550 } },
-      { "id": "t_redis", "name": "Redis", "tags": ["db", "cache"], "ui": { "visible": true, "order": 550 } },
-      { "id": "t_mysql", "name": "MySQL", "tags": ["db", "sql"], "ui": { "visible": true, "order": 530 } },
-      { "id": "t_docdb", "name": "DocumentDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 } },
-      { "id": "t_dynamo", "name": "DynamoDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 } },
-      { "id": "t_cassandra", "name": "Cassandra", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 } },
-      { "id": "t_oracle", "name": "Oracle DB", "tags": ["db", "sql"], "ui": { "visible": true, "order": 530 } },
+      { "id": "t_mongo", "name": "MongoDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 500 }, "core_stack": true },
+      { "id": "t_pg", "name": "PostgreSQL", "tags": ["db", "sql"], "ui": { "visible": true, "order": 510 }, "core_stack": true },
+      { "id": "t_kafka", "name": "Kafka", "tags": ["db", "streaming"], "ui": { "visible": true, "order": 550 }, "core_stack": false },
+      { "id": "t_redis", "name": "Redis", "tags": ["db", "cache"], "ui": { "visible": true, "order": 550 }, "core_stack": false },
+      { "id": "t_mysql", "name": "MySQL", "tags": ["db", "sql"], "ui": { "visible": true, "order": 530 }, "core_stack": true },
+      { "id": "t_docdb", "name": "DocumentDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 }, "core_stack": false },
+      { "id": "t_dynamo", "name": "DynamoDB", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 }, "core_stack": false },
+      { "id": "t_cassandra", "name": "Cassandra", "tags": ["db", "nosql"], "ui": { "visible": true, "order": 530 }, "core_stack": false },
+      { "id": "t_oracle", "name": "Oracle DB", "tags": ["db", "sql"], "ui": { "visible": true, "order": 530 }, "core_stack": true },
 
-      { "id": "t_aws_lambda", "name": "AWS Lambda", "tags": ["cloud", "serverless"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_apigw", "name": "AWS API Gateway", "tags": ["cloud", "api"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_cognito", "name": "AWS Cognito", "tags": ["cloud", "auth"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_iam", "name": "AWS IAM", "tags": ["cloud", "security"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_s3", "name": "AWS S3", "tags": ["cloud", "storage"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_sqs", "name": "AWS SQS", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_sns", "name": "AWS SNS", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_ec2", "name": "AWS EC2", "tags": ["cloud", "compute"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_aws_ses", "name": "AWS SES", "tags": ["cloud", "email"], "ui": { "visible": true, "order": 1000 } },
-      { "id": "t_gcp_cf", "name": "GCP Cloud Functions", "tags": ["cloud", "serverless"], "ui": { "visible": true, "order": 1500 } },
-      { "id": "t_gcp_apigw", "name": "GCP API Gateway", "tags": ["cloud", "api"], "ui": { "visible": true, "order": 1500 } },
-      { "id": "t_pubsub", "name": "Pub/Sub", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1500 } },
-      { "id": "t_firebase", "name": "Firebase", "tags": ["cloud"] , "ui": { "visible": true, "order": 1500 } },
+      { "id": "t_aws_lambda", "name": "AWS Lambda", "tags": ["cloud", "serverless"], "ui": { "visible": true, "order": 1000 }, "core_stack": true },
+      { "id": "t_aws_apigw", "name": "AWS API Gateway", "tags": ["cloud", "api"], "ui": { "visible": true, "order": 1000 }, "core_stack": true },
+      { "id": "t_aws_cognito", "name": "AWS Cognito", "tags": ["cloud", "auth"], "ui": { "visible": true, "order": 1000 }, "core_stack": true },
+      { "id": "t_aws_iam", "name": "AWS IAM", "tags": ["cloud", "security"], "ui": { "visible": true, "order": 1000 }, "core_stack": false },
+      { "id": "t_aws_s3", "name": "AWS S3", "tags": ["cloud", "storage"], "ui": { "visible": true, "order": 1000 }, "core_stack": false },
+      { "id": "t_aws_sqs", "name": "AWS SQS", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1000 }, "core_stack": false },
+      { "id": "t_aws_sns", "name": "AWS SNS", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1000 }, "core_stack": false },
+      { "id": "t_aws_ec2", "name": "AWS EC2", "tags": ["cloud", "compute"], "ui": { "visible": true, "order": 1000 }, "core_stack": false },
+      { "id": "t_aws_ses", "name": "AWS SES", "tags": ["cloud", "email"], "ui": { "visible": true, "order": 1000 }, "core_stack": true },
+      { "id": "t_gcp_cf", "name": "GCP Cloud Functions", "tags": ["cloud", "serverless"], "ui": { "visible": true, "order": 1500 }, "core_stack": true },
+      { "id": "t_gcp_apigw", "name": "GCP API Gateway", "tags": ["cloud", "api"], "ui": { "visible": true, "order": 1500 }, "core_stack": true },
+      { "id": "t_pubsub", "name": "Pub/Sub", "tags": ["cloud", "messaging"], "ui": { "visible": true, "order": 1500 }, "core_stack": false },
+      { "id": "t_firebase", "name": "Firebase", "tags": ["cloud"] , "ui": { "visible": true, "order": 1500 }, "core_stack": false },
 
-      { "id": "t_docker", "name": "Docker", "tags": ["devops"], "ui": { "visible": true, "order": 3000 } },
-      { "id": "t_k8s", "name": "Kubernetes", "tags": ["devops"], "ui": { "visible": true, "order": 3000 } },
-      { "id": "t_nginx", "name": "NGINX", "tags": ["devops"], "ui": { "visible": true, "order": 3000 } },
-      { "id": "t_istio", "name": "Istio", "tags": ["devops", "mesh"] },
+      { "id": "t_docker", "name": "Docker", "tags": ["devops"], "ui": { "visible": true, "order": 3000 }, "core_stack": true },
+      { "id": "t_k8s", "name": "Kubernetes", "tags": ["devops"], "ui": { "visible": true, "order": 3000 }, "core_stack": false },
+      { "id": "t_nginx", "name": "NGINX", "tags": ["devops"], "ui": { "visible": true, "order": 3000 }, "core_stack": false },
+      { "id": "t_istio", "name": "Istio", "tags": ["devops", "mesh"], "ui": { "visible": true, "order": 3000 }, "core_stack": false },
 
-      { "id": "t_datadog", "name": "Datadog", "tags": ["observability"], "ui": { "visible": false, "order": 240 } },
+      { "id": "t_datadog", "name": "Datadog", "tags": ["observability"], "ui": { "visible": false, "order": 240 }, "core_stack": false },
       { "id": "t_salesforce", "name": "Salesforce", "tags": ["platform"] },
       { "id": "t_cloudcraze", "name": "CloudCraze", "tags": ["platform"] },
       { "id": "t_activecampaign", "name": "ActiveCampaign", "tags": ["platform", "integration", "marketing"] },

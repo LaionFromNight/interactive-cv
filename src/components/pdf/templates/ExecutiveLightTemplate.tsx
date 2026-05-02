@@ -9,7 +9,8 @@ import {
 } from "@react-pdf/renderer";
 import type { CV } from "../../../lib/cvTypes";
 import { getConsentText, type CvPdfOptions } from "../CvPdfOptions";
-import type { SlateProfessionalStyles } from "../styles/slateProfessional";
+import type { PdfTemplateConfig } from "../PdfTemplateConfig";
+import type { ExecutiveLightStyles } from "../styles/createExecutiveLightStyles";
 
 Font.register({
   family: "Inter",
@@ -19,7 +20,7 @@ Font.register({
   ],
 });
 
-const months = [
+const MONTHS = [
   "Jan",
   "Feb",
   "Mar",
@@ -33,6 +34,10 @@ const months = [
   "Nov",
   "Dec",
 ];
+
+const FIRST_PAGE_SKILL_GROUP_COUNT = 4;
+const FIRST_PAGE_PROJECT_COUNT = 5;
+const MAX_LINK_TEXT_LENGTH = 28;
 
 type PdfProfile = {
   id: string;
@@ -54,7 +59,7 @@ function formatMonth(value: string | null | undefined) {
     return value;
   }
 
-  return `${months[monthIndex]} ${year}`;
+  return `${MONTHS[monthIndex]} ${year}`;
 }
 
 function formatRange(
@@ -122,14 +127,33 @@ function getProjectCompany(project: Project, companiesById: CompanyLookup) {
   return companiesById[project.company_id]?.name ?? "Company";
 }
 
+function getCompactLinkText(profile: PdfProfile) {
+  if (profile.label) return profile.label;
+
+  try {
+    const parsedUrl = new URL(profile.url);
+    const host = parsedUrl.hostname.replace(/^www\./, "");
+    const path = parsedUrl.pathname === "/" ? "" : parsedUrl.pathname;
+    const compactUrl = `${host}${path}`.replace(/\/$/, "");
+
+    if (compactUrl.length <= MAX_LINK_TEXT_LENGTH) return compactUrl;
+
+    return `${compactUrl.slice(0, MAX_LINK_TEXT_LENGTH - 3)}...`;
+  } catch {
+    if (profile.url.length <= MAX_LINK_TEXT_LENGTH) return profile.url;
+
+    return `${profile.url.slice(0, MAX_LINK_TEXT_LENGTH - 3)}...`;
+  }
+}
+
 function Header({
   cv,
-  qrCodeSrc,
   styles,
+  templateConfig,
 }: {
   cv: CV;
-  qrCodeSrc: string;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   return (
     <View style={styles.header} wrap={false}>
@@ -147,38 +171,48 @@ function Header({
             </Text>
           ) : null}
 
-          <Text style={styles.contactText}>{"  ·  "}Polish / English</Text>
+          {templateConfig.spokenLanguagesLine ? (
+            <Text style={styles.contactText}>
+              {"  ·  "}
+              {templateConfig.spokenLanguagesLine}
+            </Text>
+          ) : null}
         </View>
       </View>
 
-      <View style={styles.headerQr}>
-        <Image src={qrCodeSrc} style={styles.headerQrImage} />
-        <Text style={styles.headerQrText}>lukaszkomur.dev</Text>
-      </View>
+      <Link src={templateConfig.qr.targetUrl} style={styles.headerQr}>
+        <Image src={templateConfig.qr.imageSrc} style={styles.headerQrImage} />
+        <Text style={styles.headerQrText}>{templateConfig.qr.label}</Text>
+      </Link>
     </View>
   );
 }
 
 function ContinuationHeader({
   cv,
-  qrCodeSrc,
   styles,
+  templateConfig,
 }: {
   cv: CV;
-  qrCodeSrc: string;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   return (
     <View style={styles.continuedHeader} wrap={false}>
       <View style={styles.continuedHeaderMain}>
         <Text style={styles.continuedName}>{cv.person.full_name}</Text>
-        <Text style={styles.continuedSubtitle}>CV continued</Text>
+        <Text style={styles.continuedSubtitle}>
+          {templateConfig.labels.cvContinued}
+        </Text>
       </View>
 
-      <View style={styles.continuedQr}>
-        <Image src={qrCodeSrc} style={styles.continuedQrImage} />
-        <Text style={styles.continuedQrText}>lukaszkomur.dev</Text>
-      </View>
+      <Link src={templateConfig.qr.targetUrl} style={styles.continuedQr}>
+        <Image
+          src={templateConfig.qr.imageSrc}
+          style={styles.continuedQrImage}
+        />
+        <Text style={styles.continuedQrText}>{templateConfig.qr.label}</Text>
+      </Link>
     </View>
   );
 }
@@ -187,15 +221,22 @@ function Footer({
   generatedAt,
   consentText,
   styles,
+  templateConfig,
 }: {
   generatedAt: string;
   consentText?: string | null;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   return (
     <View style={styles.footerBlock}>
-      <Text style={styles.footer}>Last updated: {generatedAt}</Text>
-      <Text style={styles.footerConsentText}>{consentText}</Text>
+      <Text style={styles.footer}>
+        {templateConfig.labels.lastUpdated}: {generatedAt}
+      </Text>
+
+      {consentText ? (
+        <Text style={styles.footerConsentText}>{consentText}</Text>
+      ) : null}
     </View>
   );
 }
@@ -203,15 +244,17 @@ function Footer({
 function SkillsBlock({
   skillGroups,
   styles,
+  templateConfig,
 }: {
   skillGroups: SkillGroups;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   if (skillGroups.length === 0) return null;
 
   return (
     <View style={styles.sidebarBlock}>
-      <Text style={styles.sidebarTitle}>Skills</Text>
+      <Text style={styles.sidebarTitle}>{templateConfig.labels.skills}</Text>
 
       {skillGroups.map((group) => (
         <View key={group.key} style={styles.skillGroup} wrap={false}>
@@ -230,16 +273,23 @@ function SkillsBlock({
   );
 }
 
-function FocusBlock({ styles }: { styles: SlateProfessionalStyles }) {
+function FocusBlock({
+  styles,
+  templateConfig,
+}: {
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
+}) {
   return (
     <View style={styles.sidebarBlock} wrap={false}>
-      <Text style={styles.sidebarTitle}>PROFILE</Text>
+      <Text style={styles.sidebarTitle}>{templateConfig.labels.profile}</Text>
 
       <View style={styles.focusList}>
-        <Text style={styles.focusItem}>Backend / Solution Architecture</Text>
-        <Text style={styles.focusItem}>System Design</Text>
-        <Text style={styles.focusItem}>Cloud / Serverless</Text>
-        <Text style={styles.focusItem}>IAM & Integrations</Text>
+        {templateConfig.profileFocus.map((item) => (
+          <Text key={item} style={styles.focusItem}>
+            {item}
+          </Text>
+        ))}
       </View>
     </View>
   );
@@ -249,16 +299,18 @@ function TimelineBlock({
   timeline,
   companiesById,
   styles,
+  templateConfig,
 }: {
   timeline: CV["experience_timeline"];
   companiesById: CompanyLookup;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   if (!timeline || timeline.length === 0) return null;
 
   return (
     <View style={styles.sidebarBlock}>
-      <Text style={styles.sidebarTitle}>Timeline</Text>
+      <Text style={styles.sidebarTitle}>{templateConfig.labels.timeline}</Text>
 
       {timeline.map((item, index) => {
         const label = item.company_id
@@ -289,21 +341,22 @@ function TimelineBlock({
 function LinksBlock({
   profiles,
   styles,
+  templateConfig,
 }: {
   profiles: PdfProfile[];
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   if (profiles.length === 0) return null;
 
   return (
     <View style={styles.sidebarBlock}>
-      <Text style={styles.sidebarTitle}>Links</Text>
+      <Text style={styles.sidebarTitle}>{templateConfig.labels.links}</Text>
 
       {profiles.map((profile) => (
         <View key={profile.id} style={styles.linkRow} wrap={false}>
-          <Text style={styles.linkLabel}>{profile.label}</Text>
           <Link src={profile.url} style={styles.link}>
-            {profile.url}
+            {getCompactLinkText(profile)}
           </Link>
         </View>
       ))}
@@ -315,10 +368,12 @@ function FirstPageSidebar({
   cv,
   skillGroups,
   styles,
+  templateConfig,
 }: {
   cv: CV;
   skillGroups: SkillGroups;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   return (
     <View style={styles.sidebar}>
@@ -328,8 +383,13 @@ function FirstPageSidebar({
         </View>
       ) : null}
 
-      <FocusBlock styles={styles} />
-      <SkillsBlock skillGroups={skillGroups} styles={styles} />
+      <FocusBlock styles={styles} templateConfig={templateConfig} />
+
+      <SkillsBlock
+        skillGroups={skillGroups}
+        styles={styles}
+        templateConfig={templateConfig}
+      />
     </View>
   );
 }
@@ -340,24 +400,35 @@ function ContinuationSidebar({
   companiesById,
   profiles,
   styles,
+  templateConfig,
 }: {
   skillGroups: SkillGroups;
   timeline: CV["experience_timeline"];
   companiesById: CompanyLookup;
   profiles: PdfProfile[];
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   return (
     <View style={styles.sidebar}>
-      <SkillsBlock skillGroups={skillGroups} styles={styles} />
+      <SkillsBlock
+        skillGroups={skillGroups}
+        styles={styles}
+        templateConfig={templateConfig}
+      />
 
       <TimelineBlock
         timeline={timeline}
         companiesById={companiesById}
         styles={styles}
+        templateConfig={templateConfig}
       />
 
-      <LinksBlock profiles={profiles} styles={styles} />
+      <LinksBlock
+        profiles={profiles}
+        styles={styles}
+        templateConfig={templateConfig}
+      />
     </View>
   );
 }
@@ -369,7 +440,7 @@ function ProjectList({
 }: {
   projects: Project[];
   companiesById: CompanyLookup;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
 }) {
   return (
     <View style={styles.experienceList}>
@@ -401,10 +472,12 @@ export function ExecutiveLightTemplate({
   cv,
   options,
   styles,
+  templateConfig,
 }: {
   cv: CV;
   options: CvPdfOptions;
-  styles: SlateProfessionalStyles;
+  styles: ExecutiveLightStyles;
+  templateConfig: PdfTemplateConfig;
 }) {
   const companiesById = Object.fromEntries(
     cv.companies.map((company) => [company.id, company]),
@@ -421,17 +494,18 @@ export function ExecutiveLightTemplate({
 
   const allSkillGroups = groupSkills(cv);
 
-  const firstPageSkillGroupCount = 4;
-  const firstPageProjectCount = 5;
+  const firstPageSkillGroups = allSkillGroups.slice(
+    0,
+    FIRST_PAGE_SKILL_GROUP_COUNT,
+  );
+  const remainingSkillGroups = allSkillGroups.slice(
+    FIRST_PAGE_SKILL_GROUP_COUNT,
+  );
 
-  const firstPageSkillGroups = allSkillGroups.slice(0, firstPageSkillGroupCount);
-  const remainingSkillGroups = allSkillGroups.slice(firstPageSkillGroupCount);
-
-  const firstPageProjects = publicProjects.slice(0, firstPageProjectCount);
-  const remainingProjects = publicProjects.slice(firstPageProjectCount);
+  const firstPageProjects = publicProjects.slice(0, FIRST_PAGE_PROJECT_COUNT);
+  const remainingProjects = publicProjects.slice(FIRST_PAGE_PROJECT_COUNT);
 
   const profiles = getProfiles(cv);
-  const qrCodeSrc = `${import.meta.env.BASE_URL}QRCODE.png`;
   const consentText = getConsentText(options);
 
   const shouldRenderContinuationPage =
@@ -447,25 +521,30 @@ export function ExecutiveLightTemplate({
       subject={cv.person.headline}
     >
       <Page size="A4" style={styles.page} wrap={false}>
-        <Header cv={cv} qrCodeSrc={qrCodeSrc} styles={styles} />
+        <Header cv={cv} styles={styles} templateConfig={templateConfig} />
 
         <View style={styles.body}>
           <FirstPageSidebar
             cv={cv}
             skillGroups={firstPageSkillGroups}
             styles={styles}
+            templateConfig={templateConfig}
           />
 
           <View style={styles.main}>
             <View style={styles.mainSection} wrap={false}>
-              <Text style={styles.sectionTitle}>Summary</Text>
+              <Text style={styles.sectionTitle}>
+                {templateConfig.labels.summary}
+              </Text>
               <Text style={styles.summaryText}>
                 {cv.person.bio_short ?? "—"}
               </Text>
             </View>
 
             <View style={styles.mainSection}>
-              <Text style={styles.sectionTitle}>Experience / Projects</Text>
+              <Text style={styles.sectionTitle}>
+                {templateConfig.labels.experienceProjects}
+              </Text>
 
               <ProjectList
                 projects={firstPageProjects}
@@ -480,12 +559,17 @@ export function ExecutiveLightTemplate({
           generatedAt={cv.meta.generated_at_local}
           consentText={consentText}
           styles={styles}
+          templateConfig={templateConfig}
         />
       </Page>
 
       {shouldRenderContinuationPage ? (
         <Page size="A4" style={styles.page} wrap={false}>
-          <ContinuationHeader cv={cv} qrCodeSrc={qrCodeSrc} styles={styles} />
+          <ContinuationHeader
+            cv={cv}
+            styles={styles}
+            templateConfig={templateConfig}
+          />
 
           <View style={styles.body}>
             <ContinuationSidebar
@@ -494,13 +578,14 @@ export function ExecutiveLightTemplate({
               companiesById={companiesById}
               profiles={profiles}
               styles={styles}
+              templateConfig={templateConfig}
             />
 
             <View style={styles.main}>
               {remainingProjects.length > 0 ? (
                 <View style={styles.mainSection}>
                   <Text style={styles.sectionTitle}>
-                    Experience / Projects continued
+                    {templateConfig.labels.experienceProjectsContinued}
                   </Text>
 
                   <ProjectList
@@ -512,7 +597,7 @@ export function ExecutiveLightTemplate({
               ) : (
                 <View style={styles.emptyMainPanel}>
                   <Text style={styles.emptyMainText}>
-                    Additional profile details
+                    {templateConfig.labels.additionalProfileDetails}
                   </Text>
                 </View>
               )}
@@ -523,6 +608,7 @@ export function ExecutiveLightTemplate({
             generatedAt={cv.meta.generated_at_local}
             consentText={consentText}
             styles={styles}
+            templateConfig={templateConfig}
           />
         </Page>
       ) : null}

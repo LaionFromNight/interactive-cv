@@ -33,6 +33,40 @@ export type CVMeta = {
 };
 
 // --------------------
+// PDF Config
+// --------------------
+export type CVPdfQrCode = {
+  image_url?: string;
+  target_url?: string;
+  label?: string;
+};
+
+export type CVPdfLabels = {
+  summary?: string;
+  professional_summary?: string;
+  core_strengths?: string;
+  core_skills?: string;
+  skills?: string;
+  profile?: string;
+  timeline?: string;
+  links?: string;
+  experience_projects?: string;
+  experience_projects_continued?: string;
+  responsibilities?: string;
+  highlights?: string;
+  stack?: string;
+  cv_continued?: string;
+  additional_profile_details?: string;
+  last_updated?: string;
+};
+
+export type CVPdfConfig = {
+  qr_code?: CVPdfQrCode;
+  profile_focus?: string[];
+  labels?: CVPdfLabels;
+};
+
+// --------------------
 // Media (Spotify)
 // --------------------
 export type SpotifyItem = {
@@ -63,7 +97,7 @@ export type CVContacts = {
 export type CVProfiles = {
   id: "github" | "linkedin" | "website" | "x" | "email" | string;
   label: string; // what user sees
-  url: string;   // destination link
+  url: string; // destination link
   icon?: "globe" | "link" | string;
   icon_url?: string; // optional custom icon (e.g. /assets/github.svg or https://...)
 };
@@ -101,8 +135,8 @@ export type CVSummaryCard = {
 };
 
 export type CVSummary = {
-  title?: string;      // e.g. "In short"
-  subtitle?: string;   // e.g. "Key values and work style."
+  title?: string; // e.g. "In short"
+  subtitle?: string; // e.g. "Key values and work style."
   cards: CVSummaryCard[];
 };
 
@@ -113,6 +147,11 @@ export type CVTech = {
   id: string;
   name: string;
   tags: string[];
+  core_stack?: boolean;
+  ui?: {
+    visible?: boolean;
+    order?: number;
+  };
 };
 
 export type CVSkills = {
@@ -224,15 +263,15 @@ export type CVShowcaseItem = {
   title: string;
   teaser: string;
   url: string;
-  image_url?: string;      
+  image_url?: string;
   image_alt?: string;
-  tags?: string[];         
-  featured?: boolean;      
+  tags?: string[];
+  featured?: boolean;
 };
 
 export type CVShowcase = {
-  title?: string;          
-  subtitle?: string;       
+  title?: string;
+  subtitle?: string;
   items: CVShowcaseItem[];
 };
 
@@ -243,6 +282,9 @@ export type CV = {
   schema_version: string;
 
   meta: CVMeta;
+
+  // PDF-specific rendering config from JSON
+  pdf?: CVPdfConfig;
 
   // Keep optional media near the top
   media?: CVMedia;

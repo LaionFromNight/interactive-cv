@@ -3,20 +3,18 @@ import {
   defaultCvPdfOptions,
   type CvPdfOptions,
 } from "./CvPdfOptions";
+import { createPdfTemplateConfig } from "./PdfTemplateConfig";
 import { amberExecutiveStyles } from "./styles/amberExecutive";
 import { blueEngineeringStyles } from "./styles/blueEngineering";
 import { emeraldArchitectStyles } from "./styles/emeraldArchitect";
 import { graphiteMonoStyles } from "./styles/graphiteMono";
-import { slateProfessionalStyles } from "./styles/slateProfessional";
-import { ArchitectBriefTemplate } from "./templates/ArchitectBriefTemplate";
+import { highContrastAccessibleStyles } from "./styles/highContrastAccessible";
 import { ExecutiveLightTemplate } from "./templates/ExecutiveLightTemplate";
-import { OnePageCompactTemplate } from "./templates/OnePageCompactTemplate";
+import { AmericanResumeTemplate } from "./templates/AmericanResumeTemplate";
+import { OnePageGradientTemplate } from "./templates/OnePageGradientTemplate";
 
 function getStyles(options: CvPdfOptions) {
   switch (options.colorSchemeId) {
-    case "emeraldArchitect":
-      return emeraldArchitectStyles;
-
     case "blueEngineering":
       return blueEngineeringStyles;
 
@@ -26,9 +24,14 @@ function getStyles(options: CvPdfOptions) {
     case "amberExecutive":
       return amberExecutiveStyles;
 
-    case "slateProfessional":
+    case "emeraldArchitect":
+      return emeraldArchitectStyles;
+
+    case "highContrastAccessible":
+      return highContrastAccessibleStyles;
+
     default:
-      return slateProfessionalStyles;
+      return emeraldArchitectStyles;
   }
 }
 
@@ -40,23 +43,24 @@ export function CvPdfDocument({
   options?: CvPdfOptions;
 }) {
   const styles = getStyles(options);
+  const templateConfig = createPdfTemplateConfig(cv);
 
   switch (options.templateId) {
-    case "architectBrief":
+    case "americanResume":
       return (
-        <ArchitectBriefTemplate
+        <AmericanResumeTemplate
           cv={cv}
           options={options}
           styles={styles}
+          templateConfig={templateConfig}
         />
       );
-
-    case "onePageCompact":
+    case "onePageGradient":
       return (
-        <OnePageCompactTemplate
+        <OnePageGradientTemplate
           cv={cv}
           options={options}
-          styles={styles}
+          templateConfig={templateConfig}
         />
       );
 
@@ -67,6 +71,7 @@ export function CvPdfDocument({
           cv={cv}
           options={options}
           styles={styles}
+          templateConfig={templateConfig}
         />
       );
   }

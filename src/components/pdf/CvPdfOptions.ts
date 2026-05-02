@@ -2,15 +2,16 @@ export type CvPdfConsentStandard = "none" | "eu" | "us" | "china";
 
 export type CvPdfTemplateId =
   | "executiveLight"
-  | "architectBrief"
-  | "onePageCompact";
+  | "americanResume"
+  | "onePageGradient"
+  ;
 
 export type CvPdfColorSchemeId =
   | "amberExecutive"
-  | "slateProfessional"
   | "emeraldArchitect"
   | "blueEngineering"
   | "graphiteMono"
+  | "highContrastAccessible"
   ;
 
 export type CvPdfOptions = {
@@ -61,20 +62,21 @@ export const templateOptions: Array<{
 }> = [
   {
     id: "executiveLight",
-    label: "Executive Light",
-    description: "Clean two-page senior engineering CV layout.",
+    label: "Detailed Engineering CV",
+    description:
+      "Two-page CV focused on senior engineering profile, skills, timeline, links, and selected project summaries.",
   },
   {
-    id: "architectBrief",
-    label: "Architect Brief",
+    id: "americanResume",
+    label: "American Resume",
     description:
-      "Senior/architect-focused layout with key strengths and selected projects.",
+      "US-style resume with a clean single-column layout, full project descriptions, responsibilities, highlights, and stack.",
   },
   {
-    id: "onePageCompact",
-    label: "One Page Compact",
+    id: "onePageGradient",
+    label: "Visual Profile Card",
     description:
-      "Single-page condensed CV for quick recruitment screening.",
+      "One-page visual profile / business-card style PDF with QR artwork, summary, core stack, and timeline.",
   },
 ];
 
@@ -89,9 +91,10 @@ export const colorSchemeOptions: Array<{
     description: "Warm executive-style palette with subtle amber accents.",
   },
   {
-    id: "slateProfessional",
-    label: "Slate Professional",
-    description: "Light mode, slate text, subtle blue accents.",
+    id: "highContrastAccessible",
+    label: "High Contrast Accessible",
+    description:
+      "Maximum contrast palette for better readability and low-vision accessibility.",
   },
   {
     id: "emeraldArchitect",
