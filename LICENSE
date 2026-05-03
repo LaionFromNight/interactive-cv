@@ -1,21 +1,108 @@
-MIT License
+Source-Available Portfolio Template License
 
-Copyright (c) 2026 LaionFromNight
+Copyright (c) 2026 LaionFromNight / Lukasz Komur
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This repository contains the source code for the interactive CV and developer
+portfolio of Lukasz Komur.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The Project is made source-available so it can be viewed, studied, forked, and
+used as a personal portfolio template under the conditions below.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. Definitions
+
+"Project" means this repository, including its source code, scripts, build
+configuration, generated page system, static page renderer, PDF generation,
+styles, documentation, and related files.
+
+"Author" means Lukasz Komur / LaionFromNight.
+
+"Personal Content" means any personal data, CV information, work history,
+experience descriptions, images, names, profile links, contact details,
+branding, Open Graph images, website identity, and other materials that identify
+or describe Lukasz Komur.
+
+"Configuration Files" means the JSON/data files intended for personal
+customization, including but not limited to:
+
+- src/data/cv.json
+- src/data/seo.json
+- src/data/cms.json
+
+"Core System" means the application code, React components, layout system,
+styling system, build scripts, static page renderer, CMS renderer, SEO pipeline,
+PDF renderer, and project architecture.
+
+2. Permissions
+
+You may:
+
+- view and study the Project source code;
+- fork this repository;
+- use the Project as a personal portfolio template;
+- modify the Configuration Files to replace the Author's data with your own;
+- replace public assets such as images, favicons, icons, and Open Graph images
+  with your own assets;
+- deploy your own personal version of the portfolio after replacing the
+  Author's Personal Content;
+- submit pull requests with improvements to the original repository.
+
+3. Conditions
+
+If you publish or deploy a fork of this Project, you must:
+
+- replace the Author's Personal Content with your own content;
+- not present the Author's identity, CV, experience, images, profile, links, or
+  branding as your own;
+- keep the copyright notice and this license in the repository;
+- make it clear that your published version represents you, not Lukasz Komur.
+
+The intended customization layer for personal forks is the Configuration Files
+and personal/public assets.
+
+4. Core System changes
+
+You should not maintain a privately divergent version of the Core System for
+redistribution as a separate template or product.
+
+Changes to the Core System should be proposed to the original repository through
+pull requests, especially changes to:
+
+- application code;
+- React components;
+- layout or styling system;
+- static page renderer;
+- CMS/static page system;
+- SEO/build pipeline;
+- PDF renderer;
+- scripts and build tooling;
+- project architecture.
+
+5. Restrictions
+
+You may not:
+
+- reuse, publish, or redistribute the Author's Personal Content as your own;
+- impersonate the Author;
+- publish a fork that may mislead others into believing it is the Author's
+  official website or profile;
+- sell, sublicense, or redistribute the Project as a competing portfolio
+  template or product without written permission from the Author;
+- remove copyright notices or this license from the repository;
+- use the Author's name, image, links, CV, work history, experience, or branding
+  to promote your own version.
+
+6. Contributions
+
+By submitting a pull request or other contribution to the original repository,
+you agree that your contribution may be included in the Project under this same
+license or a future license chosen by the Author.
+
+7. No warranty
+
+THE PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+OUT OF, OR IN CONNECTION WITH THE PROJECT OR THE USE OF THE PROJECT.
