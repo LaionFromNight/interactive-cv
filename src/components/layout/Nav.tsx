@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 
 type NavItem = { id: string; label: string; href: string; trackActive?: boolean };
+type StaticPageNavItem = { label: string; description: string; href: string };
 
 type Props = {
   ownerName?: string;
   subtitle?: string;
   items?: NavItem[];
+  staticPages?: StaticPageNavItem[];
+  staticPagesNavLabel?: string;
   avatarSrc?: string;
   avatarAlt?: string;
   onOpenPdfModal?: () => void;
@@ -45,10 +48,78 @@ const useActiveSection = (ids: string[]) => {
   return active;
 };
 
+function StaticPagesNav({
+  pages,
+  label,
+  variant,
+}: {
+  pages: StaticPageNavItem[];
+  label: string;
+  variant: "desktop" | "mobile";
+}) {
+  if (pages.length === 0) return null;
+
+  const isMobile = variant === "mobile";
+  const singlePage = pages[0];
+  const linkClassName = isMobile
+    ? "rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+    : "transition text-white/70 hover:text-white";
+
+  if (pages.length === 1 && singlePage) {
+    return (
+      <a className={linkClassName} href={singlePage.href}>
+        {singlePage.label}
+      </a>
+    );
+  }
+
+  return (
+    <details className="group relative">
+      <summary
+        className={[
+          "flex cursor-pointer list-none items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 [&::-webkit-details-marker]:hidden",
+          isMobile
+            ? "rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+            : "text-white/70 transition hover:text-white",
+        ].join(" ")}
+      >
+        {label}
+        <span
+          aria-hidden="true"
+          className="h-1.5 w-1.5 rotate-45 border-b border-r border-white/45 transition group-open:-rotate-135"
+        />
+      </summary>
+      <div
+        className={[
+          "absolute right-0 top-full z-50 mt-3 rounded-xl border border-white/10 bg-black/90 p-2 shadow-2xl shadow-black/40 backdrop-blur",
+          isMobile ? "w-[min(20rem,calc(100vw-2rem))]" : "w-80",
+        ].join(" ")}
+      >
+        {pages.map((page) => (
+          <a
+            key={page.href}
+            className="block rounded-lg px-3 py-3 text-left hover:bg-white/10 focus:bg-white/10 focus:outline-none"
+            href={page.href}
+          >
+            <span className="block text-sm font-semibold text-white">
+              {page.label}
+            </span>
+            <span className="mt-1 block text-xs leading-5 text-white/60">
+              {page.description}
+            </span>
+          </a>
+        ))}
+      </div>
+    </details>
+  );
+}
+
 export function Nav({
   ownerName = "Your Name",
   subtitle = "Interactive CV",
   items = DEFAULT_ITEMS,
+  staticPages = [],
+  staticPagesNavLabel = "More",
   avatarSrc,
   avatarAlt,
   onOpenPdfModal,
@@ -96,10 +167,22 @@ export function Nav({
               </a>
             );
           })}
+          <StaticPagesNav
+            pages={staticPages}
+            label={staticPagesNavLabel}
+            variant="desktop"
+          />
         </nav>
 
         {/* CTA */}
         <div className="flex items-center gap-2">
+          <div className="md:hidden">
+            <StaticPagesNav
+              pages={staticPages}
+              label={staticPagesNavLabel}
+              variant="mobile"
+            />
+          </div>
           <button
             type="button"
             className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"

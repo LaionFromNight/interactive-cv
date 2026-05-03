@@ -1,10 +1,11 @@
-import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { mkdir, rm, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import {
   applyTitleTemplate,
   buildRobotsTxt,
   buildSeoHead,
   buildSitemapXml,
+  buildSiteNavigationStructuredData,
   buildStructuredData,
   buildWebManifest,
   escapeHtml,
@@ -14,11 +15,26 @@ import {
   rootDir,
   safeJsonScript,
 } from "./seo-utils.mjs";
+import {
+  allowedAnimatedListStyles,
+  getEnabledStaticPages,
+  getPageTone,
+  getToneClass,
+  loadCmsConfig,
+  validateCmsConfig,
+} from "./cms-utils.mjs";
+import {
+  buildNoScriptProfileFallback,
+  buildStaticProfileHtml,
+} from "./static-profile-renderer.mjs";
 
 const indexPath = path.join(rootDir, "dist", "index.html");
 const robotsPath = path.join(rootDir, "dist", "robots.txt");
 const sitemapPath = path.join(rootDir, "dist", "sitemap.xml");
 const manifestPath = path.join(rootDir, "dist", "site.webmanifest");
+const publicRobotsPath = path.join(rootDir, "public", "robots.txt");
+const publicSitemapPath = path.join(rootDir, "public", "sitemap.xml");
+const publicManifestPath = path.join(rootDir, "public", "site.webmanifest");
 
 const getOutputPathForRoute = (routePath) => {
   const relativeRoute = String(routePath ?? "").replace(/^\/+|\/+$/g, "");
@@ -33,10 +49,19 @@ const getOutputPathForRoute = (routePath) => {
 };
 
 const seo = await loadJson("src/data/seo.json");
+const cms = await loadCmsConfig();
 const cv = await loadJson("src/data/cv.json");
 const originalHtml = await readFile(indexPath, "utf8");
 const siteUrl = getSiteUrl(seo);
-const lastmod = normalizeLastmod(cv.meta?.generated_at_local);
+const lastmod = normalizeLastmod(process.env.SITE_LASTMOD);
+validateCmsConfig(cms, seo);
+const enabledStaticPages = getEnabledStaticPages(cms, seo);
+
+const removeOutputForRoute = async (routePath) => {
+  if (!String(routePath ?? "").trim()) return;
+  const output = getOutputPathForRoute(routePath);
+  await rm(output.dir, { recursive: true, force: true });
+};
 
 const headMatch = originalHtml.match(/<head>[\s\S]*?<\/head>/);
 const assetTags = headMatch
@@ -53,6 +78,24 @@ const structuredData = buildStructuredData(seo, {
   breadcrumbs: [{ name: "Strona główna", item: `${siteUrl}/` }],
 });
 
+structuredData["@graph"].push({
+  "@type": "ProfilePage",
+  "@id": `${siteUrl}/#profile-page`,
+  name: `${cv.person?.full_name ?? seo.site?.name} - Profile`,
+  url: `${siteUrl}/`,
+  description: seo.defaultSeo?.description,
+  mainEntity: { "@id": `${siteUrl}/#person` },
+});
+
+const siteNavigationStructuredData = buildSiteNavigationStructuredData(
+  seo,
+  enabledStaticPages,
+);
+
+if (siteNavigationStructuredData) {
+  structuredData["@graph"].push(siteNavigationStructuredData);
+}
+
 const nextHead = buildSeoHead({
   seo,
   title: seo.defaultSeo?.title,
@@ -63,62 +106,74 @@ const nextHead = buildSeoHead({
   assetTags,
 });
 
-const crawlerBlock = `    <div class="sr-only">
-      <p>${escapeHtml(seo.contentSeo?.crawlerNote)}</p>
-      <a href="/cv/">${escapeHtml(seo.contentSeo?.crawlerLinkText)}</a>
-    </div>`;
+const staticProfileBlock = `    ${buildStaticProfileHtml(cv, {
+  className: "sr-only",
+  id: "static-profile",
+  staticPages: enabledStaticPages,
+})}`;
 
-const noScriptFallback = `    <noscript>
-      <main>
-        <h1>${escapeHtml(cv.person?.full_name)}</h1>
-        <p>${escapeHtml(cv.person?.headline)}</p>
-        <p>${escapeHtml(cv.person?.bio_short)}</p>
-      </main>
-    </noscript>`;
+const noScriptFallback = `    ${buildNoScriptProfileFallback(cv, enabledStaticPages)}`;
 
 let html = originalHtml
   .replace(/<html\b[^>]*>/, `<html lang="${escapeHtml(seo.site?.language)}">`)
   .replace(/<head>[\s\S]*?<\/head>/, nextHead)
-  .replace(/    <div class="sr-only">[\s\S]*?<\/div>/, crawlerBlock)
+  .replace(/    <(?:div|main)\b[^>]*class=["']sr-only["'][\s\S]*?<\/(?:div|main)>/, staticProfileBlock)
   .replace(/    <noscript>[\s\S]*?<\/noscript>/, noScriptFallback);
 
-if (!html.includes(crawlerBlock)) {
-  html = html.replace(/<body>/, `<body>\n${crawlerBlock}`);
+if (!html.includes('id="static-profile"')) {
+  html = html.replace(/<body>/, `<body>\n${staticProfileBlock}`);
 }
 
 if (!html.includes(noScriptFallback)) {
   html = html.replace(/<script\b/, `${noScriptFallback}\n    <script`);
 }
 
-await writeFile(indexPath, html, "utf8");
-await writeFile(robotsPath, buildRobotsTxt(seo), "utf8");
-await writeFile(sitemapPath, buildSitemapXml(seo, lastmod), "utf8");
-await writeFile(manifestPath, `${safeJsonScript(buildWebManifest(seo))}\n`, "utf8");
+const robotsTxt = buildRobotsTxt(seo);
+const sitemapXml = buildSitemapXml(seo, lastmod, enabledStaticPages);
+const webManifest = `${safeJsonScript(buildWebManifest(seo))}\n`;
 
-const contentPage = seo.contentSeo?.page;
-if (contentPage) {
-  const contentPageOutput = getOutputPathForRoute(contentPage.path);
-  const contentPageStructuredData = buildStructuredData(seo, {
-    pageName: contentPage.title,
-    pageUrl: contentPage.canonical,
+await writeFile(indexPath, html, "utf8");
+await writeFile(robotsPath, robotsTxt, "utf8");
+await writeFile(publicRobotsPath, robotsTxt, "utf8");
+await writeFile(sitemapPath, sitemapXml, "utf8");
+await writeFile(publicSitemapPath, sitemapXml, "utf8");
+await writeFile(manifestPath, webManifest, "utf8");
+await writeFile(publicManifestPath, webManifest, "utf8");
+
+await Promise.all(
+  (cms.staticPages ?? []).flatMap((page) => [
+    removeOutputForRoute(page.path),
+    ...(page.redirectFrom ?? []).map(removeOutputForRoute),
+  ]),
+);
+
+for (const staticPage of enabledStaticPages) {
+  const staticPageOutput = getOutputPathForRoute(staticPage.path);
+  const staticPageStructuredData = buildStructuredData(seo, {
+    pageName: staticPage.title,
+    pageUrl: staticPage.canonical,
     breadcrumbs: [
       { name: "Home", item: `${siteUrl}/` },
-      { name: contentPage.title, item: contentPage.canonical },
+      { name: staticPage.title, item: staticPage.canonical },
     ],
   });
 
-  const contentPageHead = buildSeoHead({
+  if (siteNavigationStructuredData) {
+    staticPageStructuredData["@graph"].push(siteNavigationStructuredData);
+  }
+
+  const staticPageHead = buildSeoHead({
     seo,
-    title: applyTitleTemplate(seo, contentPage.title),
-    description: contentPage.description,
-    canonical: contentPage.canonical,
-    robots: seo.defaultSeo?.robots,
-    structuredData: contentPageStructuredData,
+    title: applyTitleTemplate(seo, staticPage.title),
+    description: staticPage.description,
+    canonical: staticPage.canonical,
+    robots: staticPage.robots ?? seo.defaultSeo?.robots,
+    structuredData: staticPageStructuredData,
     openGraph: {
-      ...contentPage.openGraph,
-      url: contentPage.openGraph?.url ?? contentPage.canonical,
+      ...staticPage.openGraph,
+      url: staticPage.openGraph?.url ?? staticPage.canonical,
     },
-    twitter: contentPage.twitter,
+    twitter: staticPage.twitter,
   });
 
   const renderActions = (actions = [], className = "section-actions") => {
@@ -146,14 +201,48 @@ if (contentPage) {
       .join("")}</ul>`;
   };
 
-  const sectionHtml = (seo.contentSeo?.sections ?? [])
+  const renderBadges = (badges = []) => {
+    if (!badges.length) return "";
+
+    return `<ul class="badge-list">${badges
+      .map((badge) => `<li class="badge">${escapeHtml(badge)}</li>`)
+      .join("")}</ul>`;
+  };
+
+  const renderAnimatedParagraphs = (paragraphs = []) => {
+    if (!paragraphs.length) return "";
+
+    return `<div class="animated-paragraphs">${paragraphs
+      .map((paragraph) => `<p class="animated-paragraph">${escapeHtml(paragraph)}</p>`)
+      .join("")}</div>`;
+  };
+
+  const renderAnimatedList = (section) => {
+    if (!section.animatedList?.length) return "";
+
+    const style = allowedAnimatedListStyles.has(section.animatedListStyle)
+      ? section.animatedListStyle
+      : "list";
+
+    return `<ul class="animated-list animated-list-${style}">${section.animatedList
+      .map((item) => `<li class="animated-list-item">${escapeHtml(item)}</li>`)
+      .join("")}</ul>`;
+  };
+
+  const pageTone = getPageTone(staticPage);
+
+  const sectionHtml = (staticPage.sections ?? [])
     .map(
-      (section) => `
-        <section class="content-section">
+      (section) => {
+        const sectionTone = section.tone ? getPageTone(section) : pageTone;
+        return `
+        <section class="content-section ${getToneClass(sectionTone)}">
           <h2>${escapeHtml(section.heading)}</h2>
           ${section.description ? `<p class="section-intro">${escapeHtml(section.description)}</p>` : ""}
           ${section.body ? `<p>${escapeHtml(section.body)}</p>` : ""}
           ${(section.paragraphs ?? []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+          ${renderAnimatedParagraphs(section.animatedParagraphs)}
+          ${renderBadges(section.badges)}
           ${section.cards?.length ? `<div class="card-grid">${section.cards
             .map(
               (card) => `
@@ -164,27 +253,32 @@ if (contentPage) {
             )
             .join("")}</div>` : ""}
           ${renderItems(section)}
+          ${renderAnimatedList(section)}
           ${renderActions(section.ctas ?? (section.cta ? [section.cta] : []))}
-        </section>`,
+        </section>`;
+      },
     )
     .join("");
 
-  const heroActions = renderActions(seo.contentSeo?.heroCtas ?? [], "hero-actions");
+  const heroActions = renderActions(
+    staticPage.ctas ?? (staticPage.cta ? [staticPage.cta] : []),
+    "hero-actions",
+  );
 
-  const contentPageHtml = `<!doctype html>
+  const staticPageHtml = `<!doctype html>
 <html lang="${escapeHtml(seo.site?.language)}">
-${contentPageHead}
-  <body>
+${staticPageHead}
+  <body class="${getToneClass(pageTone)}">
     <main>
       <p class="back"><a href="/">Back to interactive CV</a></p>
       <header>
         <p class="eyebrow">${escapeHtml(seo.site?.name)}</p>
-        <h1>${escapeHtml(seo.contentSeo?.h1)}</h1>
-        <p class="lead">${escapeHtml(seo.contentSeo?.lead)}</p>
+        <h1>${escapeHtml(staticPage.h1)}</h1>
+        <p class="lead">${escapeHtml(staticPage.lead)}</p>
         ${heroActions}
-        ${seo.contentSeo?.heroNote ? `<p class="hero-note">${escapeHtml(seo.contentSeo.heroNote)}</p>` : ""}
+        ${staticPage.heroNote ? `<p class="hero-note">${escapeHtml(staticPage.heroNote)}</p>` : ""}
       </header>
-      <section class="grid" aria-label="Reasons to work together">
+      <section class="grid" aria-label="${escapeHtml(staticPage.navLabel)}">
         ${sectionHtml}
       </section>
     </main>
@@ -201,6 +295,72 @@ ${contentPageHead}
         background: #0b1216;
       }
 
+      body,
+      .tone-violet {
+        --accent: #c4b5fd;
+        --accent-soft: rgba(196, 181, 253, 0.10);
+        --accent-strong: #ddd6fe;
+        --accent-text: #f5f3ff;
+        --accent-border: rgba(196, 181, 253, 0.28);
+        --accent-shadow: rgba(167, 139, 250, 0.16);
+        --accent-ink: #1e133d;
+      }
+
+      body.tone-gold,
+      .tone-gold {
+        --accent: #facc15;
+        --accent-soft: rgba(250, 204, 21, 0.10);
+        --accent-strong: #fde68a;
+        --accent-text: #fef3c7;
+        --accent-border: rgba(250, 204, 21, 0.28);
+        --accent-shadow: rgba(245, 158, 11, 0.16);
+        --accent-ink: #1f1600;
+      }
+
+      body.tone-blue,
+      .tone-blue {
+        --accent: #93c5fd;
+        --accent-soft: rgba(147, 197, 253, 0.10);
+        --accent-strong: #bfdbfe;
+        --accent-text: #eff6ff;
+        --accent-border: rgba(147, 197, 253, 0.28);
+        --accent-shadow: rgba(59, 130, 246, 0.16);
+        --accent-ink: #071426;
+      }
+
+      body.tone-emerald,
+      .tone-emerald {
+        --accent: #6ee7b7;
+        --accent-soft: rgba(110, 231, 183, 0.10);
+        --accent-strong: #a7f3d0;
+        --accent-text: #ecfdf5;
+        --accent-border: rgba(110, 231, 183, 0.28);
+        --accent-shadow: rgba(16, 185, 129, 0.16);
+        --accent-ink: #052016;
+      }
+
+      body.tone-rose,
+      .tone-rose {
+        --accent: #fda4af;
+        --accent-soft: rgba(253, 164, 175, 0.10);
+        --accent-strong: #fecdd3;
+        --accent-text: #fff1f2;
+        --accent-border: rgba(253, 164, 175, 0.28);
+        --accent-shadow: rgba(244, 63, 94, 0.14);
+        --accent-ink: #2a0710;
+      }
+
+      body.tone-slate,
+      .tone-slate {
+        --accent: #cbd5e1;
+        --accent-soft: rgba(203, 213, 225, 0.10);
+        --accent-strong: #e2e8f0;
+        --accent-text: #f8fafc;
+        --accent-border: rgba(203, 213, 225, 0.24);
+        --accent-shadow: rgba(148, 163, 184, 0.12);
+        --accent-ink: #111827;
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
@@ -215,9 +375,9 @@ ${contentPageHead}
         inset: -2px;
         z-index: -2;
         background:
-          radial-gradient(1200px 600px at 14% 4%, rgba(139, 92, 246, 0.22), transparent 60%),
-          radial-gradient(900px 500px at 85% 0%, rgba(168, 85, 247, 0.16), transparent 55%),
-          radial-gradient(900px 700px at 72% 88%, rgba(59, 130, 246, 0.14), transparent 60%);
+          radial-gradient(1200px 600px at 14% 4%, var(--accent-shadow), transparent 60%),
+          radial-gradient(900px 500px at 85% 0%, var(--accent-soft), transparent 55%),
+          radial-gradient(900px 700px at 72% 88%, rgba(59, 130, 246, 0.12), transparent 60%);
       }
 
       body::after {
@@ -274,7 +434,7 @@ ${contentPageHead}
       }
 
       a {
-        color: #c4b5fd;
+        color: var(--accent);
       }
 
       .back {
@@ -284,7 +444,7 @@ ${contentPageHead}
 
       .eyebrow {
         margin: 0 0 16px;
-        color: #c4b5fd;
+        color: var(--accent);
         font-size: 0.86rem;
         font-weight: 700;
         letter-spacing: 0.18em;
@@ -329,26 +489,26 @@ ${contentPageHead}
       }
 
       .action-link-primary {
-        background: #c4b5fd;
-        border-color: rgba(196, 181, 253, 0.34);
-        color: #1e133d;
-        box-shadow: 0 18px 42px rgba(167, 139, 250, 0.16);
+        background: var(--accent);
+        border-color: var(--accent-border);
+        color: var(--accent-ink);
+        box-shadow: 0 18px 42px var(--accent-shadow);
       }
 
       .action-link-primary:hover {
-        background: #ddd6fe;
+        background: var(--accent-strong);
         transform: translateY(-1px);
       }
 
       .action-link-secondary {
-        background: rgba(196, 181, 253, 0.10);
-        border-color: rgba(196, 181, 253, 0.24);
-        color: #f5f3ff;
+        background: var(--accent-soft);
+        border-color: var(--accent-border);
+        color: var(--accent-text);
       }
 
       .action-link-secondary:hover {
-        background: rgba(196, 181, 253, 0.18);
-        border-color: rgba(196, 181, 253, 0.36);
+        background: var(--accent-soft);
+        border-color: var(--accent);
         transform: translateY(-1px);
       }
 
@@ -359,6 +519,8 @@ ${contentPageHead}
 
       .card-grid,
       .item-grid,
+      .badge-list,
+      .animated-list,
       .detail-list {
         display: grid;
         gap: 16px;
@@ -389,8 +551,8 @@ ${contentPageHead}
         position: absolute;
         inset: -2px;
         background:
-          radial-gradient(800px 240px at 15% 10%, rgba(139, 92, 246, 0.12), transparent 60%),
-          radial-gradient(800px 260px at 85% 85%, rgba(59, 130, 246, 0.10), transparent 60%);
+          radial-gradient(800px 240px at 15% 10%, var(--accent-soft), transparent 60%),
+          radial-gradient(800px 260px at 85% 85%, var(--accent-shadow), transparent 60%);
         opacity: 0.55;
         animation: softGlow 6.5s ease-in-out infinite;
         pointer-events: none;
@@ -405,9 +567,9 @@ ${contentPageHead}
       }
 
       .content-card:hover {
-        border-color: rgba(196, 181, 253, 0.34);
+        border-color: var(--accent-border);
         background: rgba(22, 30, 42, 0.82);
-        box-shadow: 0 30px 70px rgba(167, 139, 250, 0.08);
+        box-shadow: 0 30px 70px var(--accent-shadow);
         transform: translateY(-2px);
       }
 
@@ -441,22 +603,48 @@ ${contentPageHead}
         width: 8px;
         height: 8px;
         border-radius: 999px;
-        background: #c4b5fd;
-        box-shadow: 0 0 16px rgba(196, 181, 253, 0.32);
+        background: var(--accent);
+        box-shadow: 0 0 16px var(--accent-shadow);
       }
 
+      .badge-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .badge,
       .interactive-chip {
         position: relative;
         overflow: hidden;
-        border-color: rgba(196, 181, 253, 0.18);
-        background: rgba(139, 92, 246, 0.08);
-        color: rgba(237, 233, 254, 0.92);
+        border-color: var(--accent-border);
+        background: var(--accent-soft);
+        color: var(--accent-text);
         transition:
           background 180ms ease,
           border-color 180ms ease,
           color 180ms ease,
           transform 180ms ease,
           box-shadow 180ms ease;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 12px;
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        list-style: none;
+      }
+
+      .badge:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+        box-shadow: 0 12px 28px var(--accent-shadow);
+        transform: translateY(-1px);
       }
 
       .interactive-chip::after {
@@ -473,10 +661,10 @@ ${contentPageHead}
       }
 
       .interactive-chip:hover {
-        background: rgba(139, 92, 246, 0.14);
-        border-color: rgba(196, 181, 253, 0.3);
-        color: #f5f3ff;
-        box-shadow: 0 18px 42px rgba(167, 139, 250, 0.08);
+        background: var(--accent-soft);
+        border-color: var(--accent);
+        color: var(--accent-text);
+        box-shadow: 0 18px 42px var(--accent-shadow);
         transform: translateY(-1px);
       }
 
@@ -484,6 +672,103 @@ ${contentPageHead}
         opacity: 0.5;
         left: 120%;
         transition: left 650ms ease, opacity 200ms ease;
+      }
+
+      .animated-paragraphs {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .animated-paragraph {
+        margin: 0;
+        border-left: 3px solid var(--accent-border);
+        border-radius: 14px;
+        background: rgba(15, 23, 30, 0.42);
+        padding: 14px 16px;
+        transition:
+          background 180ms ease,
+          border-color 180ms ease,
+          color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .animated-paragraph:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+        color: rgba(248, 250, 252, 0.86);
+        transform: translateY(-1px);
+      }
+
+      .animated-list-list {
+        gap: 12px;
+      }
+
+      .animated-list-cards {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .animated-list-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .animated-list-item {
+        position: relative;
+        border: 1px solid var(--accent-border);
+        border-radius: 18px;
+        background: rgba(15, 23, 30, 0.44);
+        color: rgba(248, 250, 252, 0.84);
+        line-height: 1.6;
+        list-style: none;
+        padding: 14px 16px 14px 36px;
+        transition:
+          background 180ms ease,
+          border-color 180ms ease,
+          color 180ms ease,
+          transform 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .animated-list-item::before {
+        content: "";
+        position: absolute;
+        left: 16px;
+        top: 1.36em;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 16px var(--accent-shadow);
+      }
+
+      .animated-list-cards .animated-list-item {
+        min-height: 72px;
+        padding: 18px 18px 18px 42px;
+      }
+
+      .animated-list-chips .animated-list-item {
+        min-height: 32px;
+        border-radius: 999px;
+        padding: 6px 14px 6px 30px;
+        font-weight: 700;
+      }
+
+      .animated-list-chips .animated-list-item::before {
+        left: 14px;
+        top: 50%;
+        width: 6px;
+        height: 6px;
+        transform: translateY(-50%);
+      }
+
+      .animated-list-item:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+        color: var(--accent-text);
+        box-shadow: 0 18px 42px var(--accent-shadow);
+        transform: translateY(-1px);
       }
 
       @media (max-width: 759px) {
@@ -511,10 +796,22 @@ ${contentPageHead}
 
         .interactive-chip::after,
         .interactive-chip:hover::after,
+        .animated-list-item,
+        .animated-paragraph,
+        .badge,
         .content-card,
         .interactive-chip,
         .action-link {
           transition: none !important;
+        }
+
+        .animated-list-item:hover,
+        .animated-paragraph:hover,
+        .badge:hover,
+        .content-card:hover,
+        .interactive-chip:hover,
+        .action-link:hover {
+          transform: none !important;
         }
       }
 
@@ -540,10 +837,10 @@ ${contentPageHead}
 </html>
 `;
 
-  await mkdir(contentPageOutput.dir, { recursive: true });
-  await writeFile(contentPageOutput.file, contentPageHtml, "utf8");
+  await mkdir(staticPageOutput.dir, { recursive: true });
+  await writeFile(staticPageOutput.file, staticPageHtml, "utf8");
 
-  const redirectPages = contentPage.redirectFrom ?? [];
+  const redirectPages = staticPage.redirectFrom ?? [];
 
   await Promise.all(
     redirectPages.map(async (redirectFrom) => {
@@ -553,13 +850,13 @@ ${contentPageHead}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(`Redirecting to ${contentPage.title}`)}</title>
+    <title>${escapeHtml(`Redirecting to ${staticPage.title}`)}</title>
     <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href="${escapeHtml(contentPage.canonical)}" />
-    <meta http-equiv="refresh" content="0; url=${escapeHtml(contentPage.canonical)}" />
+    <link rel="canonical" href="${escapeHtml(staticPage.canonical)}" />
+    <meta http-equiv="refresh" content="0; url=${escapeHtml(staticPage.canonical)}" />
   </head>
   <body>
-    <p>Redirecting to <a href="${escapeHtml(contentPage.canonical)}">${escapeHtml(contentPage.canonical)}</a>.</p>
+    <p>Redirecting to <a href="${escapeHtml(staticPage.canonical)}">${escapeHtml(staticPage.canonical)}</a>.</p>
   </body>
 </html>
 `;

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/apply-seo.mjs && node scripts/generate-static-cv.mjs",
+    "build": "tsc -b && vite build && node scripts/apply-seo.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky"

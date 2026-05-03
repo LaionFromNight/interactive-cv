@@ -1,6 +1,12 @@
 import { useState } from "react";
+import cmsRaw from "../data/cms.json";
 import cvRaw from "../data/cv.json";
+import type { CmsConfig } from "../lib/cmsTypes";
 import type { CV } from "../lib/cvTypes";
+import {
+  getEnabledStaticPageNavItems,
+  getStaticPagesNavLabel,
+} from "../lib/staticPageNav";
 
 import { Nav } from "../components/layout/Nav";
 import { Hero } from "../components/cv/Hero";
@@ -18,15 +24,12 @@ const HOME_NAV_ITEMS = [
   { id: "experience", label: "Experience", href: "#experience" },
   { id: "skills", label: "Skills", href: "#skills" },
   { id: "education", label: "Education", href: "#education" },
-  {
-    id: "work-with-me",
-    label: "Work with me",
-    href: "/work-with-me/",
-    trackActive: false,
-  },
 ] as const;
 
 const cv = cvRaw as unknown as CV;
+const cms = cmsRaw as unknown as CmsConfig;
+const staticPageNavItems = getEnabledStaticPageNavItems(cms);
+const staticPagesNavLabel = getStaticPagesNavLabel(cms);
 
 export function Home() {
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
@@ -37,6 +40,8 @@ export function Home() {
         ownerName={cv.person.full_name}
         subtitle="Interactive CV"
         items={[...HOME_NAV_ITEMS]}
+        staticPages={staticPageNavItems}
+        staticPagesNavLabel={staticPagesNavLabel}
         avatarSrc={cv.person.avatar_url}
         avatarAlt={cv.person.full_name}
         onOpenPdfModal={() => setIsPdfModalOpen(true)}

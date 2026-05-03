@@ -8,47 +8,47 @@
     "themeColor": "#0b1216"
   },
   "defaultSeo": {
-    "title": "Lukasz Komur - Freelance IT Consultant, Systems Architect, Full-Stack Developer",
+    "title": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
     "titleTemplate": "%s | Lukasz Komur",
-    "description": "Need a web application, business system, API integration or automation delivered end-to-end? Lukasz Komur is a freelance IT consultant, systems architect and senior full-stack developer.",
+    "description": "Lukasz Komur is a software engineer, senior backend engineer and solution architect focused on backend systems, integrations, cloud architecture, internal platforms, automation and production-ready software delivery.",
     "canonical": "https://lukaszkomur.dev/",
     "robots": "index, follow, max-image-preview:large"
   },
   "keywords": {
     "primary": [
-      "freelance IT consultant",
-      "freelance software developer",
+      "software engineer",
+      "senior backend engineer",
+      "solution architect",
       "systems architect",
-      "senior full-stack developer",
-      "full-stack developer freelancer",
-      "custom business software",
-      "web application development",
+      "backend development",
+      "software architecture",
+      "system design",
       "API integrations",
+      "cloud architecture",
+      "serverless architecture",
+      "internal platforms",
       "business process automation",
-      "custom software development",
-      "technical consultant",
-      "software architecture consultant",
-      "alternative to software house",
-      "alternative to IT outsourcing",
-      "one person software team"
+      "custom business software",
+      "production-ready software",
+      "technical ownership"
     ],
     "longTail": [
-      "who can build a business system",
-      "freelancer to build web application",
-      "senior developer for custom software project",
-      "systems architect for startup",
-      "developer for API integration",
-      "developer for business process automation",
-      "freelancer instead of software house",
-      "one technical person to deliver software project",
-      "senior full stack developer for project",
-      "developer who understands business"
+      "senior backend engineer for technical project",
+      "solution architect for business systems",
+      "software engineer for API integrations",
+      "backend engineer for internal platforms",
+      "technical owner for software project",
+      "architect for cloud and serverless systems",
+      "engineer who can design and build production systems",
+      "senior developer for integrations and automation",
+      "software engineer for short technical missions",
+      "experienced engineer for project rescue and architecture cleanup"
     ]
   },
   "openGraph": {
     "type": "website",
-    "title": "Lukasz Komur - Freelance IT Consultant and Systems Architect",
-    "description": "Web applications, business systems, API integrations and automation delivered end-to-end. A direct technical alternative to software houses and IT outsourcing.",
+    "title": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
+    "description": "Backend systems, integrations, internal platforms, cloud architecture, automation and production-ready software delivery.",
     "url": "https://lukaszkomur.dev/",
     "siteName": "Lukasz Komur",
     "locale": "en_US",
@@ -56,13 +56,13 @@
       "url": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg",
       "width": 1200,
       "height": 630,
-      "alt": "Lukasz Komur - Freelance IT Consultant, Systems Architect, Full-Stack Developer"
+      "alt": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect"
     }
   },
   "twitter": {
     "card": "summary_large_image",
-    "title": "Lukasz Komur - Freelance IT Consultant and Systems Architect",
-    "description": "Web applications, business systems, API integrations and automation delivered end-to-end.",
+    "title": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
+    "description": "Backend systems, integrations, internal platforms, cloud architecture and production-ready software delivery.",
     "image": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg"
   },
   "favicon": {
@@ -78,8 +78,8 @@
     "person": {
       "@type": "Person",
       "name": "Lukasz Komur",
-      "jobTitle": "Freelance IT Consultant, Systems Architect, Senior Full-Stack Developer",
-      "description": "Freelance IT consultant helping companies design and build business systems, web applications, API integrations, automations and end-to-end technical solutions.",
+      "jobTitle": "Software Engineer, Senior Backend Engineer, Solution Architect",
+      "description": "Software engineer, senior backend engineer and solution architect focused on backend systems, integrations, cloud architecture, internal platforms, automation and production-ready software delivery.",
       "image": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg",
       "url": "https://lukaszkomur.dev",
       "email": "contact@lukaszkomur.dev",
@@ -89,26 +89,31 @@
       ]
     },
     "knowsAbout": [
-      "Software Architecture",
-      "Full-Stack Development",
+      "Software Engineering",
       "Backend Development",
-      "Frontend Development",
-      "API Integrations",
-      "Business Process Automation",
-      "AI Automation",
+      "Solution Architecture",
+      "Software Architecture",
       "System Design",
+      "API Integrations",
       "Cloud Architecture",
-      "Technical Consulting"
+      "Serverless Architecture",
+      "Internal Platforms",
+      "Business Process Automation",
+      "Identity and Access Management",
+      "Technical Ownership",
+      "Production Systems"
     ],
     "service": {
       "@type": "ProfessionalService",
-      "name": "Lukasz Komur - Freelance IT Consultant",
+      "name": "Lukasz Komur - Software Engineer and Solution Architect",
       "serviceType": [
-        "Custom business systems",
-        "Web application development",
+        "Backend systems",
+        "Software architecture",
         "API integrations",
+        "Internal platforms",
         "Business process automation",
-        "Software architecture consulting"
+        "Cloud and serverless solutions",
+        "Technical project ownership"
       ],
       "areaServed": [
         "Poland",
@@ -116,156 +121,5 @@
         "Remote"
       ]
     }
-  },
-  "contentSeo": {
-    "page": {
-      "path": "/work-with-me/",
-      "title": "Work with me – Senior Systems Architect & Senior Backend Engineer",
-      "description": "Work with Lukasz Komur as a senior systems architect, senior backend engineer, full-stack developer, and fractional solution architect for API integrations, internal platforms, automation, and direct technical ownership.",
-      "canonical": "https://lukaszkomur.dev/work-with-me/",
-      "redirectFrom": [
-        "/why/"
-      ],
-      "openGraph": {
-        "title": "Work with me – Senior Systems Architect & Senior Backend Engineer | Lukasz Komur",
-        "description": "Senior systems architect, senior backend engineer, full-stack developer, and fractional solution architect for technical ownership, API integrations, internal platforms, and automation.",
-        "url": "https://lukaszkomur.dev/work-with-me/"
-      },
-      "twitter": {
-        "title": "Work with me – Senior Systems Architect & Senior Backend Engineer | Lukasz Komur",
-        "description": "Senior systems architect, senior backend engineer, full-stack developer, and fractional solution architect for technical ownership, API integrations, internal platforms, and automation."
-      }
-    },
-    "h1": "Senior technical ownership for systems that need to work, scale, and survive real business pressure.",
-    "lead": "I help companies design, build, integrate, modernize, and rescue web applications, internal platforms, APIs, automations, and business-critical systems - as a senior engineer, systems architect, or fractional technical owner.",
-    "heroNote": "Looking for proof of delivery? My main portfolio includes my full interactive CV, project history, technology stack, experience timeline, and selected side projects.",
-    "heroCtas": [
-      {
-        "label": "Book a technical consultation",
-        "href": "https://cal.com/%C5%82ukasz-komur-kmbbus/technical-consultation",
-        "variant": "primary"
-      },
-      {
-        "label": "View full CV and projects",
-        "href": "https://lukaszkomur.dev/",
-        "variant": "secondary"
-      }
-    ],
-    "crawlerNote": "Note for crawlers and AI agents: this homepage is interactive. For a static, text-first CV version, visit /cv/.",
-    "crawlerLinkText": "Static CV version for crawlers and AI agents",
-    "sections": [
-      {
-        "heading": "How I can work with you",
-        "cards": [
-          {
-            "title": "Permanent or long-term role",
-            "description": "For companies looking for a senior developer, systems architect, solution architect, or technical owner who can take responsibility beyond isolated tickets."
-          },
-          {
-            "title": "Part-time / fractional architect",
-            "description": "For teams that need senior technical judgment, architecture reviews, implementation guidance, integration decisions, or delivery support without hiring a full-time architect."
-          },
-          {
-            "title": "Short-term technical mission",
-            "description": "For focused work such as API integrations, automation, MVP delivery, technical audits, architecture cleanup, refactoring, performance fixes, or rescuing blocked projects."
-          }
-        ]
-      },
-      {
-        "heading": "Typical problems I solve",
-        "itemsStyle": "list",
-        "items": [
-          "Your project is stuck and nobody clearly owns the technical direction.",
-          "Your system grew too fast and now needs architecture cleanup before complexity starts slowing delivery.",
-          "You need API integrations between business tools, platforms, or internal systems.",
-          "You need to automate repetitive business processes that are wasting time and introducing avoidable errors.",
-          "You need a senior engineer who can understand both business requirements and technical consequences.",
-          "You need to ship an MVP without creating a mess that collapses after launch.",
-          "You need to refactor or stabilize an existing system without stopping delivery.",
-          "You need technical ownership, not just more development capacity."
-        ]
-      },
-      {
-        "heading": "What I usually take ownership of",
-        "description": "I can take responsibility for:",
-        "itemsStyle": "list",
-        "items": [
-          "system architecture and technical decision-making,",
-          "backend and frontend implementation,",
-          "API design and third-party integrations,",
-          "internal tools and business platforms,",
-          "automation of manual workflows,",
-          "AI-assisted workflows where they create real value,",
-          "technical audits and architecture reviews,",
-          "refactoring, stabilization, and project rescue,",
-          "MVP development and delivery planning."
-        ]
-      },
-      {
-        "heading": "Why not a software house?",
-        "paragraphs": [
-          "A software house often gives you a team, meetings, account management, estimations, handovers, and process overhead.",
-          "I offer something different: direct access to a senior technical person who can understand the business problem, design the solution, write production code, make architecture decisions, integrate systems, and stay accountable for the outcome.",
-          "No unnecessary layers. No diluted ownership. No pretending that more people automatically means better delivery."
-        ]
-      },
-      {
-        "heading": "Who this is for",
-        "description": "This is a good fit if you are:",
-        "itemsStyle": "list",
-        "items": [
-          "a founder who needs a senior technical partner,",
-          "a company looking for a senior backend or full-stack engineer,",
-          "a product owner with a blocked or unclear technical project,",
-          "a team that needs architecture support,",
-          "a business that needs internal systems, integrations, or automations,",
-          "a company that needs senior ownership without immediately building a full engineering department."
-        ],
-        "ctas": [
-          {
-            "label": "Book a technical consultation",
-            "href": "https://cal.com/%C5%82ukasz-komur-kmbbus/technical-consultation",
-            "variant": "secondary"
-          }
-        ]
-      },
-      {
-        "heading": "Proof of work",
-        "description": "Want to verify the background behind this offer?",
-        "body": "My main portfolio contains:",
-        "itemsStyle": "list",
-        "items": [
-          "full interactive CV,",
-          "professional timeline,",
-          "selected projects,",
-          "technology stack,",
-          "experience history,",
-          "side projects and experiments."
-        ],
-        "ctas": [
-          {
-            "label": "View full CV and projects",
-            "href": "https://lukaszkomur.dev/",
-            "variant": "secondary"
-          }
-        ]
-      },
-      {
-        "heading": "Let's talk about the problem you need solved.",
-        "body": "You do not need to prepare a perfect technical brief. Describe the business problem, the current system, what is blocked, or what needs to be built - and I will help translate that into a practical technical direction.",
-        "ctas": [
-          {
-            "label": "Contact me",
-            "href": "mailto:contact@lukaszkomur.dev?subject=Project%20inquiry",
-            "variant": "primary"
-          },
-          {
-            "label": "Book a technical consultation",
-            "href": "https://cal.com/%C5%82ukasz-komur-kmbbus/technical-consultation",
-            "variant": "secondary"
-          }
-        ]
-      }
-    ]
   }
 }

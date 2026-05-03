@@ -128,14 +128,39 @@ export const buildStructuredData = (
   };
 };
 
-export const buildSitemapXml = (seo, lastmod) => {
+export const buildSiteNavigationStructuredData = (seo, staticPages = []) => {
+  const siteUrl = getSiteUrl(seo);
+  if (!staticPages.length) return null;
+
+  return {
+    "@type": "ItemList",
+    "@id": `${siteUrl}/#site-navigation`,
+    name: "Site navigation",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        url: `${siteUrl}/`,
+      },
+      ...staticPages.map((page, index) => ({
+        "@type": "ListItem",
+        position: index + 2,
+        name: page.navLabel ?? page.title,
+        description: page.navDescription,
+        url: absoluteUrl(seo, page.canonical ?? page.path),
+      })),
+    ],
+  };
+};
+
+export const buildSitemapXml = (seo, lastmod, staticPages = []) => {
   const siteUrl = getSiteUrl(seo);
   const urls = Array.from(
     new Set(
       [
         `${siteUrl}/`,
-        `${siteUrl}/cv/`,
-        seo.contentSeo?.page?.canonical,
+        ...staticPages.map((page) => page.canonical),
       ].filter(Boolean),
     ),
   );
@@ -223,7 +248,6 @@ export const buildSeoHead = ({
     <meta name="robots" content="${escapeHtml(robots)}" />
     <meta name="theme-color" content="${escapeHtml(seo.site?.themeColor ?? "#0b1216")}" />
     <link rel="canonical" href="${escapeHtml(canonical)}" />
-    <link rel="alternate" type="text/html" href="${escapeHtml(`${getSiteUrl(seo)}/cv/`)}" title="Static CV version" />
     <link rel="icon" href="${escapeHtml(seo.favicon?.ico)}" sizes="any" />
     <link rel="icon" type="image/png" sizes="16x16" href="${escapeHtml(seo.favicon?.icon16)}" />
     <link rel="icon" type="image/png" sizes="32x32" href="${escapeHtml(seo.favicon?.icon32)}" />

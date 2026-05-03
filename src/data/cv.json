@@ -42,11 +42,6 @@
         "id": "linkedin",
         "label": "LinkedIn",
         "url": "https://www.linkedin.com/in/%C5%82ukasz-komur-553042117/"
-      },
-      {
-        "id": "cv",
-        "label": "Interactive CV",
-        "url": "https://lukaszkomur.dev/"
       }
     ],
     "spoken_languages": ["Polish", "English"]

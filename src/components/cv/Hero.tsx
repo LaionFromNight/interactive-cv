@@ -199,13 +199,6 @@ export function Hero({
 
       <div className="mt-10 flex flex-wrap gap-3">
         <a
-          className="rounded-xl bg-amber-200 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-100"
-          href="/work-with-me/"
-        >
-          Work with me
-        </a>
-
-        <a
           className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-white/90"
           href="#experience"
         >

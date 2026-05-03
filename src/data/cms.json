@@ -1,0 +1,508 @@
+{
+  "staticPagesNavLabel": "More",
+  "staticPages": [
+    {
+      "enabled": true,
+      "path": "/contact/",
+      "navLabel": "Schedule a meeting",
+      "navDescription": "Book a call and send a short email with the meeting context.",
+      "title": "Schedule a meeting – Lukasz Komur",
+      "description": "Schedule a meeting with Lukasz Komur to discuss a professional opportunity, technical role, cooperation model, project, or technical topic.",
+      "canonical": "https://lukaszkomur.dev/contact/",
+      "robots": "index, follow, max-image-preview:large",
+      "tone": "blue",
+      "openGraph": {
+        "title": "Schedule a meeting – Lukasz Komur",
+        "description": "Book a call and send a short email with the meeting context.",
+        "url": "https://lukaszkomur.dev/contact/"
+      },
+      "twitter": {
+        "title": "Schedule a meeting – Lukasz Komur",
+        "description": "Book a call and send a short email with the meeting context."
+      },
+      "h1": "Schedule a meeting",
+      "lead": "If you are a recruiter, technical manager, founder, engineer, or someone interested in possible cooperation, you can book a short call and send me a brief email with the meeting context.",
+      "heroNote": "Please send a short email after booking. Calendar bookings without email context and confirmation from my side may be cancelled up to 6 hours before the scheduled time.",
+      "ctas": [
+        {
+          "label": "Book a meeting",
+          "href": "https://cal.com/%C5%82ukasz-komur-kmbbus/technical-consultation",
+          "variant": "primary"
+        },
+        {
+          "label": "Send an email",
+          "href": "mailto:contact@lukaszkomur.dev?subject=Question%20about%20cooperation",
+          "variant": "secondary"
+        },
+        {
+          "label": "Back to main page",
+          "href": "/",
+          "variant": "secondary"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Who this page is for",
+          "description": "This page is for people who want to discuss a role, cooperation model, project, or technical topic.",
+          "animatedListStyle": "list",
+          "animatedList": [
+            "Recruiters who want to discuss a role, contract model, seniority level, availability, or technical fit.",
+            "Team leaders, CTOs, and engineering managers looking for experienced people for their teams.",
+            "Startup founders or CEOs who need senior technical support for product, backend, architecture, integrations, or delivery.",
+            "Small business owners who need custom software, internal tools, automation, or integrations.",
+            "People looking for mentoring, technical consultation, or a clear cooperation format."
+          ]
+        },
+        {
+          "heading": "Best way to contact me",
+          "tone": "emerald",
+          "description": "Book a meeting and provide the meeting context. You can use the additional notes field while booking, or send more detailed information by email afterwards.",
+          "badges": [
+            "Recruitment",
+            "Technical discussion",
+            "Cooperation",
+            "Project topic",
+            "Architecture talk",
+            "Remote call"
+          ],
+          "animatedListStyle": "cards",
+          "animatedList": [
+            "Book a meeting using the calendar link.",
+            "Use the additional notes field to add who you are, who you represent, and what you want to discuss.",
+            "If you forgot to include something or could not provide enough context while booking, please send the missing details by email.",
+            "When the context is clear, I can confirm the meeting and keep the scheduled time for a focused conversation."
+          ]
+          
+        },
+        {
+          "heading": "Meeting confirmation",
+          "tone": "gold",
+          "description": "Please add enough context so I can understand and confirm the meeting.",
+            "badges": [
+            "Meeting context needed",
+            "Fit matters",
+            "Up to 6h cancellation window"
+          ],
+          "animatedParagraphs": [
+            "Please include the reason for the call and the expected meeting format in the calendar form when booking.",
+            "If you forgot to add details during booking or need to provide more context, please send them by email afterwards.",
+            "I reserve the right to cancel a calendar booking up to 6 hours before the scheduled time if there is no meeting context and no confirmation from my side.",
+            "I also reserve the right to decline or cancel meeting requests that do not seem aligned with my experience, technical background, seniority level, or cooperation preferences, for example roles based mainly on technologies I have not worked with."
+          ],
+          "ctas": [
+            {
+              "label": "Send meeting context",
+              "href": "mailto:contact@lukaszkomur.dev?subject=Meeting%20context",
+              "variant": "primary"
+            }
+          ]
+        },
+        {
+          "heading": "What to include",
+          "description": "Keep it short and concrete. Add this in the calendar notes field or send it by email if it was missing during booking.",
+          "itemsStyle": "list",
+          "items": [
+            "who you are and who you represent,",
+            "what you would like to discuss,",
+            "whether this is about recruitment, cooperation, project work, mentoring, or a technical topic,",
+            "what kind of conversation you expect,",
+            "the preferred cooperation model, if relevant."
+          ]
+        },
+        {
+          "heading": "Choose how to continue",
+          "description": "Choose the simplest path: book a meeting with context, send an email first, or return to the main profile page.",
+          "cards": [
+            {
+              "title": "Book a meeting",
+              "description": "Choose a time in the calendar and add a short context in the notes field if possible."
+            },
+            {
+              "title": "Send an email first",
+              "description": "Use email if you want to share more details, send a role description, or clarify whether a meeting makes sense."
+            },
+            {
+              "title": "Return to main page",
+              "description": "Go back to the main profile page to review my experience, stack, projects, and professional background."
+            }
+          ],
+          "ctas": [
+            {
+              "label": "Book a meeting",
+              "href": "https://cal.com/%C5%82ukasz-komur-kmbbus/technical-consultation",
+              "variant": "primary"
+            },
+            {
+              "label": "Send an email",
+              "href": "mailto:contact@lukaszkomur.dev?subject=Question%20about%20cooperation",
+              "variant": "secondary"
+            },
+            {
+              "label": "Back to main page",
+              "href": "/",
+              "variant": "secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "enabled": true,
+      "path": "/before-we-work-together/",
+      "navLabel": "Before we work together",
+      "navDescription": "Practical details for founders, startups and small teams considering direct cooperation with a software engineer.",
+      "title": "Before we work together – Practical cooperation details",
+      "description": "Practical information for founders, startups, small companies and early teams considering direct cooperation with Lukasz Komur as a software engineer or solution architect.",
+      "canonical": "https://lukaszkomur.dev/before-we-work-together/",
+      "robots": "index, follow, max-image-preview:large",
+      "tone": "emerald",
+      "redirectFrom": [
+        "/how-i-work/"
+      ],
+      "openGraph": {
+        "title": "Before we work together – Lukasz Komur",
+        "description": "Practical cooperation details for founders, startups, small companies and early teams considering direct cooperation with a software engineer.",
+        "url": "https://lukaszkomur.dev/before-we-work-together/"
+      },
+      "twitter": {
+        "title": "Before we work together – Lukasz Komur",
+        "description": "Practical cooperation details for founders, startups, small companies and early teams considering direct cooperation with a software engineer."
+      },
+      "h1": "Before we work together",
+      "lead": "A practical overview for founders, small companies and early teams who want to understand how direct cooperation with a software engineer can work before scheduling a conversation.",
+      "heroNote": "This page is mostly for people considering direct cooperation with an engineer instead of immediately going to a software house or building a full internal team. If I join an established company or existing engineering team, I naturally adapt to its processes, tools and policies.",
+      "ctas": [
+        {
+          "label": "Schedule a meeting",
+          "href": "/contact/",
+          "variant": "primary"
+        },
+        {
+          "label": "Back to main page",
+          "href": "/",
+          "variant": "secondary"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Who this page is mainly for",
+          "tone": "blue",
+          "description": "These details are most useful for people and companies that are still shaping how technical cooperation should look.",
+          "badges": [
+            "Startups",
+            "Small companies",
+            "Early teams",
+            "Founders",
+            "Non-technical owners",
+            "Software house alternative"
+          ],
+          "animatedParagraphs": [
+            "This page is mainly for founders, small businesses, startups, early-stage teams, or non-technical decision-makers who want to work with a software engineer but are not yet sure how such cooperation should be organized.",
+            "If I join an established company, existing engineering team, or recruitment process, I naturally adapt to the company’s tools, policies, onboarding, communication rules and security requirements.",
+            "The goal is to reduce uncertainty for people who are considering direct cooperation with an engineer instead of immediately going to a software house or building a full internal team."
+          ]
+        },
+        {
+          "heading": "Cooperation basics",
+          "description": "A quick summary of the most common formal and practical cooperation details.",
+          "badges": [
+            "B2B",
+            "VAT invoice",
+            "Contract-based cooperation",
+            "US market experience",
+            "Remote from Europe",
+            "CET / CEST",
+            "Client device possible",
+            "Private macOS setup possible"
+          ],
+          "animatedListStyle": "cards",
+          "animatedList": [
+            "I can cooperate on a B2B basis and issue VAT invoices for companies in Poland and Europe.",
+            "For clients outside Europe, including the United States, cooperation can be contract-based without employment on the client side.",
+            "I have experience working with US clients and teams, so the cooperation model, communication style and expectations of that market are familiar to me.",
+            "I work remotely, preferably from Europe and CET / CEST-friendly working hours.",
+            "For part-time, project-based or short-term cooperation, I can be flexible with meeting times within reasonable limits.",
+            "I can work on client-provided equipment or on my private macOS setup, depending on security and project requirements."
+          ]
+        },
+        {
+          "heading": "Secure remote setup",
+          "description": "I maintain a security-conscious remote work setup and can also follow the client’s access requirements.",
+          "badges": [
+            "Own VPN",
+            "Secured network",
+            "MFA",
+            "Password manager",
+            "Private macOS setup",
+            "Client security policy"
+          ],
+          "animatedListStyle": "list",
+          "animatedList": [
+            "I use my own VPN and secured network setup for remote work when appropriate.",
+            "My professional accounts are protected with MFA and managed with security-focused practices.",
+            "If the client requires specific access rules, VPN, device policy, MFA, or internal procedures, I can adapt to that setup before starting work."
+          ]
+        },
+        {
+          "heading": "Communication setup",
+          "description": "Communication can be adapted to the client’s workflow, team maturity and technical background.",
+          "badges": [
+            "Technical teams",
+            "Non-technical stakeholders",
+            "Email",
+            "Video calls",
+            "Task tracking",
+            "Documentation",
+            "Code collaboration"
+          ],
+          "animatedParagraphs": [
+            "If the client already has tools and processes, I can join the existing setup.",
+            "For smaller or side projects, I can help establish a lightweight communication flow using professional tools instead of creating unnecessary process overhead.",
+            "When working with non-technical stakeholders, I can translate technical topics into practical decisions, risks and next steps.",
+            "The goal is simple: clear context, visible decisions and enough structure to move the work forward."
+          ]
+        },
+        {
+          "heading": "Availability and timezone",
+          "description": "My preferred working timezone is Poland / Central European Time, especially for long-term or full-time cooperation.",
+          "animatedListStyle": "list",
+          "animatedList": [
+            "For full-time, long-term or team-based cooperation, I prefer CET / CEST-friendly working hours.",
+            "For European clients, this usually works naturally within normal business hours.",
+            "For part-time, project-based or short-term cooperation with clients outside Europe, I can adjust meeting times when needed.",
+            "For US clients, I can be flexible with later Polish hours, but please keep in mind that 4:00 PM on the US East Coast is already around 10:00 PM in Poland, depending on daylight saving time.",
+            "I am flexible for important meetings, handovers, production topics or urgent situations, but I do not treat very late-night calls as a default working model."
+          ]
+        },
+        {
+          "heading": "Working with teams",
+          "description": "I can join an existing team or work independently when the project needs focused technical ownership.",
+          "animatedParagraphs": [
+            "I can adapt to existing repositories, workflows, planning processes and communication channels.",
+            "For smaller projects, I can help organize the technical direction without adding unnecessary process overhead.",
+            "Clear context, practical communication and access to decision-makers usually matter more than heavy process.",
+            "The goal is simple: enough structure to move the work forward without slowing everyone down."
+          ]
+        },
+        {
+          "heading": "Non-profit and impact projects",
+          "tone": "gold",
+          "description": "I am open to selected non-profit or reduced-rate cooperation when the project has a real impact on animals, the planet, or human life.",
+          "badges": [
+            "Animal rescue",
+            "Environmental protection",
+            "Life-saving technology",
+            "Drones",
+            "Impact platforms",
+            "Non-profit support"
+          ],
+          "animatedParagraphs": [
+            "If you are building something that helps rescue animals, protects the environment, supports emergency response, or can help save lives, you can contact me even if the project is not purely commercial.",
+            "I may be able to help design or build needed platforms, internal tools, automation, drone-related software, integrations, or other technical solutions that support the mission.",
+            "I cannot promise availability for every request, but if the project is meaningful and technically realistic, reach out and we can check what can be done."
+          ]
+        },
+        {
+          "heading": "Before we start",
+          "tone": "violet",
+          "description": "To avoid confusion later, it is useful to agree on a few basics early.",
+          "itemsStyle": "list",
+          "items": [
+            "what problem we are trying to solve,",
+            "what kind of help or responsibility you expect,",
+            "how we will communicate and organize the work,",
+            "what access, equipment or security setup is required,",
+            "what availability and timezone overlap makes sense,",
+            "what contract, invoice or billing setup is needed."
+          ]
+        }
+      ]
+    },
+    {
+      "enabled": false,
+      "path": "/example/",
+      "navLabel": "Example",
+      "navDescription": "Demo page showing all available static page content elements.",
+      "title": "Example static page – UI content reference",
+      "description": "A disabled demo page showing the available static page content elements.",
+      "canonical": "https://lukaszkomur.dev/example/",
+      "robots": "noindex, nofollow",
+      "tone": "violet",
+      "openGraph": {
+        "title": "Example static page – UI content reference",
+        "description": "A disabled demo page showing available static page content elements.",
+        "url": "https://lukaszkomur.dev/example/"
+      },
+      "twitter": {
+        "title": "Example static page – UI content reference",
+        "description": "A disabled demo page showing available static page content elements."
+      },
+      "h1": "Example static page",
+      "lead": "This disabled page demonstrates the content blocks available for generated static pages.",
+      "heroNote": "Enable this page locally only when you want to preview supported static page UI elements.",
+      "ctas": [
+        {
+          "label": "Primary CTA",
+          "href": "https://example.com",
+          "variant": "primary"
+        },
+        {
+          "label": "Back to main page",
+          "href": "/",
+          "variant": "secondary"
+        },
+        {
+          "label": "Email CTA",
+          "href": "mailto:contact@lukaszkomur.dev?subject=Example%20CTA",
+          "variant": "secondary"
+        }
+      ],
+      "sections": [
+        {
+          "heading": "Body section",
+          "body": "This section demonstrates a simple body field."
+        },
+        {
+          "heading": "Description section",
+          "description": "This section demonstrates a short description field."
+        },
+        {
+          "heading": "Badges",
+          "description": "Compact highlighted labels.",
+          "badges": [
+            "B2B",
+            "VAT invoice",
+            "Remote",
+            "CET timezone",
+            "Client device or private macOS setup"
+          ]
+        },
+        {
+          "heading": "Paragraphs section",
+          "paragraphs": [
+            "This is the first paragraph.",
+            "This is the second paragraph."
+          ]
+        },
+        {
+          "heading": "Animated paragraphs",
+          "animatedParagraphs": [
+            "This paragraph demonstrates a subtle hover highlight.",
+            "This paragraph uses the selected page tone for its accent."
+          ]
+        },
+        {
+          "heading": "List section",
+          "itemsStyle": "list",
+          "items": [
+            "First list item,",
+            "second list item,",
+            "third list item."
+          ]
+        },
+        {
+          "heading": "Animated list – list",
+          "description": "Detailed list items with accent bullets and hover states.",
+          "animatedListStyle": "list",
+          "animatedList": [
+            "Clear communication",
+            "Practical delivery",
+            "Timezone-aware cooperation"
+          ]
+        },
+        {
+          "heading": "Animated list – cards",
+          "description": "Card-like list items with subtle hover states.",
+          "animatedListStyle": "cards",
+          "animatedList": [
+            "Clear communication",
+            "Practical delivery",
+            "Technical ownership"
+          ]
+        },
+        {
+          "heading": "Animated list – chips",
+          "animatedListStyle": "chips",
+          "animatedList": [
+            "Backend",
+            "Systems",
+            "Integrations",
+            "Cloud"
+          ]
+        },
+        {
+          "heading": "Section tone override",
+          "tone": "gold",
+          "description": "This section demonstrates a local gold tone override.",
+          "badges": [
+            "Gold tone",
+            "Section override"
+          ],
+          "animatedParagraphs": [
+            "Nested content in this section uses the section tone instead of the page tone."
+          ]
+        },
+        {
+          "heading": "Cards section",
+          "cards": [
+            {
+              "title": "Card title one",
+              "description": "Card description one."
+            },
+            {
+              "title": "Card title two",
+              "description": "Card description two."
+            }
+          ]
+        },
+        {
+          "heading": "CTA section",
+          "body": "This section demonstrates nested CTAs.",
+          "ctas": [
+            {
+              "label": "Nested primary CTA",
+              "href": "https://example.com",
+              "variant": "primary"
+            },
+            {
+              "label": "Nested secondary CTA",
+              "href": "/",
+              "variant": "secondary"
+            }
+          ]
+        },
+        {
+          "heading": "Mixed content section",
+          "description": "This section demonstrates several content fields used together.",
+          "paragraphs": [
+            "Use this page as a reference when creating new generated static pages.",
+            "Keep it disabled in production unless you intentionally want to preview it."
+          ],
+          "itemsStyle": "list",
+          "items": [
+            "Supports paragraphs,",
+            "supports lists,",
+            "supports badges,",
+            "supports animated paragraphs,",
+            "supports animated lists,",
+            "supports cards,",
+            "supports CTAs."
+          ],
+          "cards": [
+            {
+              "title": "Mixed card",
+              "description": "A card inside a mixed content section."
+            }
+          ],
+          "ctas": [
+            {
+              "label": "Back to main page",
+              "href": "/",
+              "variant": "secondary"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
