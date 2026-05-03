@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import attributionRaw from "../../../data/attribution.json";
 import type { CV } from "../../../lib/cvTypes";
 import { getConsentText, type CvPdfOptions } from "../CvPdfOptions";
 import type { PdfTemplateConfig } from "../PdfTemplateConfig";
@@ -37,6 +38,11 @@ const MONTHS = [
 ];
 
 const MAX_CORE_SKILLS = 16;
+const attribution = attributionRaw as {
+  text: string;
+  url: string;
+  textWithUrl: string;
+};
 
 type CompanyLookup = Record<string, CV["companies"][number] | undefined>;
 
@@ -270,6 +276,13 @@ function Footer({
       {consentText ? (
         <Text style={styles.footerConsentText}>{consentText}</Text>
       ) : null}
+
+      <View style={styles.footerAttributionBlock}>
+        <View style={styles.footerDivider} />
+        <Link src={attribution.url} style={styles.footerAttributionText}>
+          {attribution.textWithUrl}
+        </Link>
+      </View>
     </View>
   );
 }
@@ -448,7 +461,6 @@ const styles = StyleSheet.create({
     border: "1px solid rgba(103, 232, 249, 0.42)",
     backgroundColor: "rgba(8, 47, 73, 0.54)",
   },
-
   sectionLabel: {
     fontSize: 10,
     fontWeight: 600,
@@ -585,5 +597,23 @@ const styles = StyleSheet.create({
     color: "#CFFAFE",
     textAlign: "center",
     marginTop: 3,
+  },
+  footerAttributionBlock: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 5,
+  },
+  footerDivider: {
+    width: "32%",
+    height: 1,
+    backgroundColor: "rgba(125, 211, 252, 0.34)",
+    marginBottom: 5,
+  },
+  footerAttributionText: {
+    width: "88%",
+    fontSize: 6.4,
+    color: "#BAE6FD",
+    textAlign: "center",
+    textDecoration: "none",
   },
 });

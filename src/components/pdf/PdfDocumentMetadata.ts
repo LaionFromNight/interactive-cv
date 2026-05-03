@@ -1,4 +1,9 @@
+import attributionRaw from "../../data/attribution.json";
 import type { CV } from "../../lib/cvTypes";
+
+const attribution = attributionRaw as {
+  text: string;
+};
 
 type Project = CV["projects"][number];
 
@@ -206,7 +211,7 @@ export function getPdfDocumentMetadata(cv: CV) {
     author: cv.person.full_name,
     subject,
     keywords,
-    creator: "interactive-cv",
-    producer: "interactive-cv",
+    creator: attribution.text,
+    producer: attribution.text,
   };
 }

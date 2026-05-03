@@ -65,6 +65,9 @@ type ExecutiveLightStyleKey =
   | "emptyMainText"
   | "footerBlock"
   | "footerConsentText"
+  | "footerAttributionBlock"
+  | "footerDivider"
+  | "footerAttribution"
   | "footer"
   | "inlineLinkItem"
   | "inlineLinkSeparator";
@@ -546,6 +549,36 @@ export function createExecutiveLightStyles(
         marginBottom: 3,
       },
       overrides.footerConsentText,
+    ),
+
+    footerAttributionBlock: mergeStyle(
+      {
+        width: "100%",
+        alignItems: "center",
+        marginTop: 5,
+      },
+      overrides.footerAttributionBlock,
+    ),
+
+    footerDivider: mergeStyle(
+      {
+        width: "34%",
+        height: 1,
+        backgroundColor: palette.border,
+        marginBottom: 5,
+      },
+      overrides.footerDivider,
+    ),
+
+    footerAttribution: mergeStyle(
+      {
+        width: "88%",
+        fontSize: 6.4,
+        color: palette.subtle,
+        textAlign: "center",
+        textDecoration: "none",
+      },
+      overrides.footerAttribution,
     ),
 
     footer: mergeStyle(

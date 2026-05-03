@@ -248,7 +248,13 @@ const renderStaticPageNavigation = (staticPages, headingId) => {
 
 export const buildStaticProfileHtml = (
   cv,
-  { className = "", id = "", headingPrefix = "static", staticPages = [] } = {},
+  {
+    className = "",
+    id = "",
+    headingPrefix = "static",
+    staticPages = [],
+    attribution = null,
+  } = {},
 ) => {
   const model = buildProfileViewModel(cv);
   const profiles = asArray(cv.person?.profiles);
@@ -261,6 +267,8 @@ export const buildStaticProfileHtml = (
   const classAttr = className ? ` class="${escapeHtml(className)}"` : "";
   const idAttr = id ? ` id="${escapeHtml(id)}"` : "";
   const headingId = (name) => `${headingPrefix}-${name}-heading`;
+  const attributionText = cleanText(attribution?.text);
+  const attributionUrl = cleanText(attribution?.url);
 
   return `<main${idAttr}${classAttr} aria-label="Static CV profile">
       <header>
@@ -358,10 +366,19 @@ export const buildStaticProfileHtml = (
         <p>Last updated: ${escapeHtml(cv.meta?.generated_at_local)}</p>
         ${linkedInProfile ? `<p>LinkedIn: <a href="${escapeHtml(linkedInProfile.url)}">${escapeHtml(linkedInProfile.url)}</a></p>` : ""}
       </section>
+      ${
+        attributionText && attributionUrl
+          ? `<footer><p><a href="${escapeHtml(attributionUrl)}">${escapeHtml(attributionText)}</a></p></footer>`
+          : ""
+      }
     </main>`;
 };
 
-export const buildNoScriptProfileFallback = (cv, staticPages = []) => `<noscript>
+export const buildNoScriptProfileFallback = (
+  cv,
+  staticPages = [],
+  attribution = null,
+) => `<noscript>
       <style>
         .static-profile-noscript {
           width: min(100% - 32px, 960px);
@@ -386,5 +403,6 @@ export const buildNoScriptProfileFallback = (cv, staticPages = []) => `<noscript
         className: "static-profile-noscript",
         headingPrefix: "noscript-profile",
         staticPages,
+        attribution,
       })}
     </noscript>`;

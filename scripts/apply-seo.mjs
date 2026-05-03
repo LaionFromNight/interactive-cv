@@ -51,11 +51,18 @@ const getOutputPathForRoute = (routePath) => {
 const seo = await loadJson("src/data/seo.json");
 const cms = await loadCmsConfig();
 const cv = await loadJson("src/data/cv.json");
+const attribution = await loadJson("src/data/attribution.json");
 const originalHtml = await readFile(indexPath, "utf8");
 const siteUrl = getSiteUrl(seo);
 const lastmod = normalizeLastmod(process.env.SITE_LASTMOD);
 validateCmsConfig(cms, seo);
 const enabledStaticPages = getEnabledStaticPages(cms, seo);
+const attributionText =
+  typeof attribution.text === "string"
+    ? attribution.text
+    : "Powered by Interactive CV by Lukasz Komur";
+const attributionUrl =
+  typeof attribution.url === "string" ? attribution.url : "https://lukaszkomur.dev/";
 
 const removeOutputForRoute = async (routePath) => {
   if (!String(routePath ?? "").trim()) return;
@@ -110,9 +117,10 @@ const staticProfileBlock = `    ${buildStaticProfileHtml(cv, {
   className: "sr-only",
   id: "static-profile",
   staticPages: enabledStaticPages,
+  attribution,
 })}`;
 
-const noScriptFallback = `    ${buildNoScriptProfileFallback(cv, enabledStaticPages)}`;
+const noScriptFallback = `    ${buildNoScriptProfileFallback(cv, enabledStaticPages, attribution)}`;
 
 let html = originalHtml
   .replace(/<html\b[^>]*>/, `<html lang="${escapeHtml(seo.site?.language)}">`)
@@ -282,6 +290,9 @@ ${staticPageHead}
         ${sectionHtml}
       </section>
     </main>
+    <footer class="site-attribution">
+      <a href="${escapeHtml(attributionUrl)}">${escapeHtml(attributionText)}</a>
+    </footer>
     <style>
       @keyframes softGlow {
         0%, 100% { opacity: 0.35; transform: translate3d(0, 0, 0); }
@@ -397,6 +408,24 @@ ${staticPageHead}
         width: min(100% - 32px, 1080px);
         margin: 0 auto;
         padding: 48px 0 88px;
+      }
+
+      .site-attribution {
+        width: min(100% - 32px, 1080px);
+        margin: -48px auto 0;
+        padding: 0 0 40px;
+        text-align: center;
+      }
+
+      .site-attribution a {
+        color: rgba(148, 163, 184, 0.72);
+        font-size: 0.78rem;
+        text-decoration: none;
+        transition: color 180ms ease;
+      }
+
+      .site-attribution a:hover {
+        color: var(--accent-text);
       }
 
       header {
@@ -777,6 +806,10 @@ ${staticPageHead}
           padding-top: 32px;
         }
 
+        .site-attribution {
+          width: min(100% - 24px, 1080px);
+        }
+
         .content-card,
         .item-grid li,
         .content-section {
@@ -799,6 +832,7 @@ ${staticPageHead}
         .animated-list-item,
         .animated-paragraph,
         .badge,
+        .site-attribution a,
         .content-card,
         .interactive-chip,
         .action-link {
@@ -857,6 +891,9 @@ ${staticPageHead}
   </head>
   <body>
     <p>Redirecting to <a href="${escapeHtml(staticPage.canonical)}">${escapeHtml(staticPage.canonical)}</a>.</p>
+    <footer>
+      <p><a href="${escapeHtml(attributionUrl)}">${escapeHtml(attributionText)}</a></p>
+    </footer>
   </body>
 </html>
 `;

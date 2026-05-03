@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import attributionRaw from "../../../data/attribution.json";
 import type { CV } from "../../../lib/cvTypes";
 import { getConsentText, type CvPdfOptions } from "../CvPdfOptions";
 import type { PdfTemplateConfig } from "../PdfTemplateConfig";
@@ -40,6 +41,11 @@ const AMERICAN_PROJECTS_PER_PAGE = 3;
 const MAX_PROJECT_TECH_ITEMS = 12;
 const MAX_RESPONSIBILITIES = 5;
 const MAX_HIGHLIGHTS = 4;
+const attribution = attributionRaw as {
+  text: string;
+  url: string;
+  textWithUrl: string;
+};
 
 type CompanyLookup = Record<string, CV["companies"][number] | undefined>;
 type ClientLookup = Record<string, CV["clients"][number] | undefined>;
@@ -195,11 +201,13 @@ function Header({
 function Footer({
   generatedAt,
   consentText,
+  showAttribution = false,
   styles,
   templateConfig,
 }: {
   generatedAt: string;
   consentText?: string | null;
+  showAttribution?: boolean;
   styles: ExecutiveLightStyles;
   templateConfig: PdfTemplateConfig;
 }) {
@@ -208,9 +216,17 @@ function Footer({
       <Text style={styles.footer}>
         {templateConfig.labels.lastUpdated}: {generatedAt}
       </Text>
-
       {consentText ? (
         <Text style={styles.footerConsentText}>{consentText}</Text>
+      ) : null}
+
+      {showAttribution ? (
+        <View style={styles.footerAttributionBlock}>
+          <View style={styles.footerDivider} />
+          <Link src={attribution.url} style={styles.footerAttribution}>
+            {attribution.textWithUrl}
+          </Link>
+        </View>
       ) : null}
     </View>
   );
@@ -463,6 +479,7 @@ export function AmericanResumeTemplate({
         <Footer
           generatedAt={cv.meta.generated_at_local}
           consentText={consentText}
+          showAttribution={projectPages.length === 0}
           styles={styles}
           templateConfig={templateConfig}
         />
@@ -499,6 +516,7 @@ export function AmericanResumeTemplate({
           <Footer
             generatedAt={cv.meta.generated_at_local}
             consentText={consentText}
+            showAttribution={pageIndex === projectPages.length - 1}
             styles={styles}
             templateConfig={templateConfig}
           />

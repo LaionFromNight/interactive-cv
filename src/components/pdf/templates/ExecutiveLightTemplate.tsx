@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import attributionRaw from "../../../data/attribution.json";
 import type { CV } from "../../../lib/cvTypes";
 import { getConsentText, type CvPdfOptions } from "../CvPdfOptions";
 import type { PdfTemplateConfig } from "../PdfTemplateConfig";
@@ -39,6 +40,11 @@ const MONTHS = [
 const FIRST_PAGE_SKILL_GROUP_COUNT = 4;
 const FIRST_PAGE_PROJECT_COUNT = 5;
 const MAX_LINK_TEXT_LENGTH = 28;
+const attribution = attributionRaw as {
+  text: string;
+  url: string;
+  textWithUrl: string;
+};
 
 type PdfProfile = {
   id: string;
@@ -221,11 +227,13 @@ function ContinuationHeader({
 function Footer({
   generatedAt,
   consentText,
+  showAttribution = false,
   styles,
   templateConfig,
 }: {
   generatedAt: string;
   consentText?: string | null;
+  showAttribution?: boolean;
   styles: ExecutiveLightStyles;
   templateConfig: PdfTemplateConfig;
 }) {
@@ -234,9 +242,17 @@ function Footer({
       <Text style={styles.footer}>
         {templateConfig.labels.lastUpdated}: {generatedAt}
       </Text>
-
       {consentText ? (
         <Text style={styles.footerConsentText}>{consentText}</Text>
+      ) : null}
+
+      {showAttribution ? (
+        <View style={styles.footerAttributionBlock}>
+          <View style={styles.footerDivider} />
+          <Link src={attribution.url} style={styles.footerAttribution}>
+            {attribution.textWithUrl}
+          </Link>
+        </View>
       ) : null}
     </View>
   );
@@ -564,6 +580,7 @@ export function ExecutiveLightTemplate({
         <Footer
           generatedAt={cv.meta.generated_at_local}
           consentText={consentText}
+          showAttribution={!shouldRenderContinuationPage}
           styles={styles}
           templateConfig={templateConfig}
         />
@@ -613,6 +630,7 @@ export function ExecutiveLightTemplate({
           <Footer
             generatedAt={cv.meta.generated_at_local}
             consentText={consentText}
+            showAttribution
             styles={styles}
             templateConfig={templateConfig}
           />

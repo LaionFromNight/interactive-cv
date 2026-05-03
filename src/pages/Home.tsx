@@ -1,4 +1,5 @@
 import { useState } from "react";
+import attributionRaw from "../data/attribution.json";
 import cmsRaw from "../data/cms.json";
 import cvRaw from "../data/cv.json";
 import type { CmsConfig } from "../lib/cmsTypes";
@@ -28,6 +29,10 @@ const HOME_NAV_ITEMS = [
 
 const cv = cvRaw as unknown as CV;
 const cms = cmsRaw as unknown as CmsConfig;
+const attribution = attributionRaw as {
+  text: string;
+  url: string;
+};
 const staticPageNavItems = getEnabledStaticPageNavItems(cms);
 const staticPagesNavLabel = getStaticPagesNavLabel(cms);
 
@@ -71,6 +76,15 @@ export function Home() {
 
         <ContactSection cv={cv} />
       </main>
+
+      <footer className="mx-auto max-w-6xl px-4 pb-8 text-center text-xs text-slate-500">
+        <a
+          href={attribution.url}
+          className="transition hover:text-slate-300"
+        >
+          {attribution.text}
+        </a>
+      </footer>
     </div>
   );
 }
