@@ -54,11 +54,19 @@
       {
         "id": "sh_interactive_cv",
         "title": "Interactive CV",
-        "teaser": "JSON-driven CV with filtering, timeline, and project drill-down.",
+        "teaser": "Free, source-available portfolio tool for building a JSON-driven developer CV, generating PDF resumes, and publishing SEO-friendly personal pages.",
         "url": "https://github.com/LaionFromNight/interactive-cv",
         "image_url": "/assets/showcase/interactive-cv.jpg",
-        "image_alt": "Interactive CV preview",
-        "tags": ["React", "TypeScript", "UX"]
+        "image_alt": "Interactive CV portfolio builder preview",
+        "tags": [
+          "React",
+          "TypeScript",
+          "Vite",
+          "JSON CMS",
+          "PDF CV",
+          "SEO",
+          "Portfolio"
+        ]
       },
       {
         "id": "sh_ideboide",
@@ -68,6 +76,38 @@
         "image_url": "/assets/showcase/ideboide.jpg",
         "image_alt": "ideboide.pl travel blog preview",
         "tags": ["WordPress", "Elementor Pro", "CSS", "SEO", "Performance"]
+      },
+      {
+        "id": "sh_laion_eye",
+        "title": "LaionEye",
+        "teaser": "Open-source hobby project for game telemetry and radar visualization, including a radar module quickly adapted from protocol 16 to protocol 18 after a game update, based on prior reverse engineering work.",
+        "url": "https://github.com/LaionFromNight/LaionEye",
+        "image_url": "https://github.com/LaionFromNight/LaionEye/blob/master/readme_screenshots/LaionEye-RadarFullScreen.png?raw=true",
+        "image_alt": "LaionEye radar full-screen preview",
+        "tags": [
+          "Open Source",
+          "Reverse Engineering",
+          "Game Telemetry",
+          "Radar",
+          "Protocol Analysis",
+          "Hobby Project"
+        ]
+      },
+      {
+        "id": "sh_fs_screeps_core",
+        "title": "fs-screeps-core",
+        "teaser": "Legacy hobby AI core for Screeps, a programming MMO strategy game where units are controlled by JavaScript code running in a persistent world. Built as an automation-heavy colony brain for harvesting, building, logistics, defense, and expansion.",
+        "url": "https://github.com/LaionFromNight/fs-screeps-core",
+        "image_url": "/assets/showcase/fs-screeps-core.png",
+        "image_alt": "fs-screeps-core Screeps AI project preview",
+        "tags": [
+          "JavaScript",
+          "AI Automation",
+          "Game AI",
+          "MMO Strategy",
+          "Screeps",
+          "Hobby Project"
+        ]
       }
     ]
   },
@@ -300,10 +340,12 @@
     },
     {
       "id": "client_institute",
-      "display_name": "Anonymized Institute (large e-commerce retailer)",
+      "display_name": "The Institutes (risk management and insurance education)",
       "employer_company_id": "co_sofomo",
       "is_anonymized": false,
-      "privacy": { "show_client_name": true }
+      "privacy": {
+        "show_client_name": true
+      }
     },
     {
       "id": "client_accenture_internal",
@@ -517,7 +559,7 @@
       "time_range": { "start": "2024-06", "end": null },
       "status": "ongoing",
       "domain_ids": ["dom_ecomm_tools"],
-      "description": "Modernization of legacy Oracle-based internal forms/app ('SIMS') into user-friendly React + Express tools for managing e-commerce operations (not building a storefront).",
+      "description": "Modernization of legacy Oracle-based internal forms/app ('SIMMS') into user-friendly React + Express tools for managing e-commerce operations (not building a storefront).",
       "roles": ["role_fullstack", "role_backend"],
       "responsibilities": [
         "Rewrite legacy Oracle forms into modern web UI/UX.",
