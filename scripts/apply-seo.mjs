@@ -276,9 +276,15 @@ for (const staticPage of enabledStaticPages) {
   const staticPageHtml = `<!doctype html>
 <html lang="${escapeHtml(seo.site?.language)}">
 ${staticPageHead}
-  <body class="${getToneClass(pageTone)}">
+  <body class="${getToneClass(pageTone)} theme-dark" data-theme="dark">
     <main>
-      <p class="back"><a href="/">Back to interactive CV</a></p>
+      <div class="page-toolbar">
+        <p class="back"><a href="/">Back to interactive CV</a></p>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+          <span class="theme-toggle-indicator" aria-hidden="true"></span>
+          <span class="theme-toggle-label">Light mode</span>
+        </button>
+      </div>
       <header>
         <p class="eyebrow">${escapeHtml(seo.site?.name)}</p>
         <h1>${escapeHtml(staticPage.h1)}</h1>
@@ -293,6 +299,9 @@ ${staticPageHead}
     <footer class="site-attribution">
       <a href="${escapeHtml(attributionUrl)}">${escapeHtml(attributionText)}</a>
     </footer>
+    <button class="scroll-top-button" type="button" data-scroll-top aria-label="Scroll to top">
+      <span class="scroll-top-button-label">Top</span>
+    </button>
     <style>
       @keyframes softGlow {
         0%, 100% { opacity: 0.35; transform: translate3d(0, 0, 0); }
@@ -302,8 +311,34 @@ ${staticPageHead}
       :root {
         color-scheme: dark;
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: #f8fafc;
-        background: #0b1216;
+        color: var(--page-text);
+        background: var(--page-bg);
+        --page-bg: #0b1216;
+        --page-text: #f8fafc;
+        --page-text-muted: rgba(248, 250, 252, 0.72);
+        --page-text-soft: rgba(248, 250, 252, 0.58);
+        --page-panel: rgba(17, 27, 35, 0.72);
+        --page-panel-strong: rgba(15, 23, 30, 0.44);
+        --page-panel-border: rgba(148, 163, 184, 0.24);
+        --page-shadow: rgba(7, 10, 18, 0.28);
+        --page-toolbar-bg: rgba(255, 255, 255, 0.05);
+        --page-toolbar-border: rgba(255, 255, 255, 0.12);
+        --page-grid: rgba(255, 255, 255, 0.06);
+      }
+
+      body.theme-light {
+        color-scheme: light;
+        --page-bg: #edf4f7;
+        --page-text: #0f172a;
+        --page-text-muted: rgba(15, 23, 42, 0.72);
+        --page-text-soft: rgba(15, 23, 42, 0.58);
+        --page-panel: rgba(255, 255, 255, 0.82);
+        --page-panel-strong: rgba(255, 255, 255, 0.94);
+        --page-panel-border: rgba(148, 163, 184, 0.24);
+        --page-shadow: rgba(148, 163, 184, 0.2);
+        --page-toolbar-bg: rgba(255, 255, 255, 0.86);
+        --page-toolbar-border: rgba(148, 163, 184, 0.22);
+        --page-grid: rgba(15, 23, 42, 0.08);
       }
 
       body,
@@ -377,7 +412,9 @@ ${staticPageHead}
         min-height: 100vh;
         position: relative;
         overflow-x: hidden;
-        background: #0b1216;
+        background: var(--page-bg);
+        color: var(--page-text);
+        transition: background-color 220ms ease, color 220ms ease;
       }
 
       body::before {
@@ -397,8 +434,8 @@ ${staticPageHead}
         inset: 0;
         z-index: -1;
         background-image:
-          linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+          linear-gradient(to right, var(--page-grid) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--page-grid) 1px, transparent 1px);
         background-size: 64px 64px;
         opacity: 0.12;
         mask-image: radial-gradient(500px 300px at 50% 10%, black 25%, transparent 80%);
@@ -418,7 +455,7 @@ ${staticPageHead}
       }
 
       .site-attribution a {
-        color: rgba(148, 163, 184, 0.72);
+        color: var(--page-text-soft);
         font-size: 0.78rem;
         text-decoration: none;
         transition: color 180ms ease;
@@ -454,12 +491,20 @@ ${staticPageHead}
       h3 {
         margin: 0 0 12px;
         font-size: 1.05rem;
-        color: rgba(248, 250, 252, 0.96);
+        color: var(--page-text);
       }
 
       p {
-        color: rgba(248, 250, 252, 0.72);
+        color: var(--page-text-muted);
         line-height: 1.7;
+      }
+
+      .page-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
       }
 
       a {
@@ -489,7 +534,58 @@ ${staticPageHead}
       .hero-note {
         max-width: 780px;
         margin-top: 18px;
-        color: rgba(248, 250, 252, 0.64);
+        color: var(--page-text-soft);
+      }
+
+      .theme-toggle,
+      .scroll-top-button {
+        transition:
+          background 180ms ease,
+          border-color 180ms ease,
+          color 180ms ease,
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          opacity 180ms ease;
+      }
+
+      .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 40px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid var(--page-toolbar-border);
+        background: var(--page-toolbar-bg);
+        color: var(--page-text);
+        box-shadow: 0 14px 30px var(--page-shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        border-color: var(--accent-border);
+      }
+
+      .theme-toggle:focus-visible,
+      .scroll-top-button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .theme-toggle-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 30%, #ffffff, transparent 38%), var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+        flex-shrink: 0;
+      }
+
+      .theme-toggle-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
       }
 
       .section-intro {
@@ -541,6 +637,29 @@ ${staticPageHead}
         transform: translateY(-1px);
       }
 
+      body.theme-light .action-link-secondary {
+        background: transparent;
+        border-width: 1.5px;
+        box-shadow: none;
+        color: color-mix(in srgb, var(--accent) 82%, #0f172a 18%);
+      }
+
+      body.theme-light .action-link-secondary:hover {
+        background: color-mix(in srgb, var(--accent-soft) 48%, white 52%);
+        border-color: var(--accent);
+      }
+
+      body.theme-light .action-link-primary {
+        background: var(--accent);
+        border-color: var(--accent-border);
+        color: var(--accent-ink);
+        box-shadow: 0 18px 42px var(--accent-shadow);
+      }
+
+      body.theme-light .action-link-primary:hover {
+        background: var(--accent-strong);
+      }
+
       .grid {
         display: grid;
         gap: 24px;
@@ -561,12 +680,20 @@ ${staticPageHead}
       .content-card,
       .item-grid li,
       .content-section {
-        border: 1px solid rgba(148, 163, 184, 0.24);
+        border: 1px solid var(--page-panel-border);
         border-radius: 24px;
-        background: rgba(17, 27, 35, 0.72);
+        background: var(--page-panel);
         backdrop-filter: blur(18px);
-        box-shadow: 0 20px 60px rgba(7, 10, 18, 0.28);
+        box-shadow: 0 20px 60px var(--page-shadow);
         padding: 24px;
+      }
+
+      body.theme-light .content-card,
+      body.theme-light .item-grid li,
+      body.theme-light .content-section,
+      body.theme-light .theme-toggle,
+      body.theme-light .scroll-top-button {
+        border-width: 1.5px;
       }
 
       .cv-card {
@@ -602,6 +729,10 @@ ${staticPageHead}
         transform: translateY(-2px);
       }
 
+      body.theme-light .content-card:hover {
+        background: rgba(255, 255, 255, 0.96);
+      }
+
       .content-card > *,
       .interactive-chip > * {
         position: relative;
@@ -609,7 +740,7 @@ ${staticPageHead}
       }
 
       .item-grid li {
-        color: rgba(248, 250, 252, 0.86);
+        color: color-mix(in srgb, var(--page-text) 86%, transparent);
         font-weight: 500;
       }
 
@@ -620,7 +751,7 @@ ${staticPageHead}
       .detail-list li {
         position: relative;
         padding-left: 22px;
-        color: rgba(248, 250, 252, 0.82);
+        color: color-mix(in srgb, var(--page-text) 82%, transparent);
         line-height: 1.7;
       }
 
@@ -657,6 +788,15 @@ ${staticPageHead}
           box-shadow 180ms ease;
       }
 
+      body.theme-light .badge,
+      body.theme-light .interactive-chip,
+      body.theme-light .animated-list-chips .animated-list-item {
+        background: transparent;
+        color: color-mix(in srgb, var(--accent) 82%, #0f172a 18%);
+        border-width: 1.5px;
+        box-shadow: none;
+      }
+
       .badge {
         display: inline-flex;
         align-items: center;
@@ -674,6 +814,13 @@ ${staticPageHead}
         border-color: var(--accent);
         box-shadow: 0 12px 28px var(--accent-shadow);
         transform: translateY(-1px);
+      }
+
+      body.theme-light .badge:hover,
+      body.theme-light .interactive-chip:hover,
+      body.theme-light .animated-list-chips .animated-list-item:hover {
+        background: transparent;
+        color: var(--accent);
       }
 
       .interactive-chip::after {
@@ -713,7 +860,7 @@ ${staticPageHead}
         margin: 0;
         border-left: 3px solid var(--accent-border);
         border-radius: 14px;
-        background: rgba(15, 23, 30, 0.42);
+        background: var(--page-panel-strong);
         padding: 14px 16px;
         transition:
           background 180ms ease,
@@ -727,6 +874,11 @@ ${staticPageHead}
         border-color: var(--accent);
         color: rgba(248, 250, 252, 0.86);
         transform: translateY(-1px);
+      }
+
+      body.theme-light .animated-paragraph:hover {
+        background: color-mix(in srgb, var(--accent-soft) 52%, white 48%);
+        color: color-mix(in srgb, var(--accent) 82%, #0f172a 18%);
       }
 
       .animated-list-list {
@@ -747,8 +899,8 @@ ${staticPageHead}
         position: relative;
         border: 1px solid var(--accent-border);
         border-radius: 18px;
-        background: rgba(15, 23, 30, 0.44);
-        color: rgba(248, 250, 252, 0.84);
+        background: var(--page-panel-strong);
+        color: color-mix(in srgb, var(--page-text) 84%, transparent);
         line-height: 1.6;
         list-style: none;
         padding: 14px 16px 14px 36px;
@@ -800,10 +952,80 @@ ${staticPageHead}
         transform: translateY(-1px);
       }
 
+      body.theme-light .animated-list-item:hover {
+        background: color-mix(in srgb, var(--accent-soft) 52%, white 48%);
+        color: color-mix(in srgb, var(--accent) 82%, #0f172a 18%);
+      }
+
+      .scroll-top-button {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 40;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--page-toolbar-border);
+        background: var(--page-toolbar-bg);
+        color: var(--page-text);
+        box-shadow: 0 18px 38px var(--page-shadow);
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(14px);
+      }
+
+      .scroll-top-button::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-top: 2px solid currentColor;
+        border-left: 2px solid currentColor;
+        transform: rotate(45deg) translateY(1px);
+      }
+
+      .scroll-top-button::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 9px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        opacity: 0.55;
+      }
+
+      .scroll-top-button-label {
+        position: relative;
+        z-index: 1;
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .scroll-top-button.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .scroll-top-button:hover {
+        transform: translateY(-1px);
+      }
+
       @media (max-width: 759px) {
         main {
           width: min(100% - 24px, 1080px);
           padding-top: 32px;
+        }
+
+        .page-toolbar {
+          align-items: flex-start;
+          flex-direction: column;
         }
 
         .site-attribution {
@@ -820,6 +1042,11 @@ ${staticPageHead}
         .action-link {
           width: 100%;
         }
+
+        .scroll-top-button {
+          right: 16px;
+          bottom: 16px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -835,7 +1062,9 @@ ${staticPageHead}
         .site-attribution a,
         .content-card,
         .interactive-chip,
-        .action-link {
+        .action-link,
+        .theme-toggle,
+        .scroll-top-button {
           transition: none !important;
         }
 
@@ -844,7 +1073,9 @@ ${staticPageHead}
         .badge:hover,
         .content-card:hover,
         .interactive-chip:hover,
-        .action-link:hover {
+        .action-link:hover,
+        .theme-toggle:hover,
+        .scroll-top-button:hover {
           transform: none !important;
         }
       }
@@ -867,6 +1098,58 @@ ${staticPageHead}
         }
       }
     </style>
+    <script>
+      (() => {
+        const STORAGE_KEY = "interactive-cv-theme";
+        const root = document.documentElement;
+        const body = document.body;
+        const toggle = document.querySelector("[data-theme-toggle]");
+        const scrollTopButton = document.querySelector("[data-scroll-top]");
+        let theme = window.localStorage.getItem(STORAGE_KEY) === "light" ? "light" : "dark";
+
+        const syncThemeLabel = () => {
+          if (!(toggle instanceof HTMLButtonElement)) return;
+
+          const nextTheme = theme === "dark" ? "light" : "dark";
+          toggle.setAttribute("aria-label", "Switch to " + nextTheme + " mode");
+          const label = toggle.querySelector(".theme-toggle-label");
+
+          if (label) {
+            label.textContent = nextTheme === "light" ? "Light mode" : "Dark mode";
+          }
+        };
+
+        const applyTheme = () => {
+          root.dataset.theme = theme;
+          root.classList.toggle("theme-light", theme === "light");
+          root.classList.toggle("theme-dark", theme === "dark");
+          body.classList.toggle("theme-light", theme === "light");
+          body.classList.toggle("theme-dark", theme === "dark");
+          syncThemeLabel();
+        };
+
+        const updateScrollButton = () => {
+          if (!(scrollTopButton instanceof HTMLButtonElement)) return;
+
+          scrollTopButton.classList.toggle("is-visible", window.scrollY > 160);
+        };
+
+        applyTheme();
+        updateScrollButton();
+
+        toggle?.addEventListener("click", () => {
+          theme = theme === "dark" ? "light" : "dark";
+          window.localStorage.setItem(STORAGE_KEY, theme);
+          applyTheme();
+        });
+
+        window.addEventListener("scroll", updateScrollButton, { passive: true });
+        scrollTopButton?.addEventListener("click", () => {
+          const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+        });
+      })();
+    </script>
   </body>
 </html>
 `;

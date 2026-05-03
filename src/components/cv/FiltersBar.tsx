@@ -18,49 +18,21 @@ const getTechCategory = (tags: string[]): (typeof TECH_COLOR_PRIORITY)[number] |
 
 const getChipClassByCategory = (category: string, active: boolean) => {
   const base =
-    "rounded-full border px-3 py-2 text-xs transition select-none " +
+    "tone-badge tone-badge--interactive rounded-full border px-3 py-2 text-xs font-medium transition select-none " +
     "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/20";
 
-  // Stronger active styling: slightly bigger + glow + clearer border/bg
-  const activeBase =
-    "scale-[1.04] border-white/20 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_10px_30px_rgba(0,0,0,0.35)]";
-
-  const otherIdle = "border-white/10 bg-white/5 text-white/70 hover:bg-white/10";
-  const otherActive = `bg-white/15 ${activeBase}`;
-
-  const variants: Record<string, { idle: string; active: string }> = {
-    language: {
-      idle: "border-violet-300/20 bg-violet-400/10 text-violet-200/80 hover:bg-violet-400/15",
-      active: `border-violet-300/70 bg-violet-400/25 text-violet-100 shadow-[0_0_0_1px_rgba(167,139,250,0.22),0_10px_30px_rgba(0,0,0,0.35)] scale-[1.04]`,
-    },
-    backend: {
-      idle: "border-amber-300/20 bg-amber-400/10 text-amber-200/80 hover:bg-amber-400/15",
-      active: `border-amber-300/70 bg-amber-400/25 text-amber-100 shadow-[0_0_0_1px_rgba(252,211,77,0.22),0_10px_30px_rgba(0,0,0,0.35)] scale-[1.04]`,
-    },
-    cloud: {
-      idle: "border-sky-300/20 bg-sky-400/10 text-sky-200/80 hover:bg-sky-400/15",
-      active: `border-sky-300/70 bg-sky-400/25 text-sky-100 shadow-[0_0_0_1px_rgba(125,211,252,0.22),0_10px_30px_rgba(0,0,0,0.35)] scale-[1.04]`,
-    },
-    frontend: {
-      idle: "border-pink-300/20 bg-pink-400/10 text-pink-200/80 hover:bg-pink-400/15",
-      active: `border-pink-300/70 bg-pink-400/25 text-pink-100 shadow-[0_0_0_1px_rgba(249,168,212,0.22),0_10px_30px_rgba(0,0,0,0.35)] scale-[1.04]`,
-    },
-    db: {
-      idle: "border-emerald-300/20 bg-emerald-400/10 text-emerald-200/80 hover:bg-emerald-400/15",
-      active: `border-emerald-300/70 bg-emerald-400/25 text-emerald-100 shadow-[0_0_0_1px_rgba(110,231,183,0.22),0_10px_30px_rgba(0,0,0,0.35)] scale-[1.04]`,
-    },
-    devops: {
-      idle: "border-indigo-300/20 bg-indigo-400/10 text-indigo-200/80 hover:bg-indigo-400/15",
-      active: `border-indigo-300/70 bg-indigo-400/25 text-indigo-100 shadow-[0_0_0_1px_rgba(165,180,252,0.22),0_10px_30px_rgba(0,0,0,0.35)] scale-[1.04]`,
-    },
-    other: {
-      idle: otherIdle,
-      active: otherActive,
-    },
+  const toneClassName: Record<string, string> = {
+    language: "tone-badge--violet",
+    backend: "tone-badge--amber",
+    cloud: "tone-badge--sky",
+    frontend: "tone-badge--pink",
+    db: "tone-badge--emerald",
+    devops: "tone-badge--indigo",
+    other: "tone-badge--slate",
   };
 
-  const v = variants[category] ?? variants.other;
-  return `${base} ${active ? v.active : v.idle}`;
+  const tone = toneClassName[category] ?? toneClassName.other;
+  return `${base} ${tone} ${active ? "tone-badge--active" : ""}`;
 };
 
 

@@ -11,6 +11,8 @@ type Props = {
   staticPagesNavLabel?: string;
   avatarSrc?: string;
   avatarAlt?: string;
+  currentTheme?: "dark" | "light";
+  onToggleTheme?: () => void;
   onOpenPdfModal?: () => void;
 };
 
@@ -74,12 +76,12 @@ function StaticPagesNav({
   }
 
   return (
-    <details className="group relative">
+    <details className={`nav-static-pages group relative ${isMobile ? "nav-static-pages-mobile" : "nav-static-pages-desktop"}`}>
       <summary
         className={[
           "flex cursor-pointer list-none items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 [&::-webkit-details-marker]:hidden",
           isMobile
-            ? "rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+            ? "nav-static-pages-summary-mobile rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
             : "text-white/70 transition hover:text-white",
         ].join(" ")}
       >
@@ -91,7 +93,7 @@ function StaticPagesNav({
       </summary>
       <div
         className={[
-          "absolute right-0 top-full z-50 mt-3 rounded-xl border border-white/10 bg-black/90 p-2 shadow-2xl shadow-black/40 backdrop-blur",
+          "nav-static-pages-menu absolute right-0 top-full z-50 mt-3 rounded-xl border border-white/10 bg-black/90 p-2 shadow-2xl shadow-black/40 backdrop-blur",
           isMobile ? "w-[min(20rem,calc(100vw-2rem))]" : "w-80",
         ].join(" ")}
       >
@@ -122,6 +124,8 @@ export function Nav({
   staticPagesNavLabel = "More",
   avatarSrc,
   avatarAlt,
+  currentTheme = "dark",
+  onToggleTheme,
   onOpenPdfModal,
 }: Props) {
   const ids = useMemo(
@@ -131,10 +135,10 @@ export function Nav({
   const active = useActiveSection(ids);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+    <header className="nav-header sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur">
+      <div className="nav-inner mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         {/* Brand */}
-        <a href="#about" className="flex items-center gap-3">
+        <a href="#about" className="nav-brand flex items-center gap-3">
           {avatarSrc ? (
             <img
               src={avatarSrc}
@@ -174,28 +178,76 @@ export function Nav({
           />
         </nav>
 
-        {/* CTA */}
-        <div className="flex items-center gap-2">
-          <div className="md:hidden">
-            <StaticPagesNav
-              pages={staticPages}
-              label={staticPagesNavLabel}
-              variant="mobile"
-            />
-          </div>
+        <div className="nav-actions-desktop hidden items-center gap-2 md:flex">
           <button
             type="button"
-            className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+            className="nav-theme-toggle"
+            aria-label={
+              currentTheme === "dark"
+                ? "Switch to light mode"
+                : "Switch to dark mode"
+            }
+            onClick={onToggleTheme}
+          >
+            <span className="nav-theme-toggle-indicator" aria-hidden="true" />
+            <span className="nav-theme-toggle-label">
+              {currentTheme === "dark" ? "Light mode" : "Dark mode"}
+            </span>
+          </button>
+          <button
+            type="button"
+            className="nav-secondary-link rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
             onClick={onOpenPdfModal}
           >
             Generate CV
           </button>
           <a
-            className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
+            className="nav-primary-link rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
             href="#experience"
           >
             Browse projects
           </a>
+        </div>
+
+        <div className="nav-actions-mobile md:hidden">
+          <div className="nav-actions-mobile-main">
+            <StaticPagesNav
+              pages={staticPages}
+              label={staticPagesNavLabel}
+              variant="mobile"
+            />
+            <button
+              type="button"
+              className="nav-secondary-link rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+              onClick={onOpenPdfModal}
+            >
+              Generate CV
+            </button>
+            <a
+              className="nav-primary-link rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
+              href="#experience"
+            >
+              Browse projects
+            </a>
+          </div>
+
+          <div className="nav-actions-mobile-theme">
+            <button
+              type="button"
+              className="nav-theme-toggle"
+              aria-label={
+                currentTheme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              onClick={onToggleTheme}
+            >
+              <span className="nav-theme-toggle-indicator" aria-hidden="true" />
+              <span className="nav-theme-toggle-label">
+                {currentTheme === "dark" ? "Light mode" : "Dark mode"}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </header>

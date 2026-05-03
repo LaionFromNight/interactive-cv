@@ -19,6 +19,7 @@ import { ExperienceExplorer } from "../components/cv/ExperienceExplorer";
 import { SkillsSection } from "../components/cv/SkillsSection";
 import { SummarySection } from "../components/cv/SummarySection";
 import { ShowcaseSection } from "../components/cv/ShowcaseSection";
+import { ScrollToTopButton } from "../components/layout/ScrollToTopButton";
 
 const HOME_NAV_ITEMS = [
   { id: "about", label: "About", href: "#about" },
@@ -36,11 +37,17 @@ const attribution = attributionRaw as {
 const staticPageNavItems = getEnabledStaticPageNavItems(cms);
 const staticPagesNavLabel = getStaticPagesNavLabel(cms);
 
-export function Home() {
+export function Home({
+  theme,
+  onToggleTheme,
+}: {
+  theme: "dark" | "light";
+  onToggleTheme: () => void;
+}) {
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
 
   return (
-    <div className="vite-bg min-h-screen text-white">
+    <div className={`vite-bg theme-shell theme-${theme} min-h-screen text-white`}>
       <Nav
         ownerName={cv.person.full_name}
         subtitle="Interactive CV"
@@ -49,6 +56,8 @@ export function Home() {
         staticPagesNavLabel={staticPagesNavLabel}
         avatarSrc={cv.person.avatar_url}
         avatarAlt={cv.person.full_name}
+        currentTheme={theme}
+        onToggleTheme={onToggleTheme}
         onOpenPdfModal={() => setIsPdfModalOpen(true)}
       />
 
@@ -62,13 +71,13 @@ export function Home() {
 
         <SummarySection cv={cv} />
 
-        <ShowcaseSection cv={cv} />
-
-        <SpotifySection cv={cv} />
-
         <ExperienceExplorer cv={cv} />
 
         <SkillsSection cv={cv} />
+
+        <ShowcaseSection cv={cv} />
+
+        <SpotifySection cv={cv} />
 
         <EducationSection cv={cv} />
 
@@ -80,11 +89,13 @@ export function Home() {
       <footer className="mx-auto max-w-6xl px-4 pb-8 text-center text-xs text-slate-500">
         <a
           href={attribution.url}
-          className="transition hover:text-slate-300"
+          className="site-footer-link transition hover:text-slate-300"
         >
           {attribution.text}
         </a>
       </footer>
+
+      <ScrollToTopButton />
     </div>
   );
 }

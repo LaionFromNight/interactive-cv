@@ -48,8 +48,8 @@
   },
 
   "showcase": {
-  "title": "Featured work",
-  "subtitle": "A few projects I’m happy to show.",
+  "title": "Selected projects",
+  "subtitle": "A curated mix of personal, technical, freelance and maintained projects.",
   "items": [
       {
         "id": "sh_interactive_cv",

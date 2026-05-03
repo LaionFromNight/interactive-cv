@@ -38,39 +38,15 @@ const cardTone: Record<Tone, string> = {
   other: "border-white/10 hover:border-white/20 hover:shadow-[0_30px_70px_rgba(255,255,255,0.04)]",
 };
 
-const chipTone: Record<Tone, { idle: string; hover: string }> = {
-  amber: {
-    idle: "border-amber-300/20 bg-amber-400/10 text-amber-200/85",
-    hover: "hover:bg-amber-400/15 hover:border-amber-300/35 hover:text-amber-200",
-  },
-  sky: {
-    idle: "border-sky-300/20 bg-sky-400/10 text-sky-200/85",
-    hover: "hover:bg-sky-400/15 hover:border-sky-300/35 hover:text-sky-200",
-  },
-  pink: {
-    idle: "border-pink-300/20 bg-pink-400/10 text-pink-200/85",
-    hover: "hover:bg-pink-400/15 hover:border-pink-300/35 hover:text-pink-200",
-  },
-  emerald: {
-    idle: "border-emerald-300/20 bg-emerald-400/10 text-emerald-200/85",
-    hover: "hover:bg-emerald-400/15 hover:border-emerald-300/35 hover:text-emerald-200",
-  },
-  indigo: {
-    idle: "border-indigo-300/20 bg-indigo-400/10 text-indigo-200/85",
-    hover: "hover:bg-indigo-400/15 hover:border-indigo-300/35 hover:text-indigo-200",
-  },
-  violet: {
-    idle: "border-violet-300/20 bg-violet-400/10 text-violet-200/85",
-    hover: "hover:bg-violet-400/15 hover:border-violet-300/35 hover:text-violet-200",
-  },
-  slate: {
-    idle: "border-white/10 bg-white/5 text-white/75",
-    hover: "hover:bg-white/10 hover:border-white/20 hover:text-white",
-  },
-  other: {
-    idle: "border-white/10 bg-white/5 text-white/75",
-    hover: "hover:bg-white/10 hover:border-white/20 hover:text-white",
-  },
+const chipToneClassName: Record<Tone, string> = {
+  amber: "tone-badge--amber",
+  sky: "tone-badge--sky",
+  pink: "tone-badge--pink",
+  emerald: "tone-badge--emerald",
+  indigo: "tone-badge--indigo",
+  violet: "tone-badge--violet",
+  slate: "tone-badge--slate",
+  other: "tone-badge--slate",
 };
 
 function TitleDot({ tone }: { tone: Tone }) {
@@ -130,11 +106,11 @@ export function SkillsSection({ cv }: { cv: CV }) {
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((t) => {
                   const tone = g.tone ?? "other";
-                  const base = "rounded-full border px-3 py-1 text-xs transition";
+                  const base = "tone-badge tone-badge--interactive rounded-full border px-3 py-1 text-xs font-medium transition";
                   return (
                     <span
                       key={t.id}
-                      className={`${base} ${chipTone[tone].idle} ${chipTone[tone].hover}`}
+                      className={`${base} ${chipToneClassName[tone]}`}
                       title={(t.tags ?? []).join(", ")}
                     >
                       {t.name}

@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>%SEO_TITLE%</title>
+    <script>
+      (() => {
+        const STORAGE_KEY = "interactive-cv-theme";
+        const savedTheme = window.localStorage.getItem(STORAGE_KEY);
+        const theme = savedTheme === "light" ? "light" : "dark";
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.add(`theme-${theme}`);
+      })();
+    </script>
     <style>
       .sr-only {
         position: absolute;
@@ -18,7 +27,7 @@
       }
     </style>
   </head>
-  <body>
+  <body class="theme-dark">
     <main class="sr-only" id="static-profile">
       <h1>Lukasz Komur</h1>
       <p>Software Engineer / Senior Backend Engineer / Solution Architect</p>

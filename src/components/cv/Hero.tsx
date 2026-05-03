@@ -23,11 +23,11 @@ type Interest = {
 };
 
 const interestToneClassName: Record<InterestTone, string> = {
-  notInterested: "border-red-300/35 bg-red-400/10 text-red-200",
-  maybe: "border-amber-300/40 bg-amber-400/10 text-amber-200",
-  looking: "border-sky-300/35 bg-sky-400/10 text-sky-200",
-  ideal: "border-emerald-300/30 bg-emerald-400/10 text-emerald-200",
-  neutral: "border-white/10 bg-white/5 text-white/70",
+  notInterested: "tone-badge tone-badge--rose",
+  maybe: "tone-badge tone-badge--amber",
+  looking: "tone-badge tone-badge--sky",
+  ideal: "tone-badge tone-badge--emerald",
+  neutral: "tone-badge tone-badge--slate",
 };
 
 type HeroProps = {
@@ -188,7 +188,7 @@ export function Hero({
           <span
             key={interest.id}
             className={[
-              "rounded-full border px-3 py-1 text-xs",
+              "rounded-full border px-3 py-1 text-xs font-medium",
               interestToneClassName[interest.tone],
             ].join(" ")}
           >
@@ -199,7 +199,7 @@ export function Hero({
 
       <div className="mt-10 flex flex-wrap gap-3">
         <a
-          className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-white/90"
+          className="site-primary-cta rounded-xl px-5 py-3 text-sm font-semibold"
           href="#experience"
         >
           Browse experience

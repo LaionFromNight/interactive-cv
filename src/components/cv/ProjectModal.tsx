@@ -34,20 +34,20 @@ export function ProjectModal({
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
-      <div className="space-y-6">
-        <div className="text-sm text-white/70">
+      <div className="project-modal-content space-y-6">
+        <div className="project-modal-meta text-sm text-white/70">
           <div>{formatRange(p.time_range.start, p.time_range.end)}</div>
           <div>{[company, client, p.status].filter(Boolean).join(" • ")}</div>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-white">Description</h4>
-          <p className="mt-2 text-sm leading-6 text-white/70">{p.description}</p>
+          <h4 className="project-modal-heading text-sm font-semibold text-white">Description</h4>
+          <p className="project-modal-copy mt-2 text-sm leading-6 text-white/70">{p.description}</p>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-white">Responsibilities</h4>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
+          <h4 className="project-modal-heading text-sm font-semibold text-white">Responsibilities</h4>
+          <ul className="project-modal-list mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
             {p.responsibilities.map((r) => (
               <li key={r}>{r}</li>
             ))}
@@ -56,8 +56,8 @@ export function ProjectModal({
 
         {p.highlights?.length ? (
           <div>
-            <h4 className="text-sm font-semibold text-white">Highlights</h4>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
+            <h4 className="project-modal-heading text-sm font-semibold text-white">Highlights</h4>
+            <ul className="project-modal-list mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
               {p.highlights.map((h) => (
                 <li key={h}>{h}</li>
               ))}
@@ -66,15 +66,15 @@ export function ProjectModal({
         ) : null}
 
         <div>
-          <h4 className="text-sm font-semibold text-white">Domains / Roles</h4>
+          <h4 className="project-modal-heading text-sm font-semibold text-white">Domains / Roles</h4>
           <div className="mt-2 flex flex-wrap gap-2">
             {p.domain_ids.map((d) => (
-              <span key={d} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+              <span key={d} className="project-modal-pill rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
                 {idx.domains[d]?.name ?? d}
               </span>
             ))}
             {p.roles.map((r) => (
-              <span key={r} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+              <span key={r} className="project-modal-pill rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
                 {idx.roles[r]?.name ?? r}
               </span>
             ))}
@@ -82,7 +82,7 @@ export function ProjectModal({
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-white">Tech (click to filter)</h4>
+          <h4 className="project-modal-heading text-sm font-semibold text-white">Tech (click to filter)</h4>
           <div className="mt-2 flex flex-wrap gap-2">
             {[...p.tech_usage].sort((a, b) => b.usage - a.usage).map((t) => (
               <Chip key={t.tech_id} onClick={() => onToggleTech(t.tech_id)}>
