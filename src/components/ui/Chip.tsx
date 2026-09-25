@@ -9,16 +9,15 @@ export function Chip({
   active?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
+  const className = [
+    "chip rounded-full border px-3 py-1 text-xs font-medium transition",
+    active ? "chip-active" : "",
+  ].join(" ");
+
+  if (!onClick) return <span className={className}>{children}</span>;
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        "chip rounded-full border px-3 py-1 text-xs font-semibold transition",
-        "focus:outline-none focus:ring-2 focus:ring-white/20",
-        active ? "chip-active" : "chip-idle",
-      ].join(" ")}
-    >
+    <button type="button" onClick={onClick} className={className}>
       {children}
     </button>
   );

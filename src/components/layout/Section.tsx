@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export function Section({
   id,
-  className,
+  className = "py-16 md:py-24",
   children,
 }: {
   id?: string;

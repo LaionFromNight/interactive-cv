@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Avatar } from "../ui/Avatar";
+import { CloseIcon, DownloadIcon, MenuIcon, MoonIcon, SunIcon } from "../ui/Icons";
 
 type NavItem = { id: string; label: string; href: string; trackActive?: boolean };
 type StaticPageNavItem = { label: string; description: string; href: string };
@@ -29,90 +31,125 @@ const useActiveSection = (ids: string[]) => {
   useEffect(() => {
     if (!ids.length) return;
 
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    if (!els.length) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight * 0.35;
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      setActive(atBottom ? ids[ids.length - 1] : current);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
 
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
-
-        if (visible?.target?.id) setActive(visible.target.id);
-      },
-      { rootMargin: "-30% 0px -60% 0px", threshold: [0.1, 0.2, 0.35, 0.5, 0.75] }
-    );
-
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [ids]);
 
   return active;
 };
 
+/** Writes scroll progress (0..1) into a CSS variable to avoid re-rendering on scroll. */
+const useScrollProgress = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      ref.current?.style.setProperty("--progress", String(progress));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return ref;
+};
+
 function StaticPagesNav({
   pages,
   label,
-  variant,
 }: {
   pages: StaticPageNavItem[];
   label: string;
-  variant: "desktop" | "mobile";
 }) {
   if (pages.length === 0) return null;
 
-  const isMobile = variant === "mobile";
   const singlePage = pages[0];
-  const linkClassName = isMobile
-    ? "rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
-    : "transition text-white/70 hover:text-white";
 
   if (pages.length === 1 && singlePage) {
     return (
-      <a className={linkClassName} href={singlePage.href}>
+      <a className="nav-link" href={singlePage.href}>
         {singlePage.label}
       </a>
     );
   }
 
   return (
-    <details className={`nav-static-pages group relative ${isMobile ? "nav-static-pages-mobile" : "nav-static-pages-desktop"}`}>
-      <summary
-        className={[
-          "flex cursor-pointer list-none items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 [&::-webkit-details-marker]:hidden",
-          isMobile
-            ? "nav-static-pages-summary-mobile rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
-            : "text-white/70 transition hover:text-white",
-        ].join(" ")}
-      >
+    <details className="group relative">
+      <summary className="nav-link flex cursor-pointer list-none items-center gap-1.5 [&::-webkit-details-marker]:hidden">
         {label}
         <span
           aria-hidden="true"
-          className="h-1.5 w-1.5 rotate-45 border-b border-r border-white/45 transition group-open:-rotate-135"
+          className="mb-0.5 h-1.5 w-1.5 rotate-45 border-b border-r border-current transition group-open:translate-y-0.5 group-open:-rotate-135"
         />
       </summary>
-      <div
-        className={[
-          "nav-static-pages-menu absolute right-0 top-full z-50 mt-3 rounded-xl border border-white/10 bg-black/90 p-2 shadow-2xl shadow-black/40 backdrop-blur",
-          isMobile ? "w-[min(20rem,calc(100vw-2rem))]" : "w-80",
-        ].join(" ")}
-      >
+      <div className="nav-static-pages-menu absolute right-0 top-full z-50 mt-3 w-80 rounded-2xl p-2">
         {pages.map((page) => (
           <a
             key={page.href}
-            className="block rounded-lg px-3 py-3 text-left hover:bg-white/10 focus:bg-white/10 focus:outline-none"
+            className="block rounded-xl px-3 py-3 text-left transition hover:bg-surface-2 focus:bg-surface-2 focus:outline-none"
             href={page.href}
           >
-            <span className="block text-sm font-semibold text-white">
-              {page.label}
-            </span>
-            <span className="mt-1 block text-xs leading-5 text-white/60">
-              {page.description}
-            </span>
+            <span className="block text-sm font-semibold text-fg">{page.label}</span>
+            <span className="mt-1 block text-xs leading-5 text-muted">{page.description}</span>
           </a>
         ))}
       </div>
     </details>
+  );
+}
+
+function ThemeToggle({
+  theme,
+  onToggle,
+}: {
+  theme: "dark" | "light";
+  onToggle?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="icon-btn"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Light mode" : "Dark mode"}
+      onClick={onToggle}
+    >
+      {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+    </button>
   );
 }
 
@@ -133,123 +170,122 @@ export function Nav({
     [items],
   );
   const active = useActiveSection(ids);
+  const progressRef = useScrollProgress();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   return (
-    <header className="nav-header sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur">
-      <div className="nav-inner mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        {/* Brand */}
-        <a href="#about" className="nav-brand flex items-center gap-3">
-          {avatarSrc ? (
-            <img
+    <>
+      <div ref={progressRef} className="scroll-progress" aria-hidden="true" />
+
+      <header className="sticky top-0 z-50 px-3 pt-3 md:px-4">
+        <div className="nav-shell mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 rounded-2xl pl-3 pr-2 md:pl-4">
+          <a href="#about" className="flex min-w-0 items-center gap-3" onClick={() => setMenuOpen(false)}>
+            <Avatar
               src={avatarSrc}
-              alt={avatarAlt ?? ownerName}
-              className="h-9 w-9 rounded-xl object-cover ring-1 ring-white/10"
-              loading="lazy"
+              name={avatarAlt ?? ownerName}
+              className="h-9 w-9 shrink-0 rounded-xl ring-1 ring-line"
+              textClassName="text-xs"
             />
-          ) : (
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-amber-400/80 to-emerald-400/60 ring-1 ring-white/10" />
-          )}
-
-          <div className="leading-tight">
-            <p className="text-sm font-semibold tracking-tight">{ownerName}</p>
-            <p className="text-xs text-white/60">{subtitle}</p>
-          </div>
-        </a>
-
-        {/* Links */}
-        <nav className="hidden items-center gap-6 text-sm md:flex">
-          {items.map((it) => {
-            const isActive = it.trackActive === false ? false : it.id === active;
-            return (
-              <a
-                key={it.id}
-                href={it.href}
-                className={`transition ${isActive ? "text-white" : "text-white/70 hover:text-white"}`}
-                aria-current={isActive ? "page" : undefined}
-              >
-                {it.label}
-              </a>
-            );
-          })}
-          <StaticPagesNav
-            pages={staticPages}
-            label={staticPagesNavLabel}
-            variant="desktop"
-          />
-        </nav>
-
-        <div className="nav-actions-desktop hidden items-center gap-2 md:flex">
-          <button
-            type="button"
-            className="nav-theme-toggle"
-            aria-label={
-              currentTheme === "dark"
-                ? "Switch to light mode"
-                : "Switch to dark mode"
-            }
-            onClick={onToggleTheme}
-          >
-            <span className="nav-theme-toggle-indicator" aria-hidden="true" />
-            <span className="nav-theme-toggle-label">
-              {currentTheme === "dark" ? "Light mode" : "Dark mode"}
-            </span>
-          </button>
-          <button
-            type="button"
-            className="nav-secondary-link rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
-            onClick={onOpenPdfModal}
-          >
-            Generate CV
-          </button>
-          <a
-            className="nav-primary-link rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
-            href="#experience"
-          >
-            Browse projects
+            <div className="min-w-0 leading-tight">
+              <p className="truncate font-display text-sm font-semibold tracking-tight text-fg">{ownerName}</p>
+              <p className="truncate text-xs text-subtle">{subtitle}</p>
+            </div>
           </a>
-        </div>
 
-        <div className="nav-actions-mobile md:hidden">
-          <div className="nav-actions-mobile-main">
-            <StaticPagesNav
-              pages={staticPages}
-              label={staticPagesNavLabel}
-              variant="mobile"
-            />
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+            {items.map((it) => {
+              const isActive = it.trackActive === false ? false : it.id === active;
+              return (
+                <a
+                  key={it.id}
+                  href={it.href}
+                  className="nav-link"
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {it.label}
+                </a>
+              );
+            })}
+            <StaticPagesNav pages={staticPages} label={staticPagesNavLabel} />
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <ThemeToggle theme={currentTheme} onToggle={onToggleTheme} />
             <button
               type="button"
-              className="nav-secondary-link rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 hover:bg-white/10"
+              className="btn btn-primary btn-sm hidden sm:inline-flex"
               onClick={onOpenPdfModal}
             >
-              Generate CV
+              <DownloadIcon className="h-4 w-4" />
+              Get CV
             </button>
-            <a
-              className="nav-primary-link rounded-lg bg-white px-3 py-2 text-sm font-semibold text-black hover:bg-white/90"
-              href="#experience"
-            >
-              Browse projects
-            </a>
-          </div>
-
-          <div className="nav-actions-mobile-theme">
             <button
               type="button"
-              className="nav-theme-toggle"
-              aria-label={
-                currentTheme === "dark"
-                  ? "Switch to light mode"
-                  : "Switch to dark mode"
-              }
-              onClick={onToggleTheme}
+              className="icon-btn md:hidden"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMenuOpen((v) => !v)}
             >
-              <span className="nav-theme-toggle-indicator" aria-hidden="true" />
-              <span className="nav-theme-toggle-label">
-                {currentTheme === "dark" ? "Light mode" : "Dark mode"}
-              </span>
+              {menuOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
           </div>
         </div>
-      </div>
-    </header>
+
+        {menuOpen ? (
+          <div
+            id="mobile-menu"
+            className="nav-shell mx-auto mt-2 max-w-6xl rounded-2xl p-2 md:hidden"
+            style={{ animation: "popIn 260ms cubic-bezier(0.22, 1, 0.36, 1)" }}
+          >
+            <nav className="grid gap-1" aria-label="Mobile">
+              {items.map((it) => (
+                <a
+                  key={it.id}
+                  href={it.href}
+                  className="rounded-xl px-4 py-3 text-sm font-medium text-fg transition hover:bg-surface-2"
+                  aria-current={it.id === active ? "page" : undefined}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {it.label}
+                </a>
+              ))}
+              {staticPages.length ? (
+                <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-[0.14em] text-subtle">
+                  {staticPagesNavLabel}
+                </p>
+              ) : null}
+              {staticPages.map((page) => (
+                <a
+                  key={page.href}
+                  href={page.href}
+                  className="rounded-xl px-4 py-3 text-sm text-muted transition hover:bg-surface-2 hover:text-fg"
+                >
+                  {page.label}
+                </a>
+              ))}
+              <button
+                type="button"
+                className="btn btn-primary mt-2 w-full"
+                onClick={() => {
+                  setMenuOpen(false);
+                  onOpenPdfModal?.();
+                }}
+              >
+                <DownloadIcon className="h-4 w-4" />
+                Generate CV (PDF)
+              </button>
+            </nav>
+          </div>
+        ) : null}
+      </header>
+    </>
   );
 }

@@ -4,6 +4,10 @@ import { formatRange } from "../../lib/cvUtils";
 import { Modal } from "../ui/Modal";
 import { Chip } from "../ui/Chip";
 
+function Heading({ children }: { children: string }) {
+  return <h4 className="field-label">{children}</h4>;
+}
+
 export function ProjectModal({
   cv,
   idx,
@@ -33,48 +37,54 @@ export function ProjectModal({
   const client = getClientLabel(p.client_id);
 
   return (
-    <Modal open={open} title={title} onClose={onClose}>
-      <div className="project-modal-content space-y-6">
-        <div className="project-modal-meta text-sm text-white/70">
-          <div>{formatRange(p.time_range.start, p.time_range.end)}</div>
-          <div>{[company, client, p.status].filter(Boolean).join(" • ")}</div>
+    <Modal
+      open={open}
+      title={title}
+      subtitle={[formatRange(p.time_range.start, p.time_range.end), company, client, p.status].filter(Boolean).join(" · ")}
+      onClose={onClose}
+    >
+      <div className="space-y-7">
+        <div>
+          <Heading>Description</Heading>
+          <p className="text-[15px] leading-7 text-fg/90">{p.description}</p>
         </div>
 
         <div>
-          <h4 className="project-modal-heading text-sm font-semibold text-white">Description</h4>
-          <p className="project-modal-copy mt-2 text-sm leading-6 text-white/70">{p.description}</p>
-        </div>
-
-        <div>
-          <h4 className="project-modal-heading text-sm font-semibold text-white">Responsibilities</h4>
-          <ul className="project-modal-list mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
+          <Heading>Responsibilities</Heading>
+          <ul className="space-y-2">
             {p.responsibilities.map((r) => (
-              <li key={r}>{r}</li>
+              <li key={r} className="flex gap-3 text-sm leading-6 text-muted">
+                <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                {r}
+              </li>
             ))}
           </ul>
         </div>
 
         {p.highlights?.length ? (
           <div>
-            <h4 className="project-modal-heading text-sm font-semibold text-white">Highlights</h4>
-            <ul className="project-modal-list mt-2 list-disc space-y-1 pl-5 text-sm text-white/70">
+            <Heading>Highlights</Heading>
+            <ul className="space-y-2">
               {p.highlights.map((h) => (
-                <li key={h}>{h}</li>
+                <li key={h} className="flex gap-3 text-sm leading-6 text-muted">
+                  <span className="shrink-0 text-accent-2" aria-hidden="true">★</span>
+                  {h}
+                </li>
               ))}
             </ul>
           </div>
         ) : null}
 
         <div>
-          <h4 className="project-modal-heading text-sm font-semibold text-white">Domains / Roles</h4>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <Heading>Domains / Roles</Heading>
+          <div className="flex flex-wrap gap-2">
             {p.domain_ids.map((d) => (
-              <span key={d} className="project-modal-pill rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+              <span key={d} className="tone-badge tone-badge--sky rounded-full border px-3 py-1 text-xs font-medium">
                 {idx.domains[d]?.name ?? d}
               </span>
             ))}
             {p.roles.map((r) => (
-              <span key={r} className="project-modal-pill rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+              <span key={r} className="tone-badge tone-badge--violet rounded-full border px-3 py-1 text-xs font-medium">
                 {idx.roles[r]?.name ?? r}
               </span>
             ))}
@@ -82,8 +92,8 @@ export function ProjectModal({
         </div>
 
         <div>
-          <h4 className="project-modal-heading text-sm font-semibold text-white">Tech (click to filter)</h4>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <Heading>Tech — click to filter projects</Heading>
+          <div className="flex flex-wrap gap-2">
             {[...p.tech_usage].sort((a, b) => b.usage - a.usage).map((t) => (
               <Chip key={t.tech_id} onClick={() => onToggleTech(t.tech_id)}>
                 {idx.tech[t.tech_id]?.name ?? t.tech_id} · {t.usage}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ArrowUpIcon } from "../ui/Icons";
 
 function prefersReducedMotion() {
   return (
@@ -36,7 +37,7 @@ export function ScrollToTopButton() {
         });
       }}
     >
-      <span className="scroll-top-button-label">Top</span>
+      <ArrowUpIcon />
     </button>
   );
 }

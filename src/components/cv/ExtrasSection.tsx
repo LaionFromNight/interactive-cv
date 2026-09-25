@@ -1,11 +1,20 @@
 import type { CV } from "../../lib/cvTypes";
 import { SectionHeader } from "../layout/SectionHeader";
+import { Reveal } from "../ui/Reveal";
 
-function Chip({ children }: { children: string }) {
+function Group({ title, items, tone }: { title: string; items: string[]; tone: string }) {
   return (
-    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75">
-      {children}
-    </span>
+    <div className="panel h-full p-6">
+      <p className="font-display text-base font-semibold text-fg">{title}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {items.map((s) => (
+          <span key={s} className={`tone-badge tone-badge--interactive ${tone} rounded-full border px-3.5 py-1.5 text-sm`}>
+            {s}
+          </span>
+        ))}
+        {items.length === 0 ? <span className="text-sm text-muted">No items.</span> : null}
+      </div>
+    </div>
   );
 }
 
@@ -14,31 +23,16 @@ export function ExtrasSection({ cv }: { cv: CV }) {
   const hobbies = cv.extras?.hobbies ?? [];
 
   return (
-    <section id="extras" className="py-12 md:py-16">
-      <SectionHeader title="Beyond work" desc="Soft skills and hobbies." />
+    <section id="extras" className="py-16 md:py-20">
+      <SectionHeader eyebrow="Beyond work" title="Beyond work" desc="Soft skills and what keeps me curious outside of code." />
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition hover:border-white/20 hover:bg-white/[0.06]">
-          <p className="text-sm font-semibold">Soft skills</p>
-
-          <div className="mt-3 flex flex-wrap gap-2">
-            {soft.map((s) => (
-              <Chip key={s}>{s}</Chip>
-            ))}
-            {soft.length === 0 ? <span className="text-sm text-white/60">No items.</span> : null}
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition hover:border-white/20 hover:bg-white/[0.06]">
-          <p className="text-sm font-semibold">Hobbies</p>
-
-          <div className="mt-3 flex flex-wrap gap-2">
-            {hobbies.map((h) => (
-              <Chip key={h}>{h}</Chip>
-            ))}
-            {hobbies.length === 0 ? <span className="text-sm text-white/60">No items.</span> : null}
-          </div>
-        </div>
+      <div className="grid gap-5 md:grid-cols-2">
+        <Reveal>
+          <Group title="Soft skills" items={soft} tone="tone-badge--violet" />
+        </Reveal>
+        <Reveal delay={100}>
+          <Group title="Hobbies" items={hobbies} tone="tone-badge--sky" />
+        </Reveal>
       </div>
     </section>
   );
