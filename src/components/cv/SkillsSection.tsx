@@ -1,5 +1,7 @@
 import type { CV } from "../../lib/cvTypes";
 import { SectionHeader } from "../layout/SectionHeader";
+import { Reveal } from "../ui/Reveal";
+import { trackSpotlight } from "../ui/spotlight";
 
 const GROUPS: { id: string; title: string; tags: string[]; tone: Tone }[] = [
   { id: "backend", title: "Backend", tags: ["backend"], tone: "amber" },
@@ -22,23 +24,7 @@ function pickGroup(tech: TechItem): { id: string; title: string; tone: Tone } {
   return { id: "other", title: "Other", tone: "other" };
 }
 
-const cardTone: Record<Tone, string> = {
-  amber:
-    "border-amber-300/15 hover:border-amber-300/30 hover:shadow-[0_30px_70px_rgba(251,191,36,0.08)]",
-  sky: "border-sky-300/15 hover:border-sky-300/30 hover:shadow-[0_30px_70px_rgba(56,189,248,0.08)]",
-  pink:
-    "border-pink-300/15 hover:border-pink-300/30 hover:shadow-[0_30px_70px_rgba(236,72,153,0.08)]",
-  emerald:
-    "border-emerald-300/15 hover:border-emerald-300/30 hover:shadow-[0_30px_70px_rgba(52,211,153,0.08)]",
-  indigo:
-    "border-indigo-300/15 hover:border-indigo-300/30 hover:shadow-[0_30px_70px_rgba(129,140,248,0.08)]",
-  violet:
-    "border-violet-300/15 hover:border-violet-300/30 hover:shadow-[0_30px_70px_rgba(167,139,250,0.08)]",
-  slate: "border-white/10 hover:border-white/20 hover:shadow-[0_30px_70px_rgba(255,255,255,0.04)]",
-  other: "border-white/10 hover:border-white/20 hover:shadow-[0_30px_70px_rgba(255,255,255,0.04)]",
-};
-
-const chipToneClassName: Record<Tone, string> = {
+const toneRgbVar: Record<Tone, string> = {
   amber: "tone-badge--amber",
   sky: "tone-badge--sky",
   pink: "tone-badge--pink",
@@ -48,25 +34,6 @@ const chipToneClassName: Record<Tone, string> = {
   slate: "tone-badge--slate",
   other: "tone-badge--slate",
 };
-
-function TitleDot({ tone }: { tone: Tone }) {
-  const cls =
-    tone === "amber"
-      ? "bg-amber-300"
-      : tone === "sky"
-        ? "bg-sky-300"
-        : tone === "pink"
-          ? "bg-pink-300"
-          : tone === "emerald"
-            ? "bg-emerald-300"
-            : tone === "indigo"
-              ? "bg-indigo-300"
-              : tone === "violet"
-                ? "bg-violet-300"
-                : "bg-white/40";
-
-  return <span className={`h-2 w-2 rounded-full ${cls} shadow-[0_0_16px_rgba(255,255,255,0.10)]`} />;
-}
 
 export function SkillsSection({ cv }: { cv: CV }) {
   const tech = cv.skills?.tech ?? [];
@@ -86,39 +53,48 @@ export function SkillsSection({ cv }: { cv: CV }) {
   ].filter((x): x is NonNullable<typeof x> => Boolean(x));
 
   return (
-    <section id="skills" className="py-12 md:py-16">
-      <SectionHeader title="Skills" desc="Technologies grouped by area." />
+    <section id="skills" className="py-16 md:py-24">
+      <SectionHeader
+        eyebrow="Skills"
+        title="Tools of the trade"
+        desc={`${tech.length} technologies, grouped by area — from backend and cloud to testing and delivery.`}
+      />
 
-      <div className="grid gap-4 md:grid-cols-3">
-        {ordered.map((g) => (
-          <div
-            key={g.title}
-            className={`group rounded-2xl border bg-white/[0.04] p-5 transition ${cardTone[g.tone]}`}
-          >
-            <div className="flex items-center gap-2">
-              <TitleDot tone={g.tone} />
-              <p className="text-sm font-semibold">{g.title}</p>
-            </div>
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {ordered.map((g, i) => (
+          <Reveal key={g.title} delay={(i % 3) * 90}>
+            <div
+              onPointerMove={trackSpotlight}
+              className={`panel spotlight h-full p-6 hover:-translate-y-1 ${toneRgbVar[g.tone]}`}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span
+                    className="h-2.5 w-2.5 rounded-full"
+                    style={{ background: "rgb(var(--tone-rgb))", boxShadow: "0 0 14px rgba(var(--tone-rgb), 0.8)" }}
+                    aria-hidden="true"
+                  />
+                  <p className="font-display text-base font-semibold text-fg">{g.title}</p>
+                </div>
+                <span className="font-display text-sm tabular-nums text-subtle">{g.items.length}</span>
+              </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              {g.items
-                .slice()
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((t) => {
-                  const tone = g.tone ?? "other";
-                  const base = "tone-badge tone-badge--interactive rounded-full border px-3 py-1 text-xs font-medium transition";
-                  return (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {g.items
+                  .slice()
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((t) => (
                     <span
                       key={t.id}
-                      className={`${base} ${chipToneClassName[tone]}`}
+                      className={`tone-badge tone-badge--interactive rounded-full border px-3 py-1 text-xs font-medium ${toneRgbVar[g.tone]}`}
                       title={(t.tags ?? []).join(", ")}
                     >
                       {t.name}
                     </span>
-                  );
-                })}
+                  ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

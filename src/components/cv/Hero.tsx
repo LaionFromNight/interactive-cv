@@ -1,13 +1,8 @@
-import { useState } from "react";
-import type { CV } from "../../lib/cvTypes";
-import {
-  colorSchemeOptions,
-  consentOptions,
-  defaultCvPdfOptions,
-  templateOptions,
-  type CvPdfOptions,
-} from "../pdf/CvPdfOptions";
-import { Chip } from "../ui/Chip";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import type { CV, CVProfiles } from "../../lib/cvTypes";
+import { Avatar } from "../ui/Avatar";
+import { ArrowRightIcon, DownloadIcon, MailIcon, ProfileIcon } from "../ui/Icons";
+import { Reveal } from "../ui/Reveal";
 
 type InterestTone =
   | "notInterested"
@@ -30,356 +25,266 @@ const interestToneClassName: Record<InterestTone, string> = {
   neutral: "tone-badge tone-badge--slate",
 };
 
-type HeroProps = {
-  cv: CV;
-  isPdfModalOpen: boolean;
-  onOpenPdfModal: () => void;
-  onClosePdfModal: () => void;
-};
+const interests: Interest[] = [
+  // { id: "long-term", label: "Long-term roles", tone: "notInterested" },
+  { id: "part-time", label: "Part-time roles", tone: "maybe" },
+  { id: "short", label: "Short-term projects", tone: "looking" },
+  { id: "mentoring", label: "Mentoring", tone: "ideal" },
+  {
+    id: "nonprofit",
+    label: "Non-profit (animal welfare)",
+    tone: "ideal",
+  },
+];
+
+const focusAreas = [
+  "Backend / Solution Architecture",
+  "System Design",
+  "Cloud / Serverless",
+];
+
+const ROLE_INTERVAL_MS = 2800;
+
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function useCountUp(target: number, ref: RefObject<HTMLElement | null>, durationMs = 1400) {
+  const [animate] = useState(
+    () => !prefersReducedMotion() && typeof IntersectionObserver !== "undefined",
+  );
+  const [value, setValue] = useState(animate ? 0 : target);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !animate) return;
+
+    let frame = 0;
+    const obs = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      obs.disconnect();
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / durationMs);
+        const eased = 1 - Math.pow(1 - t, 3);
+        setValue(Math.round(target * eased));
+        if (t < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    });
+
+    obs.observe(el);
+    return () => {
+      obs.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [target, durationMs, ref, animate]);
+
+  return animate ? value : target;
+}
+
+function Stat({ value, suffix, label }: { value: number; suffix?: string; label: string }) {
+  const ref = useRef<HTMLParagraphElement | null>(null);
+  const counted = useCountUp(value, ref);
+
+  return (
+    <div className="px-4 py-4 text-center sm:text-left">
+      <p
+        ref={ref}
+        className="font-display text-3xl font-semibold tabular-nums text-fg md:text-4xl"
+      >
+        {counted}
+        {suffix ? <span className="text-gradient">{suffix}</span> : null}
+      </p>
+      <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-subtle">{label}</p>
+    </div>
+  );
+}
+
+function RoleRotator({ roles }: { roles: string[] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (roles.length < 2 || prefersReducedMotion()) return;
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % roles.length), ROLE_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, [roles.length]);
+
+  return (
+    <span className="role-rotator" aria-live="off">
+      {roles.map((role, i) => (
+        <span key={role} data-active={i === index ? "true" : "false"} aria-hidden={i !== index}>
+          {role}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export function Hero({
   cv,
-  isPdfModalOpen,
   onOpenPdfModal,
-  onClosePdfModal,
-}: HeroProps) {
-  const [pdfOptions, setPdfOptions] =
-    useState<CvPdfOptions>(defaultCvPdfOptions);
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+}: {
+  cv: CV;
+  onOpenPdfModal: () => void;
+}) {
+  const person = cv.person;
+  const roles = useMemo(
+    () => person.headline.split("/").map((r) => r.trim()).filter(Boolean),
+    [person.headline],
+  );
 
-  const interests: Interest[] = [
-    // { id: "long-term", label: "Long-term roles", tone: "notInterested" },
-    { id: "part-time", label: "Part-time roles", tone: "maybe" },
-    { id: "short", label: "Short-term projects", tone: "looking" },
-    { id: "mentoring", label: "Mentoring", tone: "ideal" },
-    {
-      id: "nonprofit",
-      label: "Non-profit (animal welfare)",
-      tone: "ideal",
-    },
-    {
-      id: "contact",
-      label: "If you have something — reach out",
-      tone: "neutral",
-    },
-  ];
+  const stats = useMemo(() => {
+    const starts = cv.experience_timeline.map((t) => t.start).filter(Boolean).sort();
+    const firstYear = Number.parseInt(starts[0]?.slice(0, 4) ?? "", 10);
+    const years = Number.isFinite(firstYear) ? new Date().getFullYear() - firstYear : 0;
+    const projects = cv.projects.filter((p) => p.public?.show !== false).length;
+    const tech = cv.skills?.tech?.length ?? 0;
+    const companies = cv.companies.length;
+    return { years, projects, tech, companies };
+  }, [cv]);
 
-  const updatePdfOption = <K extends keyof CvPdfOptions>(
-    key: K,
-    value: CvPdfOptions[K],
-  ) => {
-    setPdfOptions((current) => ({
-      ...current,
-      [key]: value,
-    }));
-  };
-
-  const downloadGeneratedPdf = async () => {
-    setIsGeneratingPdf(true);
-
-    try {
-      const { Buffer } = await import("buffer");
-
-      if (typeof globalThis !== "undefined" && !("Buffer" in globalThis)) {
-        (globalThis as typeof globalThis & { Buffer: typeof Buffer }).Buffer =
-          Buffer;
-      }
-
-      const [
-        { pdf },
-        { CvPdfDocument },
-        { PDFDocument },
-        { getPdfDocumentMetadata },
-      ] = await Promise.all([
-        import("@react-pdf/renderer"),
-        import("../pdf/CvPdfDocument"),
-        import("pdf-lib"),
-        import("../pdf/PdfDocumentMetadata"),
-      ]);
-
-      const rawBlob = await pdf(
-        <CvPdfDocument cv={cv} options={pdfOptions} />,
-      ).toBlob();
-
-      const metadata = getPdfDocumentMetadata(cv);
-
-      const arrayBuffer = await rawBlob.arrayBuffer();
-      const pdfDocument = await PDFDocument.load(arrayBuffer);
-
-      pdfDocument.setTitle(metadata.title);
-      pdfDocument.setAuthor(metadata.author);
-      pdfDocument.setSubject(metadata.subject);
-      pdfDocument.setKeywords(
-        metadata.keywords
-          .split(",")
-          .map((keyword) => keyword.trim())
-          .filter(Boolean),
-      );
-      pdfDocument.setCreator(metadata.creator);
-      pdfDocument.setProducer(metadata.producer);
-      pdfDocument.setModificationDate(new Date());
-
-      const pdfBytes = await pdfDocument.save();
-
-      const finalBlob = new Blob([pdfBytes.buffer as ArrayBuffer], {
-        type: "application/pdf",
-      });
-
-      const url = URL.createObjectURL(finalBlob);
-
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = "Lukasz-Komur-CV.pdf";
-      anchor.rel = "noopener noreferrer";
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-
-      window.setTimeout(() => {
-        URL.revokeObjectURL(url);
-      }, 1000);
-
-      onClosePdfModal();
-    } catch (error) {
-      console.error("[Hero] PDF generation failed", error);
-    } finally {
-      setIsGeneratingPdf(false);
-    }
-  };
+  const profiles: CVProfiles[] = Array.isArray(person.profiles) ? person.profiles : [];
+  const [firstName, ...restName] = person.full_name.split(" ");
 
   return (
-    <section className="pb-10 pt-16 md:pb-16 md:pt-24" id="about">
-      <div className="mt-8 flex flex-wrap items-center gap-6">
-        {cv.person.avatar_url ? (
-          <img
-            src={cv.person.avatar_url}
-            alt={cv.person.full_name}
-            className="h-24 w-24 rounded-2xl border border-white/10 object-cover"
-            loading="lazy"
-          />
-        ) : null}
+    <section className="relative pb-12 pt-12 md:pb-20 md:pt-20" id="about">
+      <div className="grid items-center gap-12 lg:grid-cols-[1.25fr_1fr]">
+        <div>
+          <Reveal>
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-2 px-3.5 py-1.5 text-xs font-medium text-muted backdrop-blur">
+              <span className="pulse-dot" aria-hidden="true" />
+              Available for selected projects & mentoring
+            </div>
+          </Reveal>
 
-        <div className="min-w-[260px]">
-          <h1 className="text-4xl font-semibold md:text-6xl">
-            {cv.person.full_name}
-          </h1>
-          <p className="mt-3 text-lg text-white/80 md:text-xl">
-            {cv.person.headline}
-          </p>
+          <Reveal delay={80}>
+            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.02] tracking-tight text-fg sm:text-6xl md:text-7xl">
+              {firstName}{" "}
+              <span className="text-gradient">{restName.join(" ")}</span>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <p className="mt-5 font-display text-xl font-medium text-fg/90 md:text-2xl">
+              <span className="text-subtle">I’m a </span>
+              <RoleRotator roles={roles} />
+            </p>
+            <p className="sr-only">{person.headline}</p>
+          </Reveal>
+
+          <Reveal delay={240}>
+            <p className="mt-6 max-w-xl text-base leading-8 text-muted md:text-lg">
+              {person.bio_short ?? "—"}
+            </p>
+          </Reveal>
+
+          <Reveal delay={320}>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a className="btn btn-primary" href="#contact">
+                <MailIcon />
+                Let’s talk
+              </a>
+              <button type="button" className="btn btn-secondary" onClick={onOpenPdfModal}>
+                <DownloadIcon />
+                Download CV
+              </button>
+              <a className="btn btn-ghost group" href="#experience">
+                Browse experience
+                <ArrowRightIcon className="transition group-hover:translate-x-1" />
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal delay={400}>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              {profiles.map((p) => (
+                <a
+                  key={p.id}
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="icon-btn"
+                  aria-label={p.label}
+                  title={p.label}
+                >
+                  <ProfileIcon id={p.id} />
+                </a>
+              ))}
+              <a
+                href={`mailto:${person.contacts.email}`}
+                className="icon-btn"
+                aria-label="Email"
+                title={person.contacts.email}
+              >
+                <MailIcon />
+              </a>
+              <span className="ml-1 text-sm text-subtle">
+                {(person.spoken_languages ?? []).join(" · ")}
+              </span>
+            </div>
+          </Reveal>
         </div>
-      </div>
 
-      <p className="mt-6 max-w-3xl text-base leading-7 text-white/70 md:text-lg">
-        {cv.person.bio_short ?? "—"}
-      </p>
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        <Chip>Polish</Chip>
-        <Chip>English</Chip>
-        <Chip>Backend / Solution Architecture</Chip>
-        <Chip>System Design</Chip>
-        <Chip>Cloud / Serverless</Chip>
-      </div>
-
-      <div className="mt-6 inline-flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-white/75">
-        <span className="text-white/60">Currently open for:</span>
-
-        {interests.map((interest) => (
-          <span
-            key={interest.id}
-            className={[
-              "rounded-full border px-3 py-1 text-xs font-medium",
-              interestToneClassName[interest.tone],
-            ].join(" ")}
-          >
-            {interest.label}
-          </span>
-        ))}
-      </div>
-
-      <div className="mt-10 flex flex-wrap gap-3">
-        <a
-          className="site-primary-cta rounded-xl px-5 py-3 text-sm font-semibold"
-          href="#experience"
-        >
-          Browse experience
-        </a>
-
-        <a
-          className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/85 hover:bg-white/10"
-          href="#contact"
-        >
-          Contact me
-        </a>
-
-        <button
-          type="button"
-          className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/85 hover:bg-white/10"
-          onClick={onOpenPdfModal}
-          title="Generate PDF from JSON"
-        >
-          Generate CV
-        </button>
-      </div>
-
-      {isPdfModalOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-slate-950 p-6 shadow-2xl">
-            <div className="mb-6 flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-semibold text-white">
-                  Generate PDF
-                </h2>
-                <p className="mt-1 text-sm text-white/50">
-                  Choose consent clause, template, and color scheme before
-                  generating your CV.
-                </p>
+        <Reveal delay={200} className="relative">
+          <div className="float-slow relative mx-auto max-w-sm">
+            <div className="panel gradient-border rounded-[2rem] p-6">
+              <div className="flex items-center gap-4">
+                <div className="avatar-ring shrink-0">
+                  <Avatar
+                    src={person.avatar_url}
+                    name={person.full_name}
+                    className="h-20 w-20 rounded-[1.8rem]"
+                    textClassName="text-2xl"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display text-lg font-semibold text-fg">{person.full_name}</p>
+                  <p className="mt-0.5 text-sm text-muted">{roles[0]}</p>
+                </div>
               </div>
 
-              <button
-                type="button"
-                className="rounded-xl border border-white/10 px-3 py-2 text-sm text-white/70 hover:bg-white/10"
-                onClick={onClosePdfModal}
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <label className="block">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50">
-                  Consent clause
-                </span>
-
-                <select
-                  className="w-full rounded-xl border border-white/10 bg-slate-900 px-3 py-3 text-sm text-white outline-none hover:bg-slate-800"
-                  value={pdfOptions.consentStandard}
-                  onChange={(event) =>
-                    updatePdfOption(
-                      "consentStandard",
-                      event.target.value as CvPdfOptions["consentStandard"],
-                    )
-                  }
-                >
-                  {consentOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
+              <div className="mt-6">
+                <p className="field-label">Focus</p>
+                <div className="flex flex-wrap gap-2">
+                  {focusAreas.map((area) => (
+                    <span key={area} className="chip rounded-full border px-3 py-1 text-xs font-medium">
+                      {area}
+                    </span>
                   ))}
-                </select>
+                </div>
+              </div>
 
-                <p className="mt-2 text-xs text-white/45">
-                  {
-                    consentOptions.find(
-                      (option) => option.id === pdfOptions.consentStandard,
-                    )?.description
-                  }
-                </p>
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50">
-                  Company name
-                </span>
-
-                <input
-                  className="w-full rounded-xl border border-white/10 bg-slate-900 px-3 py-3 text-sm text-white outline-none placeholder:text-white/30 hover:bg-slate-800"
-                  value={pdfOptions.companyName}
-                  onChange={(event) =>
-                    updatePdfOption("companyName", event.target.value)
-                  }
-                  placeholder="Optional, e.g. Company Name"
-                />
-
-                <p className="mt-2 text-xs text-white/45">
-                  Used only when a consent clause is selected.
-                </p>
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50">
-                  PDF template
-                </span>
-
-                <select
-                  className="w-full rounded-xl border border-white/10 bg-slate-900 px-3 py-3 text-sm text-white outline-none hover:bg-slate-800"
-                  value={pdfOptions.templateId}
-                  onChange={(event) =>
-                    updatePdfOption(
-                      "templateId",
-                      event.target.value as CvPdfOptions["templateId"],
-                    )
-                  }
-                >
-                  {templateOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
+              <div className="mt-5">
+                <p className="field-label">Currently open for</p>
+                <div className="flex flex-wrap gap-2">
+                  {interests.map((interest) => (
+                    <span
+                      key={interest.id}
+                      className={`rounded-full border px-3 py-1 text-xs font-medium ${interestToneClassName[interest.tone]}`}
+                    >
+                      {interest.label}
+                    </span>
                   ))}
-                </select>
-
-                <p className="mt-2 text-xs text-white/45">
-                  {
-                    templateOptions.find(
-                      (option) => option.id === pdfOptions.templateId,
-                    )?.description
-                  }
-                </p>
-              </label>
-
-              <label className="block">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50">
-                  Color scheme
-                </span>
-
-                <select
-                  className="w-full rounded-xl border border-white/10 bg-slate-900 px-3 py-3 text-sm text-white outline-none hover:bg-slate-800"
-                  value={pdfOptions.colorSchemeId}
-                  onChange={(event) =>
-                    updatePdfOption(
-                      "colorSchemeId",
-                      event.target.value as CvPdfOptions["colorSchemeId"],
-                    )
-                  }
-                >
-                  {colorSchemeOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-
-                <p className="mt-2 text-xs text-white/45">
-                  {
-                    colorSchemeOptions.find(
-                      (option) => option.id === pdfOptions.colorSchemeId,
-                    )?.description
-                  }
-                </p>
-              </label>
-            </div>
-
-            <div className="mt-6 flex flex-wrap justify-end gap-3">
-              <button
-                type="button"
-                className="rounded-xl border border-white/10 px-5 py-3 text-sm font-semibold text-white/75 hover:bg-white/10"
-                onClick={onClosePdfModal}
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60"
-                onClick={downloadGeneratedPdf}
-                disabled={isGeneratingPdf}
-              >
-                {isGeneratingPdf ? "Generating..." : "Generate PDF"}
-              </button>
+                </div>
+                <p className="mt-3 text-xs text-subtle">Have something else in mind? Reach out.</p>
+              </div>
             </div>
           </div>
+        </Reveal>
+      </div>
+
+      <Reveal delay={450}>
+        <div className="panel mt-14 grid grid-cols-2 divide-line md:grid-cols-4 md:divide-x">
+          <Stat value={stats.years} suffix="+" label="Years in software" />
+          <Stat value={stats.projects} label="Commercial projects" />
+          <Stat value={stats.companies} label="Companies" />
+          <Stat value={stats.tech} suffix="+" label="Technologies" />
         </div>
-      ) : null}
+      </Reveal>
     </section>
   );
 }

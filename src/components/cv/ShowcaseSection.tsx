@@ -1,8 +1,9 @@
 import { useEffect, useId, useRef, useState, type WheelEvent } from "react";
 import type { CV } from "../../lib/cvTypes";
 import { Section } from "../layout/Section";
-import { Chip } from "../ui/Chip";
-import { Card } from "../ui/Card";
+import { SectionHeader } from "../layout/SectionHeader";
+import { Reveal } from "../ui/Reveal";
+import { trackSpotlight } from "../ui/spotlight";
 
 type ShowcaseItem = {
   id: string;
@@ -146,34 +147,38 @@ export function ShowcaseSection({ cv }: { cv: CV }) {
   if (!items.length) return null;
 
   return (
-    <Section id="showcase" className="py-12 md:py-16">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="featured-carousel-header">
-          <div className="featured-carousel-copy">
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
-              {showcase?.title ?? "Featured work"}
-            </h2>
-            <p className="mt-2 text-sm text-white/70">
-              {showcase?.subtitle ?? "A few projects I’m happy to show."}
-            </p>
-          </div>
-        </div>
+    <Section id="showcase">
+      <SectionHeader
+        eyebrow="Showcase"
+        title={showcase?.title ?? "Featured work"}
+        desc={showcase?.subtitle ?? "A few projects I’m happy to show."}
+        aside={
+          items.length > 1 ? (
+            <div className="hidden items-center gap-2 md:flex" aria-hidden="true">
+              {items.map((item, index) => (
+                <span
+                  key={item.id}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${
+                    index === activeIndex ? "w-8 bg-accent" : "w-1.5 bg-line-strong"
+                  }`}
+                />
+              ))}
+            </div>
+          ) : null
+        }
+      />
 
+      <Reveal>
         <div className="featured-carousel" role="region" aria-label="Featured work carousel">
           <button
             type="button"
-            className="featured-carousel-button featured-carousel-button-prev"
+            className="featured-carousel-button featured-carousel-button-prev icon-btn h-12 w-12"
             aria-label="Previous featured project"
             aria-controls={trackId}
             onClick={() => scrollTrack(-1)}
             disabled={!canScrollPrev}
           >
-            <span className="featured-carousel-button-icon" aria-hidden="true">
-              ←
-            </span>
-            <span className="featured-carousel-button-label" aria-hidden="true">
-              Prev
-            </span>
+            <span aria-hidden="true">←</span>
           </button>
 
           <div
@@ -186,83 +191,77 @@ export function ShowcaseSection({ cv }: { cv: CV }) {
               const offset = Math.max(-2, Math.min(2, index - activeIndex));
 
               return (
-              <a
-                key={item.id}
-                href={item.url}
-                target="_blank"
-                rel="noreferrer"
-                className="featured-carousel-card group block focus:outline-none"
-                data-active={index === activeIndex ? "true" : "false"}
-                data-offset={String(offset)}
-                title={item.url}
-              >
-                <Card
-                  title={item.title}
-                  subtitle={undefined}
-                  onClick={undefined}
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="featured-carousel-card group block rounded-[1.5rem]"
+                  data-active={index === activeIndex ? "true" : "false"}
+                  data-offset={String(offset)}
+                  title={item.url}
                 >
-                  {/* Image */}
-                  <div className="featured-carousel-media relative overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-                    <div className="aspect-video w-full">
-                      {item.image_url ? (
-                        <img
-                          src={item.image_url}
-                          alt={item.image_alt ?? item.title}
-                          className="featured-carousel-image h-full w-full object-contain object-center"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-sm text-white/50">
-                          No screenshot
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="mt-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <p className="text-sm font-semibold text-white">{item.title}</p>
-                      <span className="text-white/40 transition group-hover:text-white/70">↗</span>
-                    </div>
-
-                    <p className="mt-2 text-sm leading-6 text-white/70">{item.teaser}</p>
-
-                    {item.tags?.length ? (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {item.tags.map((t) => (
-                          <Chip key={`${item.id}-${t}`}>{t}</Chip>
-                        ))}
+                  <div className="panel spotlight h-full p-4" onPointerMove={trackSpotlight}>
+                    <div className="relative overflow-hidden rounded-2xl border border-line bg-bg-elev">
+                      <div className="aspect-video w-full">
+                        {item.image_url ? (
+                          <img
+                            src={item.image_url}
+                            alt={item.image_alt ?? item.title}
+                            className="featured-carousel-image h-full w-full object-cover object-top"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm text-subtle">
+                            No screenshot
+                          </div>
+                        )}
                       </div>
-                    ) : null}
+                    </div>
 
-                    <div className="mt-4 text-xs text-white/40">
-                      {getHostnameLabel(item.url)}
+                    <div className="px-2 pb-2 pt-5">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-display text-xl font-semibold text-fg">{item.title}</h3>
+                        <span className="text-subtle transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent">
+                          ↗
+                        </span>
+                      </div>
+
+                      <p className="mt-2 text-sm leading-6 text-muted">{item.teaser}</p>
+
+                      {item.tags?.length ? (
+                        <div className="mt-4 flex flex-wrap gap-1.5">
+                          {item.tags.map((t) => (
+                            <span
+                              key={`${item.id}-${t}`}
+                              className="rounded-md bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-muted ring-1 ring-line"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      <p className="mt-4 text-xs font-medium text-accent">{getHostnameLabel(item.url)}</p>
                     </div>
                   </div>
-                </Card>
-              </a>
+                </a>
               );
             })}
           </div>
 
           <button
             type="button"
-            className="featured-carousel-button featured-carousel-button-next"
+            className="featured-carousel-button featured-carousel-button-next icon-btn h-12 w-12"
             aria-label="Next featured project"
             aria-controls={trackId}
             onClick={() => scrollTrack(1)}
             disabled={!canScrollNext}
           >
-            <span className="featured-carousel-button-label" aria-hidden="true">
-              Next
-            </span>
-            <span className="featured-carousel-button-icon" aria-hidden="true">
-              →
-            </span>
+            <span aria-hidden="true">→</span>
           </button>
         </div>
-      </div>
+      </Reveal>
     </Section>
   );
 }

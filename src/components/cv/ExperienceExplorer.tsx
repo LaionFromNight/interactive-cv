@@ -7,6 +7,7 @@ import { Timeline } from "./Timeline";
 import { ProjectsGrid } from "./ProjectsGrid";
 import { ProjectModal } from "./ProjectModal";
 import { Section } from "../layout/Section";
+import { SectionHeader } from "../layout/SectionHeader";
 
 export type ExperienceFilters = {
   q: string;
@@ -214,11 +215,12 @@ export function ExperienceExplorer({ cv }: { cv: CV }) {
   }));
 
   return (
-    <Section id="experience" className="py-12 md:py-16">
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Experience Explorer</h2>
-        <p className="mt-2 text-sm text-white/70">Filter projects and drill into details. Powered by JSON.</p>
-      </div>
+    <Section id="experience">
+      <SectionHeader
+        eyebrow="Experience"
+        title="Experience Explorer"
+        desc="Search and filter commercial projects, then open any card for responsibilities, highlights and stack."
+      />
 
       <FiltersBar
         cv={cv}
@@ -238,6 +240,7 @@ export function ExperienceExplorer({ cv }: { cv: CV }) {
       <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
         <Timeline
           items={timelineItems}
+          activeCompanyId={filters.companyId}
           onSelect={(companyId) => {
             resetFiltersToTimelineCompany(companyId);
             setOpenProjectId(null);
@@ -246,6 +249,10 @@ export function ExperienceExplorer({ cv }: { cv: CV }) {
 
         <ProjectsGrid
           projects={filteredProjects}
+          onShowAll={() => {
+            setFilters({ q: "", companyId: "all", roleId: "all", domainId: "all", onlyOngoing: false, techIds: [] });
+            setTechQ("");
+          }}
           idx={idx}
           getProjectLabel={getProjectLabel}
           companyLabel={companyLabel}
