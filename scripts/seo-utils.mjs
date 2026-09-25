@@ -73,12 +73,28 @@ export const normalizeLastmod = (value, fallback = new Date()) => {
   return fallback.toISOString().slice(0, 10);
 };
 
+const buildPersonImage = (seo) => {
+  const avatar = seo.avatar;
+  const url = absoluteUrl(seo, avatar?.url ?? seo.schema.person?.image);
+  if (!avatar?.url) return url;
+
+  return {
+    "@type": "ImageObject",
+    "@id": `${getSiteUrl(seo)}/#person-image`,
+    url,
+    contentUrl: url,
+    width: avatar.width,
+    height: avatar.height,
+    caption: avatar.alt,
+  };
+};
+
 export const buildStructuredData = (
   seo,
   {
     pageName = seo.site?.name,
     pageUrl = seo.defaultSeo?.canonical,
-    breadcrumbs = [{ name: "Strona główna", item: seo.defaultSeo?.canonical }],
+    breadcrumbs = [{ name: "Home", item: seo.defaultSeo?.canonical }],
   } = {},
 ) => {
   const siteUrl = getSiteUrl(seo);
@@ -87,7 +103,7 @@ export const buildStructuredData = (
     ...seo.schema.person,
     "@id": `${siteUrl}/#person`,
     url: seo.schema.person?.url ?? siteUrl,
-    image: absoluteUrl(seo, seo.schema.person?.image),
+    image: buildPersonImage(seo),
     knowsAbout: seo.schema.knowsAbout ?? [],
     sameAs: seo.schema.person?.sameAs ?? [],
   };
@@ -104,6 +120,7 @@ export const buildStructuredData = (
     "@type": "WebSite",
     "@id": `${siteUrl}/#website`,
     name: seo.site?.name,
+    alternateName: seo.site?.alternateName,
     url: `${siteUrl}/`,
     inLanguage: seo.site?.language,
     description: seo.defaultSeo?.description,
@@ -154,24 +171,37 @@ export const buildSiteNavigationStructuredData = (seo, staticPages = []) => {
   };
 };
 
+const buildSitemapImages = (seo) =>
+  Array.from(
+    new Set([seo.avatar?.url, seo.openGraph?.image?.url].filter(Boolean).map((url) => absoluteUrl(seo, url))),
+  )
+    .map(
+      (url) => `
+    <image:image>
+      <image:loc>${escapeHtml(url)}</image:loc>
+    </image:image>`,
+    )
+    .join("");
+
 export const buildSitemapXml = (seo, lastmod, staticPages = []) => {
   const siteUrl = getSiteUrl(seo);
+  const homeUrl = `${siteUrl}/`;
   const urls = Array.from(
     new Set(
       [
-        `${siteUrl}/`,
+        homeUrl,
         ...staticPages.map((page) => page.canonical),
       ].filter(Boolean),
     ),
   );
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls
   .map(
     (url) => `  <url>
     <loc>${escapeHtml(url)}</loc>
-    <lastmod>${escapeHtml(lastmod)}</lastmod>
+    <lastmod>${escapeHtml(lastmod)}</lastmod>${url === homeUrl ? buildSitemapImages(seo) : ""}
   </url>`,
   )
   .join("\n")}
@@ -230,6 +260,8 @@ export const buildSeoHead = ({
   robots = seo.defaultSeo?.robots,
   structuredData = buildStructuredData(seo),
   assetTags = [],
+  extraHeadTags = [],
+  preloadImage,
   openGraph = {},
   twitter = {},
 }) => {
@@ -237,6 +269,17 @@ export const buildSeoHead = ({
   const twitterMeta = { ...(seo.twitter ?? {}), ...twitter };
   const image = og.image ?? {};
   const keywords = getKeywords(seo).join(", ");
+  const profile = og.type === "profile" ? (og.profile ?? {}) : null;
+  const optionalMeta = (attr, name, value) =>
+    value === undefined || value === null || value === ""
+      ? ""
+      : `\n    <meta ${attr}="${name}" content="${escapeHtml(value)}" />`;
+  const relMeLinks = (seo.schema?.person?.sameAs ?? [])
+    .map((url) => `\n    <link rel="me" href="${escapeHtml(url)}" />`)
+    .join("");
+  const preloadTag = preloadImage
+    ? `\n    <link rel="preload" as="image" href="${escapeHtml(preloadImage)}" fetchpriority="high" />`
+    : "";
 
   return `  <head>
     <meta charset="UTF-8" />
@@ -252,26 +295,29 @@ export const buildSeoHead = ({
     <link rel="icon" type="image/png" sizes="16x16" href="${escapeHtml(seo.favicon?.icon16)}" />
     <link rel="icon" type="image/png" sizes="32x32" href="${escapeHtml(seo.favicon?.icon32)}" />
     <link rel="apple-touch-icon" href="${escapeHtml(seo.favicon?.appleTouchIcon)}" />
-    <link rel="manifest" href="${escapeHtml(seo.favicon?.manifest)}" />
+    <link rel="manifest" href="${escapeHtml(seo.favicon?.manifest)}" />${relMeLinks}${preloadTag}
 
     <meta property="og:type" content="${escapeHtml(og.type)}" />
     <meta property="og:title" content="${escapeHtml(og.title)}" />
     <meta property="og:description" content="${escapeHtml(og.description)}" />
     <meta property="og:url" content="${escapeHtml(og.url)}" />
     <meta property="og:image" content="${escapeHtml(image.url)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(image.url)}" />${optionalMeta("property", "og:image:type", image.type)}
     <meta property="og:image:width" content="${escapeHtml(image.width)}" />
     <meta property="og:image:height" content="${escapeHtml(image.height)}" />
     <meta property="og:image:alt" content="${escapeHtml(image.alt)}" />
     <meta property="og:site_name" content="${escapeHtml(og.siteName)}" />
-    <meta property="og:locale" content="${escapeHtml(og.locale)}" />
+    <meta property="og:locale" content="${escapeHtml(og.locale)}" />${(og.localeAlternate ?? [])
+      .map((locale) => optionalMeta("property", "og:locale:alternate", locale))
+      .join("")}${profile ? `${optionalMeta("property", "profile:first_name", profile.firstName)}${optionalMeta("property", "profile:last_name", profile.lastName)}${optionalMeta("property", "profile:username", profile.username)}` : ""}
 
     <meta name="twitter:card" content="${escapeHtml(twitterMeta.card)}" />
     <meta name="twitter:title" content="${escapeHtml(twitterMeta.title)}" />
     <meta name="twitter:description" content="${escapeHtml(twitterMeta.description)}" />
-    <meta name="twitter:image" content="${escapeHtml(twitterMeta.image)}" />
+    <meta name="twitter:image" content="${escapeHtml(twitterMeta.image)}" />${optionalMeta("name", "twitter:image:alt", twitterMeta.imageAlt)}
 
     <script type="application/ld+json">${safeJsonScript(structuredData)}</script>
     ${buildSrOnlyStyle()}
-${assetTags.map((tag) => `    ${tag}`).join("\n")}
+${extraHeadTags.map((tag) => `    ${tag}`).join("\n")}${extraHeadTags.length ? "\n" : ""}${assetTags.map((tag) => `    ${tag}`).join("\n")}
   </head>`;
 };

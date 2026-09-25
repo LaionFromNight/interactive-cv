@@ -72,13 +72,12 @@
             "If you forgot to include something or could not provide enough context while booking, please send the missing details by email.",
             "When the context is clear, I can confirm the meeting and keep the scheduled time for a focused conversation."
           ]
-          
         },
         {
           "heading": "Meeting confirmation",
           "tone": "gold",
           "description": "Please add enough context so I can understand and confirm the meeting.",
-            "badges": [
+          "badges": [
             "Meeting context needed",
             "Fit matters",
             "Up to 6h cancellation window"
@@ -150,9 +149,9 @@
       "enabled": true,
       "path": "/before-we-work-together/",
       "navLabel": "Before we work together",
-      "navDescription": "Practical details for founders, startups and small teams considering direct cooperation with a software engineer.",
-      "title": "Before we work together – Practical cooperation details",
-      "description": "Practical information for founders, startups, small companies and early teams considering direct cooperation with Lukasz Komur as a software engineer or solution architect.",
+      "navDescription": "How cooperation works: engagement models, first steps, communication and availability.",
+      "title": "Before we work together – How cooperation works",
+      "description": "Everything you need to know before working with Lukasz Komur, a senior backend engineer and solution architect: engagement models, first steps, communication, security and availability for founders, startups and growing teams.",
       "canonical": "https://lukaszkomur.dev/before-we-work-together/",
       "robots": "index, follow, max-image-preview:large",
       "tone": "emerald",
@@ -161,159 +160,208 @@
       ],
       "openGraph": {
         "title": "Before we work together – Lukasz Komur",
-        "description": "Practical cooperation details for founders, startups, small companies and early teams considering direct cooperation with a software engineer.",
+        "description": "How cooperation with Lukasz Komur works: engagement models, first steps, communication, security and availability for founders, startups and growing teams.",
         "url": "https://lukaszkomur.dev/before-we-work-together/"
       },
       "twitter": {
         "title": "Before we work together – Lukasz Komur",
-        "description": "Practical cooperation details for founders, startups, small companies and early teams considering direct cooperation with a software engineer."
+        "description": "How cooperation with Lukasz Komur works: engagement models, first steps, communication, security and availability for founders, startups and growing teams."
       },
       "h1": "Before we work together",
-      "lead": "A practical overview for founders, small companies and early teams who want to understand how direct cooperation with a software engineer can work before scheduling a conversation.",
-      "heroNote": "This page is mostly for people considering direct cooperation with an engineer instead of immediately going to a software house or building a full internal team. If I join an established company or existing engineering team, I naturally adapt to its processes, tools and policies.",
+      "lead": "A clear picture of how we can work together – from the first conversation to a production-ready result. Whether you are a founder with an idea, a small company with a system that needs attention, or a team that needs senior backend and architecture support, this page answers the practical questions up front.",
+      "heroNote": "Joining an established company or engineering team? I adopt your existing processes, tools and security policies from day one – the details below matter most for direct cooperation.",
       "ctas": [
         {
-          "label": "Schedule a meeting",
+          "label": "Book an intro call",
           "href": "/contact/",
           "variant": "primary"
         },
         {
-          "label": "Back to main page",
+          "label": "See my experience",
           "href": "/",
           "variant": "secondary"
         }
       ],
       "sections": [
         {
-          "heading": "Who this page is mainly for",
+          "heading": "Who I work with",
           "tone": "blue",
-          "description": "These details are most useful for people and companies that are still shaping how technical cooperation should look.",
+          "description": "Direct cooperation with a senior engineer works best when you need ownership and expertise without the overhead of a software house or a full in-house team.",
           "badges": [
-            "Startups",
-            "Small companies",
-            "Early teams",
             "Founders",
+            "Startups",
+            "Small and mid-sized companies",
+            "Early engineering teams",
             "Non-technical owners",
-            "Software house alternative"
+            "Established teams"
           ],
           "animatedParagraphs": [
-            "This page is mainly for founders, small businesses, startups, early-stage teams, or non-technical decision-makers who want to work with a software engineer but are not yet sure how such cooperation should be organized.",
-            "If I join an established company, existing engineering team, or recruitment process, I naturally adapt to the company’s tools, policies, onboarding, communication rules and security requirements.",
-            "The goal is to reduce uncertainty for people who are considering direct cooperation with an engineer instead of immediately going to a software house or building a full internal team."
+            "Founders and business owners who need someone to design, build or rescue a product – and who want a direct line to the person actually writing and owning the code.",
+            "Small companies and early teams that need senior backend or architecture capacity to move faster, make the right technical decisions early, and avoid costly rework later.",
+            "Established companies that need an experienced engineer to strengthen an existing team, take ownership of a system, or lead an integration or platform initiative."
           ]
         },
         {
-          "heading": "Cooperation basics",
-          "description": "A quick summary of the most common formal and practical cooperation details.",
+          "heading": "What you can expect",
+          "tone": "emerald",
+          "description": "The principles I bring to every engagement, regardless of its size.",
+          "cards": [
+            {
+              "title": "Ownership",
+              "description": "I take responsibility for outcomes, not just tasks – from architecture decisions to production readiness and handover."
+            },
+            {
+              "title": "Clear communication",
+              "description": "Regular, concise updates. Technical topics translated into business impact, risks and decisions you can act on."
+            },
+            {
+              "title": "Pragmatic engineering",
+              "description": "Solutions sized to the real problem: maintainable, documented and built to be extended by others – no unnecessary complexity."
+            },
+            {
+              "title": "Transparency",
+              "description": "Honest estimates, early flagging of risks, and clear trade-offs so you always know where the project stands."
+            }
+          ]
+        },
+        {
+          "heading": "AI agent systems",
+          "tone": "rose",
+          "description": "I am building my own AI agent system and can help you adopt agent-based workflows – either by deploying my architecture or by designing a system tailored to your company.",
           "badges": [
-            "B2B",
-            "VAT invoice",
-            "Contract-based cooperation",
-            "US market experience",
-            "Remote from Europe",
-            "CET / CEST",
-            "Client device possible",
-            "Private macOS setup possible"
+            "AI agents",
+            "Agent architecture",
+            "Deployment in your infrastructure",
+            "AI cost optimization",
+            "Developer productivity",
+            "Team enablement"
           ],
+          "animatedParagraphs": [
+            "Two ways to work together: I can deploy and adapt my own agent system for your team, or design and implement an agent architecture directly in your environment, integrated with your tools, repositories and security policies.",
+            "The focus is practical value: automating repetitive work, supporting engineers in day-to-day delivery, and keeping AI usage costs predictable and under control.",
+            "Case study: for a team of 33 people spending around 55,000 per month on Copilot, introducing my agent architecture cut AI costs by more than 45% – over 25,000 saved every month – with no drop in output or delivery pace."
+          ],
+          "cards": [
+            {
+              "title": "33 people",
+              "description": "Team using AI coding assistants every day."
+            },
+            {
+              "title": "−45% cost",
+              "description": "Over 25,000 saved every month on AI tooling."
+            },
+            {
+              "title": "Same output",
+              "description": "Delivery pace and quality unchanged after the switch."
+            }
+          ]
+        },
+        {
+          "heading": "How we get started",
+          "tone": "violet",
+          "description": "A simple, low-commitment path from first contact to productive work.",
           "animatedListStyle": "cards",
           "animatedList": [
-            "I can cooperate on a B2B basis and issue VAT invoices for companies in Poland and Europe.",
-            "For clients outside Europe, including the United States, cooperation can be contract-based without employment on the client side.",
-            "I have experience working with US clients and teams, so the cooperation model, communication style and expectations of that market are familiar to me.",
-            "I work remotely, preferably from Europe and CET / CEST-friendly working hours.",
-            "For part-time, project-based or short-term cooperation, I can be flexible with meeting times within reasonable limits.",
-            "I can work on client-provided equipment or on my private macOS setup, depending on security and project requirements."
+            "Intro call – a short, free conversation about your goals, the current situation and where I can help most.",
+            "Scope and approach – I propose an engagement model, first milestones and an estimate so you can make an informed decision.",
+            "Agreement and access – we confirm the contract, billing and access setup, including any security requirements on your side.",
+            "Kick-off – we align on priorities, communication and success criteria, and I start delivering visible progress early."
           ]
         },
         {
-          "heading": "Secure remote setup",
-          "description": "I maintain a security-conscious remote work setup and can also follow the client’s access requirements.",
+          "heading": "Engagement models and formalities",
+          "description": "Flexible cooperation that fits your company, budget and stage.",
           "badges": [
-            "Own VPN",
-            "Secured network",
-            "MFA",
-            "Password manager",
-            "Private macOS setup",
-            "Client security policy"
+            "B2B contract",
+            "VAT invoices",
+            "Full-time",
+            "Part-time",
+            "Project-based",
+            "Short technical missions",
+            "EU and US clients"
           ],
           "animatedListStyle": "list",
           "animatedList": [
-            "I use my own VPN and secured network setup for remote work when appropriate.",
-            "My professional accounts are protected with MFA and managed with security-focused practices.",
-            "If the client requires specific access rules, VPN, device policy, MFA, or internal procedures, I can adapt to that setup before starting work."
+            "Long-term full-time or part-time cooperation, fixed-scope projects, and short technical missions such as architecture reviews, audits, project rescue or AI agent system deployments.",
+            "B2B cooperation with VAT invoicing for companies in Poland and across the European Union.",
+            "Contract-based cooperation for clients outside Europe, including the United States – I have worked with US clients and teams and am familiar with their expectations and communication style.",
+            "I can work on client-provided equipment or on my own professionally managed macOS setup, depending on your requirements."
           ]
         },
         {
-          "heading": "Communication setup",
-          "description": "Communication can be adapted to the client’s workflow, team maturity and technical background.",
+          "heading": "Security and access",
+          "description": "Your code, data and infrastructure are handled with the same care as my own.",
           "badges": [
-            "Technical teams",
-            "Non-technical stakeholders",
-            "Email",
+            "VPN",
+            "MFA everywhere",
+            "Password manager",
+            "Least-privilege access",
+            "Client security policies",
+            "NDA-ready"
+          ],
+          "animatedListStyle": "list",
+          "animatedList": [
+            "A secured remote setup with VPN, multi-factor authentication and a password manager for all professional accounts.",
+            "Access limited to what the work requires, following least-privilege principles.",
+            "Happy to sign an NDA and to follow your internal security policies, device requirements and access procedures before any work begins."
+          ]
+        },
+        {
+          "heading": "Communication and collaboration",
+          "description": "Structured enough to keep everyone aligned – light enough not to slow anyone down.",
+          "badges": [
+            "Async updates",
             "Video calls",
             "Task tracking",
             "Documentation",
-            "Code collaboration"
+            "Code reviews",
+            "Stakeholder reporting"
           ],
           "animatedParagraphs": [
-            "If the client already has tools and processes, I can join the existing setup.",
-            "For smaller or side projects, I can help establish a lightweight communication flow using professional tools instead of creating unnecessary process overhead.",
-            "When working with non-technical stakeholders, I can translate technical topics into practical decisions, risks and next steps.",
-            "The goal is simple: clear context, visible decisions and enough structure to move the work forward."
+            "If you already have tools and processes, I join them – repositories, task boards, chat and planning rituals included.",
+            "If you are just getting started, I can help set up a lightweight, professional workflow: a task board, a clear definition of done, and short regular updates.",
+            "For non-technical stakeholders, I translate technical work into what matters: progress, risks, costs and the next decisions to make."
           ]
         },
         {
-          "heading": "Availability and timezone",
-          "description": "My preferred working timezone is Poland / Central European Time, especially for long-term or full-time cooperation.",
+          "heading": "Availability and time zones",
+          "description": "Based in Poland (CET / CEST) and working remotely with clients across Europe and North America.",
           "animatedListStyle": "list",
           "animatedList": [
-            "For full-time, long-term or team-based cooperation, I prefer CET / CEST-friendly working hours.",
-            "For European clients, this usually works naturally within normal business hours.",
-            "For part-time, project-based or short-term cooperation with clients outside Europe, I can adjust meeting times when needed.",
-            "For US clients, I can be flexible with later Polish hours, but please keep in mind that 4:00 PM on the US East Coast is already around 10:00 PM in Poland, depending on daylight saving time.",
-            "I am flexible for important meetings, handovers, production topics or urgent situations, but I do not treat very late-night calls as a default working model."
+            "Full overlap with European business hours.",
+            "Solid afternoon overlap with the US East Coast – for ongoing US cooperation we agree on a fixed daily overlap window that works for both sides.",
+            "Flexible for key moments such as releases, handovers, production incidents and important stakeholder meetings."
           ]
         },
         {
-          "heading": "Working with teams",
-          "description": "I can join an existing team or work independently when the project needs focused technical ownership.",
-          "animatedParagraphs": [
-            "I can adapt to existing repositories, workflows, planning processes and communication channels.",
-            "For smaller projects, I can help organize the technical direction without adding unnecessary process overhead.",
-            "Clear context, practical communication and access to decision-makers usually matter more than heavy process.",
-            "The goal is simple: enough structure to move the work forward without slowing everyone down."
-          ]
-        },
-        {
-          "heading": "Non-profit and impact projects",
+          "heading": "Impact and non-profit projects",
           "tone": "gold",
-          "description": "I am open to selected non-profit or reduced-rate cooperation when the project has a real impact on animals, the planet, or human life.",
+          "description": "I reserve part of my time for projects that genuinely help animals, the planet or human lives – with pro bono or reduced-rate support.",
           "badges": [
-            "Animal rescue",
+            "Animal welfare",
             "Environmental protection",
+            "Emergency response",
             "Life-saving technology",
             "Drones",
-            "Impact platforms",
-            "Non-profit support"
+            "Non-profits"
           ],
           "animatedParagraphs": [
-            "If you are building something that helps rescue animals, protects the environment, supports emergency response, or can help save lives, you can contact me even if the project is not purely commercial.",
-            "I may be able to help design or build needed platforms, internal tools, automation, drone-related software, integrations, or other technical solutions that support the mission.",
-            "I cannot promise availability for every request, but if the project is meaningful and technically realistic, reach out and we can check what can be done."
+            "If your organization rescues animals, protects the environment, supports emergency response or builds technology that saves lives, I would be glad to hear about it – even if the project is not commercial.",
+            "I can help with platforms, internal tools, automation, integrations or drone-related software that supports your mission.",
+            "Capacity for these projects is limited, so reach out early and tell me about your mission – we will find the best way I can contribute."
           ]
         },
         {
-          "heading": "Before we start",
+          "heading": "Ready to talk?",
           "tone": "violet",
-          "description": "To avoid confusion later, it is useful to agree on a few basics early.",
+          "description": "To make our first call as useful as possible, it helps to have a rough idea of:",
           "itemsStyle": "list",
           "items": [
-            "what problem we are trying to solve,",
-            "what kind of help or responsibility you expect,",
-            "how we will communicate and organize the work,",
-            "what access, equipment or security setup is required,",
-            "what availability and timezone overlap makes sense,",
-            "what contract, invoice or billing setup is needed."
+            "The problem you want to solve or the goal you want to reach.",
+            "The kind of support you are looking for – hands-on development, architecture, AI agent systems, ownership or advisory.",
+            "Your preferred timeline and expected level of involvement.",
+            "Any existing tools, team setup or security requirements.",
+            "Don't have all the answers yet? That's perfectly fine – shaping them together is part of the first conversation."
           ]
         }
       ]

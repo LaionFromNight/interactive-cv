@@ -239,6 +239,8 @@ export function Hero({
                     name={person.full_name}
                     className="h-20 w-20 rounded-[1.8rem]"
                     textClassName="text-2xl"
+                    size={80}
+                    priority
                   />
                 </div>
                 <div className="min-w-0">

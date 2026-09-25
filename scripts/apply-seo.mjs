@@ -77,10 +77,20 @@ const assetTags = headMatch
     ).map((match) => match[0])
   : [];
 
+// Keep hand-written head tags from index.html (font links, theme bootstrap script)
+// that the generated SEO head would otherwise drop.
+const extraHeadTags = headMatch
+  ? Array.from(
+      headMatch[0].matchAll(
+        /<link\b[^>]*\brel=["'](?:preconnect|stylesheet)["'][^>]*\bhref=["']https?:\/\/[^"']+["'][^>]*>|<link\b[^>]*\bhref=["']https?:\/\/[^"']+["'][^>]*\brel=["'](?:preconnect|stylesheet)["'][^>]*>|<script>[\s\S]*?<\/script>/g,
+      ),
+    ).map((match) => match[0])
+  : [];
+
 const structuredData = buildStructuredData(seo, {
   pageName: seo.site?.name,
   pageUrl: seo.defaultSeo?.canonical,
-  breadcrumbs: [{ name: "Strona główna", item: `${siteUrl}/` }],
+  breadcrumbs: [{ name: "Home", item: `${siteUrl}/` }],
 });
 
 structuredData["@graph"].push({
@@ -89,6 +99,10 @@ structuredData["@graph"].push({
   name: `${cv.person?.full_name ?? seo.site?.name} - Profile`,
   url: `${siteUrl}/`,
   description: seo.defaultSeo?.description,
+  inLanguage: seo.site?.language,
+  dateModified: lastmod,
+  isPartOf: { "@id": `${siteUrl}/#website` },
+  ...(seo.avatar?.url ? { primaryImageOfPage: { "@id": `${siteUrl}/#person-image` } } : {}),
   mainEntity: { "@id": `${siteUrl}/#person` },
 });
 
@@ -109,6 +123,8 @@ const nextHead = buildSeoHead({
   robots: seo.defaultSeo?.robots,
   structuredData,
   assetTags,
+  extraHeadTags,
+  preloadImage: cv.person?.avatar_url,
 });
 
 const staticProfileBlock = `    ${buildStaticProfileHtml(cv, {
@@ -176,6 +192,7 @@ for (const staticPage of enabledStaticPages) {
     robots: staticPage.robots ?? seo.defaultSeo?.robots,
     structuredData: staticPageStructuredData,
     openGraph: {
+      type: "website",
       ...staticPage.openGraph,
       url: staticPage.openGraph?.url ?? staticPage.canonical,
     },
