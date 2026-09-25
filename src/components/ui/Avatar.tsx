@@ -15,11 +15,17 @@ export function Avatar({
   name,
   className = "",
   textClassName = "text-sm",
+  size = 80,
+  priority = false,
 }: {
   src?: string;
   name: string;
   className?: string;
   textClassName?: string;
+  /** Rendered size in CSS pixels; sets intrinsic width/height to avoid layout shift. */
+  size?: number;
+  /** Load eagerly with high fetch priority (above-the-fold hero image). */
+  priority?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -28,6 +34,11 @@ export function Avatar({
       <img
         src={src}
         alt={name}
+        width={size}
+        height={size}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
         className={`object-cover ${className}`}
         onError={() => setFailed(true)}
         referrerPolicy="no-referrer"

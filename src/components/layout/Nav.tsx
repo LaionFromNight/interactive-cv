@@ -192,6 +192,8 @@ export function Nav({
               name={avatarAlt ?? ownerName}
               className="h-9 w-9 shrink-0 rounded-xl ring-1 ring-line"
               textClassName="text-xs"
+              size={36}
+              priority
             />
             <div className="min-w-0 leading-tight">
               <p className="truncate font-display text-sm font-semibold tracking-tight text-fg">{ownerName}</p>

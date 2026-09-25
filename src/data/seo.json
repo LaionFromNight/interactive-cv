@@ -5,17 +5,20 @@
     "locale": "en_US",
     "language": "en",
     "author": "Lukasz Komur",
-    "themeColor": "#0b1216"
+    "themeColor": "#0b1216",
+    "alternateName": "Łukasz Komur"
   },
   "defaultSeo": {
     "title": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
     "titleTemplate": "%s | Lukasz Komur",
     "description": "Lukasz Komur is a software engineer, senior backend engineer and solution architect focused on backend systems, integrations, cloud architecture, internal platforms, automation and production-ready software delivery.",
     "canonical": "https://lukaszkomur.dev/",
-    "robots": "index, follow, max-image-preview:large"
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
   },
   "keywords": {
     "primary": [
+      "Lukasz Komur",
+      "Łukasz Komur",
       "software engineer",
       "senior backend engineer",
       "solution architect",
@@ -46,7 +49,7 @@
     ]
   },
   "openGraph": {
-    "type": "website",
+    "type": "profile",
     "title": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
     "description": "Backend systems, integrations, internal platforms, cloud architecture, automation and production-ready software delivery.",
     "url": "https://lukaszkomur.dev/",
@@ -56,14 +59,24 @@
       "url": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg",
       "width": 1200,
       "height": 630,
-      "alt": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect"
-    }
+      "alt": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
+      "type": "image/jpeg"
+    },
+    "profile": {
+      "firstName": "Lukasz",
+      "lastName": "Komur",
+      "username": "LaionFromNight"
+    },
+    "localeAlternate": [
+      "pl_PL"
+    ]
   },
   "twitter": {
     "card": "summary_large_image",
     "title": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect",
     "description": "Backend systems, integrations, internal platforms, cloud architecture and production-ready software delivery.",
-    "image": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg"
+    "image": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg",
+    "imageAlt": "Lukasz Komur - Software Engineer, Senior Backend Engineer, Solution Architect"
   },
   "favicon": {
     "ico": "/favicon.ico",
@@ -78,15 +91,41 @@
     "person": {
       "@type": "Person",
       "name": "Lukasz Komur",
+      "alternateName": [
+        "Łukasz Komur",
+        "LaionFromNight"
+      ],
+      "givenName": "Lukasz",
+      "familyName": "Komur",
       "jobTitle": "Software Engineer, Senior Backend Engineer, Solution Architect",
       "description": "Software engineer, senior backend engineer and solution architect focused on backend systems, integrations, cloud architecture, internal platforms, automation and production-ready software delivery.",
-      "image": "https://lukaszkomur.dev/og/lukasz-komur-og.jpg",
+      "image": "https://lukaszkomur.dev/assets/avatar/lukasz-komur.jpg",
       "url": "https://lukaszkomur.dev",
       "email": "contact@lukaszkomur.dev",
       "sameAs": [
         "https://github.com/LaionFromNight",
         "https://www.linkedin.com/in/%C5%82ukasz-komur-553042117/"
-      ]
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "Poland"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "PL"
+      },
+      "knowsLanguage": [
+        "pl",
+        "en"
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Senior Backend Engineer / Solution Architect",
+        "occupationLocation": {
+          "@type": "Country",
+          "name": "Poland"
+        }
+      }
     },
     "knowsAbout": [
       "Software Engineering",
@@ -121,5 +160,11 @@
         "Remote"
       ]
     }
+  },
+  "avatar": {
+    "url": "https://lukaszkomur.dev/assets/avatar/lukasz-komur.jpg",
+    "width": 400,
+    "height": 400,
+    "alt": "Portrait photo of Lukasz Komur"
   }
 }

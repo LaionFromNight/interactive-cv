@@ -272,7 +272,7 @@ export const buildStaticProfileHtml = (
 
   return `<main${idAttr}${classAttr} aria-label="Static CV profile">
       <header>
-        <h1>${escapeHtml(cv.person?.full_name || "Lukasz Komur")}</h1>
+${cleanText(cv.person?.avatar_url) ? `        <img src="${escapeHtml(cv.person.avatar_url)}" alt="${escapeHtml(`Portrait photo of ${cv.person?.full_name || "Lukasz Komur"}`)}" width="400" height="400" loading="lazy" decoding="async" />\n` : ""}        <h1>${escapeHtml(cv.person?.full_name || "Lukasz Komur")}</h1>
         <p><strong>${escapeHtml(cv.person?.headline || "Software Engineer / Senior Backend Engineer / Solution Architect")}</strong></p>
         ${cleanText(cv.person?.bio_short) ? `<p>${escapeHtml(cv.person.bio_short)}</p>` : ""}
       </header>
