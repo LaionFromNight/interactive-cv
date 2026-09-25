@@ -1,156 +1,100 @@
-import type { CV } from "../../lib/cvTypes";
+import type { CV, CVPdfLabels } from "../../lib/cvTypes";
 
 export type PdfLabels = {
   summary: string;
-  professionalSummary: string;
-  coreStrengths: string;
-  coreSkills: string;
+  experience: string;
   skills: string;
+  coreSkills: string;
   profile: string;
-  timeline: string;
+  education: string;
+  languages: string;
+  contact: string;
   links: string;
-  experienceProjects: string;
-  experienceProjectsContinued: string;
-  responsibilities: string;
-  highlights: string;
+  strengths: string;
+  interests: string;
   stack: string;
-  cvContinued: string;
-  additionalProfileDetails: string;
+  present: string;
   lastUpdated: string;
+  page: string;
 };
 
 export type PdfTemplateConfig = {
   qr: {
-    imageSrc: string;
     targetUrl: string;
     label: string;
-  };
+  } | null;
   profileFocus: string[];
-  spokenLanguages: string[];
-  spokenLanguagesLine: string | null;
   labels: PdfLabels;
 };
 
-type PdfJsonConfig = {
-  qr_code?: {
-    image_url?: string;
-    target_url?: string;
-    label?: string;
-  };
-  profile_focus?: string[];
-  labels?: Partial<{
-    summary: string;
-    professional_summary: string;
-    core_strengths: string;
-    core_skills: string;
-    skills: string;
-    profile: string;
-    timeline: string;
-    links: string;
-    experience_projects: string;
-    experience_projects_continued: string;
-    responsibilities: string;
-    highlights: string;
-    stack: string;
-    cv_continued: string;
-    additional_profile_details: string;
-    last_updated: string;
-  }>;
-};
-
-type CVWithPdfConfig = CV & {
-  pdf?: PdfJsonConfig;
-};
-
-const DEFAULT_PROFILE_FOCUS = [
-  "Backend/ FullStack Software Engineering",
-];
-
 const DEFAULT_LABELS: PdfLabels = {
   summary: "Summary",
-  professionalSummary: "Professional Summary",
-  coreStrengths: "Core Strengths",
-  coreSkills: "Core Skills",
+  experience: "Experience",
   skills: "Skills",
+  coreSkills: "Core Skills",
   profile: "Profile",
-  timeline: "Timeline",
+  education: "Education",
+  languages: "Languages",
+  contact: "Contact",
   links: "Links",
-  experienceProjects: "Experience / Projects",
-  experienceProjectsContinued: "Experience / Projects continued",
-  responsibilities: "Responsibilities",
-  highlights: "Highlights",
+  strengths: "Strengths",
+  interests: "Interests",
   stack: "Stack",
-  cvContinued: "CV continued",
-  additionalProfileDetails: "Additional profile details",
+  present: "Present",
   lastUpdated: "Last updated",
+  page: "Page",
 };
 
-function getInteractiveCvProfileUrl(cv: CV) {
-  return cv.person.profiles?.find((profile) => profile.id === "cv")?.url;
+/** Maps optional snake_case labels from `cv.json -> pdf.labels` onto the defaults. */
+function resolveLabels(labels: CVPdfLabels | undefined): PdfLabels {
+  const l = labels ?? {};
+
+  return {
+    summary: l.professional_summary ?? l.summary ?? DEFAULT_LABELS.summary,
+    experience: l.experience ?? l.experience_projects ?? DEFAULT_LABELS.experience,
+    skills: l.skills ?? DEFAULT_LABELS.skills,
+    coreSkills: l.core_skills ?? DEFAULT_LABELS.coreSkills,
+    profile: l.profile ?? DEFAULT_LABELS.profile,
+    education: l.education ?? DEFAULT_LABELS.education,
+    languages: l.languages ?? DEFAULT_LABELS.languages,
+    contact: l.contact ?? DEFAULT_LABELS.contact,
+    links: l.links ?? DEFAULT_LABELS.links,
+    strengths: l.strengths ?? l.core_strengths ?? DEFAULT_LABELS.strengths,
+    interests: l.interests ?? DEFAULT_LABELS.interests,
+    stack: l.stack ?? DEFAULT_LABELS.stack,
+    present: l.present ?? DEFAULT_LABELS.present,
+    lastUpdated: l.last_updated ?? DEFAULT_LABELS.lastUpdated,
+    page: l.page ?? DEFAULT_LABELS.page,
+  };
 }
 
-function normalizeDomainLabel(value: string | undefined) {
+const QR_PROFILE_IDS = ["cv", "website", "portfolio"];
+
+export function normalizeDomainLabel(value: string | undefined) {
   if (!value) return "";
 
-  return value
-    .replace(/^https?:\/\//, "")
-    .replace(/\/$/, "");
+  return value.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
 }
 
 export function createPdfTemplateConfig(cv: CV): PdfTemplateConfig {
-  const pdf = (cv as CVWithPdfConfig).pdf;
+  const pdf = cv.pdf;
 
-  const interactiveCvUrl = getInteractiveCvProfileUrl(cv);
-  const fallbackTargetUrl = interactiveCvUrl ?? "https://lukaszkomur.dev/";
-  const fallbackQrImageSrc = `${import.meta.env.BASE_URL}QRCODE.png`;
+  const profileUrl = QR_PROFILE_IDS.map(
+    (id) => cv.person.profiles?.find((profile) => profile.id === id)?.url,
+  ).find(Boolean);
 
-  const spokenLanguages = cv.person.spoken_languages ?? [];
+  const qrTargetUrl = pdf?.qr_code?.target_url ?? profileUrl;
 
   return {
-    qr: {
-      imageSrc: pdf?.qr_code?.image_url ?? fallbackQrImageSrc,
-      targetUrl: pdf?.qr_code?.target_url ?? fallbackTargetUrl,
-      label:
-        pdf?.qr_code?.label ??
-        normalizeDomainLabel(pdf?.qr_code?.target_url ?? fallbackTargetUrl),
-    },
+    qr: qrTargetUrl
+      ? {
+          targetUrl: qrTargetUrl,
+          label: pdf?.qr_code?.label ?? normalizeDomainLabel(qrTargetUrl),
+        }
+      : null,
 
-    profileFocus:
-      pdf?.profile_focus && pdf.profile_focus.length > 0
-        ? pdf.profile_focus
-        : DEFAULT_PROFILE_FOCUS,
+    profileFocus: pdf?.profile_focus ?? [],
 
-    spokenLanguages,
-
-    spokenLanguagesLine:
-      spokenLanguages.length > 0 ? spokenLanguages.join(" / ") : null,
-
-    labels: {
-      summary: pdf?.labels?.summary ?? DEFAULT_LABELS.summary,
-      professionalSummary:
-        pdf?.labels?.professional_summary ??
-        DEFAULT_LABELS.professionalSummary,
-      coreStrengths:
-        pdf?.labels?.core_strengths ?? DEFAULT_LABELS.coreStrengths,
-      coreSkills: pdf?.labels?.core_skills ?? DEFAULT_LABELS.coreSkills,
-      skills: pdf?.labels?.skills ?? DEFAULT_LABELS.skills,
-      profile: pdf?.labels?.profile ?? DEFAULT_LABELS.profile,
-      timeline: pdf?.labels?.timeline ?? DEFAULT_LABELS.timeline,
-      links: pdf?.labels?.links ?? DEFAULT_LABELS.links,
-      experienceProjects:
-        pdf?.labels?.experience_projects ?? DEFAULT_LABELS.experienceProjects,
-      experienceProjectsContinued:
-        pdf?.labels?.experience_projects_continued ??
-        DEFAULT_LABELS.experienceProjectsContinued,
-      responsibilities:
-        pdf?.labels?.responsibilities ?? DEFAULT_LABELS.responsibilities,
-      highlights: pdf?.labels?.highlights ?? DEFAULT_LABELS.highlights,
-      stack: pdf?.labels?.stack ?? DEFAULT_LABELS.stack,
-      cvContinued: pdf?.labels?.cv_continued ?? DEFAULT_LABELS.cvContinued,
-      additionalProfileDetails:
-        pdf?.labels?.additional_profile_details ??
-        DEFAULT_LABELS.additionalProfileDetails,
-      lastUpdated: pdf?.labels?.last_updated ?? DEFAULT_LABELS.lastUpdated,
-    },
+    labels: resolveLabels(pdf?.labels),
   };
 }

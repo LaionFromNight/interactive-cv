@@ -58,9 +58,18 @@ export type CVPdfLabels = {
   cv_continued?: string;
   additional_profile_details?: string;
   last_updated?: string;
+  experience?: string;
+  education?: string;
+  languages?: string;
+  contact?: string;
+  strengths?: string;
+  interests?: string;
+  present?: string;
+  page?: string;
 };
 
 export type CVPdfConfig = {
+  /** QR code is generated in the browser from `target_url` (falls back to the "cv"/"website" profile). */
   qr_code?: CVPdfQrCode;
   profile_focus?: string[];
   labels?: CVPdfLabels;

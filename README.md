@@ -109,7 +109,7 @@ If you publish your own version, replace the original personal content with your
 - Interactive experience explorer with project filtering and detail views.
 - Skills, timeline, education, contact links, and profile summary driven from `src/data/cv.json`.
 - SEO, Open Graph, Twitter Card, favicon, manifest, and Schema.org metadata driven from `src/data/seo.json`.
-- Generated PDF CV from the same JSON data source.
+- CV Studio: generated PDF CV from the same JSON data source, with 5 layouts, 17 color palettes in 6 groups, 5 font pairings, A4 / US Letter, 3 content levels, 3 densities, section toggles and a live preview of the real PDF.
 - Static crawler-friendly homepage fallback injected into the root HTML at build time.
 - Configurable static marketing/content pages generated from `src/data/cms.json`.
 - JSON-LD structured data using Schema.org `Person`, `ProfessionalService`, `WebSite`, `BreadcrumbList`, and `ProfilePage`.
@@ -143,6 +143,31 @@ Preview the production build locally:
 ```bash
 npm run preview
 ```
+
+## PDF CV Studio
+
+The "Download CV" button opens **CV Studio** — a PDF generator that builds the CV in the browser from `src/data/cv.json`.
+
+- **Layouts:** Classic (single column, ATS-friendly), Sidebar, Modern (header band), Elegant (gutter titles), Timeline.
+- **Colors:** palettes grouped as Neutral, Corporate blues, Warm, Natural, Creative and Accessible/print. Every layout works with every palette.
+- **Typography:** Inter, Lora + Source Sans 3, Playfair Display + Source Sans 3, Lora, Source Sans 3. Full latin-ext TTFs live in `public/assets/fonts`, so Polish and other diacritics render correctly.
+- **Format:** A4 or US Letter; Concise (aims for 1 page) / Standard / Detailed content; Compact / Balanced / Airy density.
+- **Sections:** photo, QR code, links, skill levels, education, languages, strengths, interests; optional GDPR / US / PIPL consent clause.
+- **Preview:** the right-hand pane renders the actual PDF with pdf.js and refreshes as options change; layout thumbnails repaint instantly when hovering a palette. The chosen options are remembered in `localStorage`.
+
+Optional configuration in `cv.json`:
+
+```json
+"pdf": {
+  "qr_code": { "target_url": "https://your-site.dev/", "label": "your-site.dev" },
+  "profile_focus": ["Backend", "System Design"],
+  "labels": { "summary": "Podsumowanie", "experience": "Doświadczenie", "present": "obecnie" }
+}
+```
+
+The QR code is generated in the browser from `target_url` (or from a profile with id `cv`, `website` or `portfolio`). Section labels can be translated through `pdf.labels`.
+
+Code lives in `src/components/pdf/`: `CvPdfOptions.ts` (option catalogs), `theme/` (palettes, typography scale), `model/buildCvViewModel.ts` (data normalization, privacy rules, content limits) and `layouts/` (one component per layout).
 
 ## CMS static pages
 
