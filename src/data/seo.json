@@ -33,7 +33,9 @@
       "business process automation",
       "custom business software",
       "production-ready software",
-      "technical ownership"
+      "technical ownership",
+      "AI agent systems",
+      "AI cost optimization"
     ],
     "longTail": [
       "senior backend engineer for technical project",
@@ -45,7 +47,8 @@
       "engineer who can design and build production systems",
       "senior developer for integrations and automation",
       "software engineer for short technical missions",
-      "experienced engineer for project rescue and architecture cleanup"
+      "experienced engineer for project rescue and architecture cleanup",
+      "engineer to deploy AI agent system in company"
     ]
   },
   "openGraph": {
@@ -140,7 +143,9 @@
       "Business Process Automation",
       "Identity and Access Management",
       "Technical Ownership",
-      "Production Systems"
+      "Production Systems",
+      "AI Agent Systems",
+      "AI Cost Optimization"
     ],
     "service": {
       "@type": "ProfessionalService",

@@ -225,6 +225,38 @@
           ]
         },
         {
+          "heading": "AI agent systems",
+          "tone": "rose",
+          "description": "I am building my own AI agent system and can help you adopt agent-based workflows – either by deploying my architecture or by designing a system tailored to your company.",
+          "badges": [
+            "AI agents",
+            "Agent architecture",
+            "Deployment in your infrastructure",
+            "AI cost optimization",
+            "Developer productivity",
+            "Team enablement"
+          ],
+          "animatedParagraphs": [
+            "Two ways to work together: I can deploy and adapt my own agent system for your team, or design and implement an agent architecture directly in your environment, integrated with your tools, repositories and security policies.",
+            "The focus is practical value: automating repetitive work, supporting engineers in day-to-day delivery, and keeping AI usage costs predictable and under control.",
+            "Case study: for a team of 33 people spending around 55,000 per month on Copilot, introducing my agent architecture cut AI costs by more than 45% – over 25,000 saved every month – with no drop in output or delivery pace."
+          ],
+          "cards": [
+            {
+              "title": "33 people",
+              "description": "Team using AI coding assistants every day."
+            },
+            {
+              "title": "−45% cost",
+              "description": "Over 25,000 saved every month on AI tooling."
+            },
+            {
+              "title": "Same output",
+              "description": "Delivery pace and quality unchanged after the switch."
+            }
+          ]
+        },
+        {
           "heading": "How we get started",
           "tone": "violet",
           "description": "A simple, low-commitment path from first contact to productive work.",
@@ -250,7 +282,7 @@
           ],
           "animatedListStyle": "list",
           "animatedList": [
-            "Long-term full-time or part-time cooperation, fixed-scope projects, and short technical missions such as architecture reviews, audits or project rescue.",
+            "Long-term full-time or part-time cooperation, fixed-scope projects, and short technical missions such as architecture reviews, audits, project rescue or AI agent system deployments.",
             "B2B cooperation with VAT invoicing for companies in Poland and across the European Union.",
             "Contract-based cooperation for clients outside Europe, including the United States – I have worked with US clients and teams and am familiar with their expectations and communication style.",
             "I can work on client-provided equipment or on my own professionally managed macOS setup, depending on your requirements."
@@ -326,7 +358,7 @@
           "itemsStyle": "list",
           "items": [
             "The problem you want to solve or the goal you want to reach.",
-            "The kind of support you are looking for – hands-on development, architecture, ownership or advisory.",
+            "The kind of support you are looking for – hands-on development, architecture, AI agent systems, ownership or advisory.",
             "Your preferred timeline and expected level of involvement.",
             "Any existing tools, team setup or security requirements.",
             "Don't have all the answers yet? That's perfectly fine – shaping them together is part of the first conversation."
