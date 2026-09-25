@@ -177,6 +177,28 @@ select option {
 }
 
 
+/* Typefaces used by the PDF generator — loaded only when the CV Studio shows them. */
+@font-face {
+  font-family: "Lora";
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/assets/fonts/Lora-600.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/assets/fonts/PlayfairDisplay-600.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Source Sans 3";
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/SourceSans3-400.ttf") format("truetype");
+}
+
 @layer components {
 /* ------------------------------------------------------------------ */
 /* Animated background                                                  */
@@ -884,4 +906,191 @@ select option {
     opacity: 1;
     transform: none;
   }
+}
+
+@layer components {
+
+/* ------------------------------------------------------------------ */
+/* CV Studio (PDF generator)                                            */
+/* ------------------------------------------------------------------ */
+
+.studio-step {
+  display: inline-flex;
+  width: 1.35rem;
+  height: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.studio-card {
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--surface-2);
+  padding: 0.5rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.studio-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+.studio-card[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.studio-thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.4rem;
+  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.45);
+}
+
+.studio-swatch {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 9999px;
+  border: 2px solid var(--bg-elev);
+  box-shadow: 0 0 0 1px var(--line-strong);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.studio-swatch:hover {
+  transform: scale(1.1);
+}
+
+.studio-swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--accent);
+  transform: scale(1.08);
+}
+
+.studio-segmented {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.studio-segment {
+  flex: 1;
+  min-height: 2.1rem;
+  padding: 0 0.6rem;
+  border-radius: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.studio-segment:hover {
+  color: var(--fg);
+}
+
+.studio-segment[aria-checked="true"] {
+  background: var(--surface-strong);
+  color: var(--fg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), inset 0 0 0 1px var(--line-strong);
+}
+
+.studio-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2rem;
+  padding: 0 0.75rem 0 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: var(--surface-2);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.studio-toggle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.studio-toggle-box {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 0.25rem;
+  border: 1.5px solid var(--line-strong);
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.studio-toggle[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--fg);
+}
+
+.studio-toggle[aria-pressed="true"] .studio-toggle-box {
+  border-color: var(--accent);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5 6.5 11.5 12.5 4.5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 100% no-repeat,
+    var(--accent-solid);
+}
+
+.studio-preview {
+  background:
+    radial-gradient(circle at 1px 1px, var(--grid-line) 1px, transparent 0) 0 0 / 18px 18px,
+    var(--surface);
+}
+
+.pdf-preview-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pdf-preview-page,
+.studio-skeleton {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.35rem;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.08),
+    0 24px 50px -24px rgba(0, 0, 0, 0.55);
+}
+
+.studio-skeleton {
+  animation: studioPulse 1.4s ease-in-out infinite alternate;
+}
+
+.studio-skeleton svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.studio-spinner {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 9999px;
+  border: 2px solid var(--line-strong);
+  border-top-color: var(--accent);
+  animation: studioSpin 700ms linear infinite;
+}
+}
+
+@keyframes studioSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes studioPulse {
+  from { opacity: 0.55; }
+  to { opacity: 0.9; }
 }

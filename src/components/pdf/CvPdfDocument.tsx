@@ -1,78 +1,50 @@
+import { Document } from "@react-pdf/renderer";
 import type { CV } from "../../lib/cvTypes";
-import {
-  defaultCvPdfOptions,
-  type CvPdfOptions,
-} from "./CvPdfOptions";
+import type { CvPdfOptions } from "./CvPdfOptions";
+import { ClassicLayout } from "./layouts/ClassicLayout";
+import { ElegantLayout } from "./layouts/ElegantLayout";
+import { ModernLayout } from "./layouts/ModernLayout";
+import { SidebarLayout } from "./layouts/SidebarLayout";
+import { TimelineLayout } from "./layouts/TimelineLayout";
+import type { LayoutProps } from "./layouts/styles";
+import { buildCvViewModel, type CvPdfAssets } from "./model/buildCvViewModel";
+import { getPdfDocumentMetadata } from "./PdfDocumentMetadata";
 import { createPdfTemplateConfig } from "./PdfTemplateConfig";
-import { amberExecutiveStyles } from "./styles/amberExecutive";
-import { blueEngineeringStyles } from "./styles/blueEngineering";
-import { emeraldArchitectStyles } from "./styles/emeraldArchitect";
-import { graphiteMonoStyles } from "./styles/graphiteMono";
-import { highContrastAccessibleStyles } from "./styles/highContrastAccessible";
-import { ExecutiveLightTemplate } from "./templates/ExecutiveLightTemplate";
-import { AmericanResumeTemplate } from "./templates/AmericanResumeTemplate";
-import { OnePageGradientTemplate } from "./templates/OnePageGradientTemplate";
+import { createPdfTheme } from "./theme/createPdfTheme";
 
-function getStyles(options: CvPdfOptions) {
-  switch (options.colorSchemeId) {
-    case "blueEngineering":
-      return blueEngineeringStyles;
-
-    case "graphiteMono":
-      return graphiteMonoStyles;
-
-    case "amberExecutive":
-      return amberExecutiveStyles;
-
-    case "emeraldArchitect":
-      return emeraldArchitectStyles;
-
-    case "highContrastAccessible":
-      return highContrastAccessibleStyles;
-
-    default:
-      return emeraldArchitectStyles;
-  }
-}
+const LAYOUTS: Record<CvPdfOptions["layoutId"], (props: LayoutProps) => React.ReactElement> = {
+  classic: ClassicLayout,
+  sidebar: SidebarLayout,
+  modern: ModernLayout,
+  elegant: ElegantLayout,
+  timeline: TimelineLayout,
+};
 
 export function CvPdfDocument({
   cv,
-  options = defaultCvPdfOptions,
+  options,
+  assets,
 }: {
   cv: CV;
-  options?: CvPdfOptions;
+  options: CvPdfOptions;
+  assets: CvPdfAssets;
 }) {
-  const styles = getStyles(options);
-  const templateConfig = createPdfTemplateConfig(cv);
+  const theme = createPdfTheme(options);
+  const vm = buildCvViewModel(cv, options, createPdfTemplateConfig(cv), assets);
+  const metadata = getPdfDocumentMetadata(cv);
+  const Layout = LAYOUTS[options.layoutId] ?? SidebarLayout;
 
-  switch (options.templateId) {
-    case "americanResume":
-      return (
-        <AmericanResumeTemplate
-          cv={cv}
-          options={options}
-          styles={styles}
-          templateConfig={templateConfig}
-        />
-      );
-    case "onePageGradient":
-      return (
-        <OnePageGradientTemplate
-          cv={cv}
-          options={options}
-          templateConfig={templateConfig}
-        />
-      );
-
-    case "executiveLight":
-    default:
-      return (
-        <ExecutiveLightTemplate
-          cv={cv}
-          options={options}
-          styles={styles}
-          templateConfig={templateConfig}
-        />
-      );
-  }
+  return (
+    <Document
+      author={metadata.author}
+      title={metadata.title}
+      subject={metadata.subject}
+      keywords={metadata.keywords}
+      creator={metadata.creator}
+      producer={metadata.producer}
+      language="en"
+    >
+      <Layout vm={vm} theme={theme} />
+    </Document>
+  );
 }
